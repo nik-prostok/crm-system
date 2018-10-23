@@ -6,7 +6,7 @@
 			<sidebar></sidebar>
 			<!-- MAIN -->
 			<div class="col">
-				<button @click="getProducts" class="btn">Обновить</button>
+				<button @click="getProducts" class="btn">Обновить...</button>
 				<div id="printMe">
 					<div class="container-fluid mt-2 ml-1">
 						<div class="row">
