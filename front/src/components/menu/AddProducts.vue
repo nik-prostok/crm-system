@@ -1,9 +1,11 @@
 <template>
 	<div id="add_products">
-		<div class="row" id="body-row">
-			<sidebar></sidebar>
+		<div class="row no-gutters" id="body-row">
+			<div class="col-lg-1">
+				<sidebar></sidebar>
+			</div>
 
-			<div class="col">
+			<div class="col-lg-11">
 				<div class="container-fluid mt-2 ml-1 mb-5">
 
 					<div class="row">

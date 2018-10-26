@@ -4,15 +4,17 @@
 		<!-- Bootstrap row -->
 		<div class="row no-gutters" id="body-row">
 			<!-- MAIN -->
+			<div class="col-lg-1">
+				<sidebar></sidebar>
+			</div>
+			
 
-			<sidebar></sidebar>
 
 
-
-			<div class="col">
+			<div class="col-lg-11">
 				<!-- <button @click="getProducts" class="btn">Обновить...</button> -->
 				<div id="printMe">
-					<div class="container-fluid mt-2 ml-1">
+					<div class="container-fluid mt-2 pl-0">
 						<div class="row">
 							<div class="col-md-4 col-lg-5">
 								<h1 class="head-text mt-3">Товары <small class="text-muted">{{length}}</small></h1>
@@ -127,7 +129,7 @@
 										<img src="/static/image/+.png" alt="+">
 										Фильтр
 									</button>
-									<b-popover ref="popover" placement="bottom" target="popoverButton-event" title="Показать только те, в которых:">
+									<b-popover ref="popover" placement="bottom" target="popoverButton-event" triggers="focus" title="Показать только те, в которых:">
 										<div class="mr-1 ml-1">
 											<div class="text-center" v-if="FilterFilter.length === 0">Нет параметров</div>
 											<div class="mb-2">
@@ -238,7 +240,7 @@
 														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 													</div>
 												</th>
-												<th class="td-th-custom">
+												<th class="td-th-custom" style="width: 50px;">
 
 												</th>
 											</tr> 
@@ -301,16 +303,26 @@
 													<div v-else>-</div>
 												</td>
 												<td class="td-custom align-middle">
-													<b-link class="main-text" >
-														<div class="link-blue link-hover">Ред.</div>
-													</b-link>
-													<b-btn id="popoverButton" ref="button"><i class="fa fa-ellipsis-h"></i></b-btn>
-													<b-popover ref="popover" target="popoverButton" triggers="hover focus" title="Popover">
-														Hello <strong>World!</strong>
-													</b-popover>
-
-													<!-- <button @click=deleteProduct(product.id) class="btn btn-danger">Удалить</button> -->
+													<div class="d-flex flex-row">
+														<div>
+															<b-link class="main-text">
+																<div class="link-blue link-hover">Ред.</div>
+															</b-link>
+														</div>
+														<div>
+															<button class="btn-icon" id="popoverButton" >
+																<i   class="fa fa-ellipsis-h"></i>
+															</button>
+														</div>
+													</div>
 												</td>
+												<b-popover ref="popover" target="popoverButton" triggers="focus">
+													<ul>
+														<li>Копировать</li>
+														<li>Скрыть во всех заведениях</li>
+														<li>Удалить</li>
+													</ul>
+												</b-popover>
 											</tr>
 										</tbody>
 									</table>

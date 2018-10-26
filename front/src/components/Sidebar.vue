@@ -3,28 +3,22 @@
 	<div id="sidebar">
 		<!-- Sidebar -->
 
-		<div id="sidebar-container" class="sidebar-expanded d-none d-md-block"><!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
-			<!-- Bootstrap List Group -->
-
-
-			<a v-on:click="SidebarCollapse" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" style="height: 80px;">
+		<div id="mySidenav" class="sidenav bg-dark">
+			<a v-on:click="navAction" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" style="height: 80px;">
 				<div class="d-flex w-100 justify-content-start align-items-center">
-					<img src="/static/image/sandwich.png" style="width: 23px; height: 16;">
+					<img src="/static/image/sandwich.png" style="width: 23px;">
 				</div>
 			</a>
-
 			<ul v-for="item in ul_list" class="list-group">
-				<!-- Menu with submenu -->
 
 				<a :href=getHref(item.id) data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
 					<div class="d-flex w-100 justify-content-start align-items-center">
-						<span class="mr-3"><img :src=item.icon style="width: 23px; height: 16;"></span>
+						<span class="mr-3" v-on:click="navAction"><img :src=item.icon style="width: 23px; height: 16;"></span>
 						<span class="menu-collapsed">{{item.title}}</span>
-						<span class="ml-3"><font-awesome-icon icon="caret-down" /></span>
+						<span class="ml-3"><font-awesome-icon icon="caret-down"/></span>
 					</div>
 				</a>
 
-				<!-- Submenu content -->
 
 				<div v-for="sub in item.submenu" :id=item.id class="collapse sidebar-submenu">
 					<a :href=sub.id class="list-group-item list-group-item-action bg-dark text-white">
@@ -32,16 +26,18 @@
 					</a>
 				</div>
 
-			</ul><!-- List Group END-->
-		</div><!-- sidebar-container END -->
+			</ul>
+		</div>
 	</div>
 </template>
 
 <script>
+
 	export default {
 		name: 'sidebar',
 		data() {
 			return {
+				stateNav: false,
 				ul_list: [
 				{
 					title: 'Статистика',
@@ -249,10 +245,25 @@
 			this.SidebarCollapse()
 		},
 		methods: {
+			navAction(){
+				if (this.stateNav == true){
+					document.getElementById("mySidenav").style.width = "60px";
+					$('.menu-collapsed').toggleClass('d-none')
+					$('.sidebar-submenu').toggleClass('d-none')
+					//$('#mySidenav').toggleClass('sidebar-expanded sidebar-collapsed')
+					this.stateNav = false;
+				} else {
+					document.getElementById("mySidenav").style.width = "230px";
+					$('.menu-collapsed').toggleClass('d-none')
+					$('.sidebar-submenu').toggleClass('d-none')
+					$('#mySidenav').toggleClass('sidebar-expanded sidebar-collapsed')
+					this.stateNav = true;
+				}
+			},
 			SidebarCollapse () {
 				$('.menu-collapsed').toggleClass('d-none')
 				$('.sidebar-submenu').toggleClass('d-none')
-				$('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed')
+				$('#mySidenav').toggleClass('sidebar-expanded sidebar-collapsed')
 			},
 			getHref(id){
 				return ('#' + id);
@@ -265,68 +276,48 @@
 </script>
 
 <style>
-#body-row {
-	margin-left:0;
-	margin-right:0;
+
+.sidenav::-webkit-scrollbar {
+	width: 1em;
 }
-#sidebar-container {
-	min-height: 100vh;   
-	background-color: #333;
-	padding: 0;
+
+.sidenav::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+.sidenav::-webkit-scrollbar-thumb {
+	background-color: darkgrey;
+	outline: 1px solid slategrey;
+}
+
+.sidenav {
 	height: 100%;
-}
-
-/* Sidebar sizes when expanded and expanded */
-.sidebar-expanded {
-	width: 230px;
-}
-.sidebar-collapsed {
 	width: 60px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	overflow-x: hidden;
+	transition: 0.5s;
 }
 
-/* Menu item*/
-#sidebar-container .list-group a {
-	height: 50px;
-	color: white;
+.sidenav a {
+	text-decoration: none;
+	font-size: 1rem;
+	color: #818181;
+	display: block;
+	transition: 0.3s;
 }
 
-/* Submenu item*/
-#sidebar-container .list-group .sidebar-submenu a {
-	height: 45px;
-	padding-left: 30px;
-}
-.sidebar-submenu {
-	font-size: 0.9rem;
+.sidenav a:hover {
+	color: #f1f1f1;
 }
 
-/* Separators */
-.sidebar-separator-title {
-	background-color: #333;
-	height: 35px;
-}
-.sidebar-separator {
-	background-color: #333;
-	height: 25px;
-}
-.logo-separator {
-	background-color: #333;    
-	height: 60px;
-}
-
-/* Closed submenu icon */
-#sidebar-container .list-group .list-group-item[aria-expanded="false"] .submenu-icon::after {
-	content: " \f0d7";
-	font-family: FontAwesome;
-	display: inline;
-	text-align: right;
-	padding-left: 10px;
-}
-/* Opened submenu icon */
-#sidebar-container .list-group .list-group-item[aria-expanded="true"] .submenu-icon::after {
-	content: " \f0da";
-	font-family: FontAwesome;
-	display: inline;
-	text-align: right;
-	padding-left: 10px;
+.sidenav .closebtn {
+	position: absolute;
+	top: 0;
+	right: 25px;
+	font-size: 36px;
+	margin-left: 50px;
 }
 </style>
