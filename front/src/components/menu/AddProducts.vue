@@ -6,7 +6,7 @@
 			</div>
 
 			<div class="col-lg-11">
-				<div class="container-fluid mt-2 ml-1 mb-5">
+				<div class="container-fluid mt-2 mb-5">
 
 					<div class="row">
 						<div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
@@ -354,7 +354,10 @@
 						</div>
 					</div>
 					<hr class="hr-page">
-					<button type="button" @click="sendProducts" class="btn btn-success btn-lg btn-save"><div style="color: white;" class="main-text">Сохранить</div></button>
+					<button type="button" @click="sendProducts" class="btn btn-success btn-lg btn-save">
+						<div v-if="!stateSaving" style="color: white;" class="main-text">Сохранить</div>
+						<div v-if="stateSaving" style="color: white;" class="main-text">Сохранение...</div>
+					</button>
 				</div>
 			</div>
 		</div>
@@ -374,6 +377,7 @@
 		},
 		data() {
 			return {
+				stateSaving: false,
 				mod: 'without_mod',
 				with_mod: false,
 				without_mod: true,
@@ -427,6 +431,7 @@
 				this.avatar = null;
 			},
 			async sendProducts(){
+				this.stateSaving = true;
 				console.log(this.product);
 
 				if (this.product.types == 0){
@@ -452,6 +457,7 @@
 
 				console.log(formData.getAll('avatar'));
 				await ProductsService.addProduct(formData)
+				this.$router.push('/menu/products')
 			},
 			async getCategories (){
 				var res = await ProductsService.fetchCategories()

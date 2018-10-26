@@ -303,26 +303,26 @@
 													<div v-else>-</div>
 												</td>
 												<td class="td-custom align-middle">
-													<div class="d-flex flex-row">
-														<div>
-															<b-link class="main-text">
+													<div  v-if="product.title_product==undefined" class="d-flex flex-row">
+														<div class="mr-2">
+															<b-link :to=getHrefEdit(product.id) class="main-text">
 																<div class="link-blue link-hover">Ред.</div>
 															</b-link>
 														</div>
-														<div>
-															<button class="btn-icon" id="popoverButton" >
-																<i   class="fa fa-ellipsis-h"></i>
+														<div class="ml-2">
+															<button class="btn-icon popoverButton" :id=getPopoverId(product.id)>
+																<i class="fa fa-ellipsis-h"></i>
 															</button>
+															<b-popover :target=getPopoverId(product.id) triggers="focus">
+																<ul class="actions-popover">
+																	<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Копировать</a></li>
+																	<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Скрыть во всех заведениях</a></li>
+																	<li @click=deleteProduct(product.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
+																</ul>
+															</b-popover>
 														</div>
 													</div>
 												</td>
-												<b-popover ref="popover" target="popoverButton" triggers="focus">
-													<ul>
-														<li>Копировать</li>
-														<li>Скрыть во всех заведениях</li>
-														<li>Удалить</li>
-													</ul>
-												</b-popover>
 											</tr>
 										</tbody>
 									</table>
@@ -519,6 +519,9 @@
 			async getCategories () {
 				const response = await ProductsService.fetchCategories()
 				this.categories = response.data
+			},
+			getHrefEdit(id){
+				return '/menu/products/edit/' + id;
 			},
 			print () {
 				this.$htmlToPaper('printMe');
@@ -728,6 +731,9 @@
 			}
 			return filtered2
 			console.log(filtered);
+		},
+		getPopoverId(id){
+			return "popover" + id;
 		}
 	},
 	computed: {
