@@ -33,6 +33,7 @@
     "vue-printer": "0.0.4",
     "vue-router": "^3.0.1",
     "vue-select": "^2.5.1",
+    "vue-tables-2": "^1.4.70",
     "vue-upload-component": "^2.8.14"
   },
   "devDependencies": {

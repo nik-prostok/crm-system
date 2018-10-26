@@ -2,26 +2,30 @@
 	<div class="products">
 		
 		<!-- Bootstrap row -->
-		<div class="row" id="body-row">
-			<sidebar></sidebar>
+		<div class="row no-gutters" id="body-row">
 			<!-- MAIN -->
+
+			<sidebar></sidebar>
+
+
+
 			<div class="col">
-				<button @click="getProducts" class="btn">Обновить...</button>
+				<!-- <button @click="getProducts" class="btn">Обновить...</button> -->
 				<div id="printMe">
 					<div class="container-fluid mt-2 ml-1">
 						<div class="row">
 							<div class="col-md-4 col-lg-5">
-								<h1 class="head-text mt-3">Товары <small class="text-muted">{{FilterProducts.length}}</small></h1>
+								<h1 class="head-text mt-3">Товары <small class="text-muted">{{length}}</small></h1>
 							</div>
 							<div class="col-md-8 col-lg-7">
-								<div class="float-lg-right">
+								<div class="float-right">
 									<div class="btn-shadow btn-group btn-group-custom mt-3 " role="group">
 
 
 										<button type="button" class="btn btn-custom-border" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-button" id="img-button-export" src="/static/image/icon1.png" alt="icon">
 										</button>
 										<div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1"  >
-											<a>Отображать столбцы</a
+											<a mb-2>Отображать столбцы</a
 												>
 												<div v-for="(item, key) in NameColumn " >
 													<div class="form-check dropdown-item">
@@ -146,101 +150,101 @@
 								</div>
 							</div>
 
-							<div class="container-fluid mt-4">
-								<table class="table table-custom table-bordered">
-									<thead>
-										<tr class="tr-th-custom"> 
-											<th @click="sortEvent('title')" class="td-th-custom" v-if="((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))">Название
-												<div v-if="sortColumn == 'title'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('count')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))">
-												Категория
-												<div v-if="sortColumn == 'category'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th> 
-											<th @click="sortEvent('barcode')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))">
-												Штрихкод
-												<div v-if="sortColumn == 'barcode'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('SKU')" class="td-th-custom" v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))">
-												SKU
-												<div v-if="sortColumn == 'SKU'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('shop')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))">
-												Цех
-												<div v-if="sortColumn == 'shop'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('types')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))">
-												Тип
-												<div v-if="sortColumn == 'types'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('weight_goods')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))">
-												Весовой товар
-												<div v-if="sortColumn == 'weight_goods'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('unit')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))">
-												Единица измерения
-												<div v-if="sortColumn == 'unit'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('self_cost')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))">
-												Себестоимость
-												<div v-if="sortColumn == 'self_cost'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('price')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))">
-												Цена
-												<div v-if="sortColumn == 'price'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('profit')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))">
-												Прибыль
-												<div v-if="sortColumn == 'profit'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('markup')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))">
-												Наценка
-												<div v-if="sortColumn == 'markup'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th class="td-th-custom">
+							<div class="mt-4">
+								<div class="table-responsive">
+									<table class="table table-custom table-bordered">
+										<thead>
+											<tr class="tr-th-custom"> 
+												<th @click="sortEvent('title')" class="td-th-custom" v-if="((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))">Название
+													<div v-if="sortColumn == 'title'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('count')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))">
+													Категория
+													<div v-if="sortColumn == 'category'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th> 
+												<th @click="sortEvent('barcode')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))">
+													Штрихкод
+													<div v-if="sortColumn == 'barcode'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('SKU')" class="td-th-custom" v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))">
+													SKU
+													<div v-if="sortColumn == 'SKU'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('shop')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))">
+													Цех
+													<div v-if="sortColumn == 'shop'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('types')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))">
+													Тип
+													<div v-if="sortColumn == 'types'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('weight_goods')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))">
+													Весовой товар
+													<div v-if="sortColumn == 'weight_goods'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('unit')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))">
+													Единица измерения
+													<div v-if="sortColumn == 'unit'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('self_cost')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))">
+													Себестоимость
+													<div v-if="sortColumn == 'self_cost'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('price')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))">
+													Цена
+													<div v-if="sortColumn == 'price'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('profit')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))">
+													Прибыль
+													<div v-if="sortColumn == 'profit'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th @click="sortEvent('markup')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))">
+													Наценка
+													<div v-if="sortColumn == 'markup'">
+														<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+														<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													</div>
+												</th>
+												<th class="td-th-custom">
 
-											</th>
-										</tr> 
-									</thead>
-									<tbody >
-										<tr v-for="product in FilterProducts" class="tr-td-custom">
-											<div>
+												</th>
+											</tr> 
+										</thead>
+										<tbody >
+											<tr class="tr-td-custom" v-for="product in FilterProducts">
 												<td class="td-custom" v-if=" ((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))" >
 													<div class="row">
 														<div v-if="product.photo != 'null'" class="col-6 pr-1">
@@ -256,19 +260,14 @@
 												</td>
 												<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))">{{product.category}}</td>
 												<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))">
-													<div v-if="product.types == 0">
-														{{product.bar_code}}
-													</div>
+													{{product.bar_code}}
 												</td>
 												<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))">{{product.SKU}}</td>
 												<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))">{{product.shop}}</td>
 												<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))">
-													<div v-if="product.types == 0">
-														Товар
-													</div>
-													<div v-else>
-														Мод. товара
-													</div>
+													<p  v-if="product.title_product!=undefined">Модификация</p>
+													<p  v-else>Товар</p>
+
 												</td>
 												<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))">
 													<div v-if="product.weight_goods == '1'">
@@ -312,53 +311,11 @@
 
 													<!-- <button @click=deleteProduct(product.id) class="btn btn-danger">Удалить</button> -->
 												</td>
-											</div>
-											<div>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-												<td class="td-custom">Data</td>
-											</div>
-										</tr>
-
-
-											<!-- <tr v-if="product.modification.length != 0" class="tr-td-custom" v-for="mod in product.modification">
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))" >{{ mod.title }}
-												</td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))"></td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))">
-														{{mod.bar_code}}
-												</td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))">{{product.SKU}}</td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"></td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"></td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))"></td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))">{{product.unit}}</td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))">
-													mod.self_cost
-												</td>
-												<td class="td-custom" v-if="((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))">
-													mod.price
-												</td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))">
-													mod.profit
-												</td>
-												<td class="td-custom" v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))">
-													mod.markup
-												</td>
-											</tr> -->
+											</tr>
 										</tbody>
 									</table>
-									<p class="text-center" v-if=" FilterProducts.length == 0 "> Нет товаров, подходящим по выбранным фильтрам.</p>
 								</div>
+								<p class="text-center" v-if=" FilterProducts.length == 0 "> Нет товаров, подходящим по выбранным фильтрам.</p>
 							</div>
 						</div>
 					</div>
@@ -370,140 +327,136 @@
 
 <script>
 
-import Vue from 'vue';
+	import Vue from 'vue';
 
-import ProductsService from '@/services/menu/ProductsService'
-import Sidebar from '@/components/Sidebar'
+	import ProductsService from '@/services/menu/ProductsService'
+	import Sidebar from '@/components/Sidebar'
 
-var menuListWord = [
-{
-	title: "Равно", 
-	sign: "==",
-},
-{
-	title: "Не равно",
-	sign: "!=",
-},
-{
-	title: "Содержит",
-	sign: ".indexOf",
-}];
-
-var menuListNum = [
-{
-	title: "Больше", 
-	sign: ">",
-},
-{
-	title: "Меньше",
-	sign: "<",
-},
-{
-	title: "Равно",
-	sign: "==",
-},
-{
-	title: "Не равно",
-	sign: "!=",
-}];
-var menuListType = [
-{
-	title: "Товар", 
-	sign: "tovar",
-},
-{
-	title: "Модификация товара",
-	sign: "modif tovar",
-},
-];
-var menuListWeightGoods = [
-{
-	title: "Да", 
-	sign: "1",
-},
-{
-	title: "Нет",
-	sign: "0",
-},
-];
-
-export default {
-	name: 'products',
-	components: {
-		'sidebar': Sidebar,
+	var menuListWord = [
+	{
+		title: "Равно", 
+		sign: "==",
 	},
-	data () {
-		return {
-			NameColumn: ["Название","Категория","Штрихкод","SKU","Цех","Тип","Весовой товар","Ед.измерения","Себестоимость","Цена","Прибыль","Наценка"],
+	{
+		title: "Не равно",
+		sign: "!=",
+	},
+	{
+		title: "Содержит",
+		sign: ".indexOf",
+	}];
 
-			filterList: [
-			{
-				NameFilter: 'Название',
-				NameVar: 'title',
-				MenuList: this.getMenuListName(menuListWord),
-			},
-			{
-				NameFilter: 'Штрихкод',
-				NameVar: 'bar_code',
-				MenuList: this.getMenuListName(menuListWord),
-			},
-			{
-				NameFilter: 'SKU',
-				NameVar: 'SKU',
-				MenuList: this.getMenuListName(menuListWord),
-			},
-			{
-				NameFilter: 'ТИП?',
-				NameVar: 'title',
-				MenuList: this.getMenuListName(menuListType),
-			},
-			{
-				NameFilter: 'Весовой товар?',
-				NameVar: 'weight_goods',
-				MenuList: this.getMenuListName(menuListWeightGoods),
-			},
-			{
-				NameFilter: 'Ед. измерения?',
-				NameVar: 'title',
-				MenuList: this.getMenuListName(menuListWord),
-			},
-			{
-				NameFilter: 'Себестоимость',
-				NameVar: 'self_cost',
-				MenuList: this.getMenuListName(menuListWord),
-			},
-			{
-				NameFilter: 'Цена',
-				NameVar: 'price',
-				MenuList: this.getMenuListName(menuListNum),
-			},
+	var menuListNum = [
+	{
+		title: "Больше", 
+		sign: ">",
+	},
+	{
+		title: "Меньше",
+		sign: "<",
+	},
+	{
+		title: "Равно",
+		sign: "==",
+	},
+	{
+		title: "Не равно",
+		sign: "!=",
+	}];
+	var menuListType = [
+	{
+		title: "Товар", 
+		sign: "tovar",
+	},
+	{
+		title: "Модификация товара",
+		sign: "modif",
+	},
+	];
+	var menuListWeightGoods = [
+	{
+		title: "Да", 
+		sign: "==1",
+	},
+	{
+		title: "Нет",
+		sign: "==0",
+	},
+	];
 
-			{
-				NameFilter: 'Прибыль',
-				NameVar: 'profit',
-				MenuList: this.getMenuListName(menuListNum),
-			},{
-				NameFilter: 'Наценка',
-				NameVar: 'receipts',
-				MenuList: this.getMenuListName(menuListNum),
-			},
-			],
-			products: [],
-			filtered: [],
-			categories: [],
-			oficients: [],
-			shops: [],
-			restaurants: [],
-			selectCategoriesSearch:'',
-			selectShopsSearch:'',
-			selectOficientsSearch:'',
-			search: '',
-			sort: false,
-			printFlag: false,
-			selectCategories: [],
-			selectShops: [],
-			selectOficiants: [],
-				//selectColumn: ["Название", "Категория", "Себестоимость", "Цена", "Наценка"],
+	export default {
+		name: 'products',
+		components: {
+			'sidebar': Sidebar,
+		},
+		data () {
+			return {
+				NameColumn: ["Название","Категория","Штрихкод","SKU","Цех","Тип","Весовой товар","Ед.измерения","Себестоимость","Цена","Прибыль","Наценка"],
+
+				filterList: [
+				{
+					NameFilter: 'Название',
+					NameVar: 'title',
+					MenuList: this.getMenuListName(menuListWord),
+				},
+				{
+					NameFilter: 'Штрихкод',
+					NameVar: 'bar_code',
+					MenuList: this.getMenuListName(menuListWord),
+				},
+				{
+					NameFilter: 'SKU',
+					NameVar: 'SKU',
+					MenuList: this.getMenuListName(menuListWord),
+				},
+				{
+					NameFilter: 'Тип',
+					NameVar: '',
+					MenuList: this.getMenuListName(menuListType),
+				},
+				{
+					NameFilter: 'Весовой товар',
+					NameVar: 'weight_goods',
+					MenuList: this.getMenuListName(menuListWeightGoods),
+				},
+				{
+					NameFilter: 'Себестоимость',
+					NameVar: 'self_cost',
+					MenuList: this.getMenuListName(menuListWord),
+				},
+				{
+					NameFilter: 'Цена',
+					NameVar: 'price',
+					MenuList: this.getMenuListName(menuListNum),
+				},
+
+				{
+					NameFilter: 'Прибыль',
+					NameVar: 'profit',
+					MenuList: this.getMenuListName(menuListNum),
+				},{
+					NameFilter: 'Наценка',
+					NameVar: 'markup',
+					MenuList: this.getMenuListName(menuListNum),
+				},
+				],
+				flagType:'',
+				products: [],
+				filtered: [],
+				categories: [],
+				oficients: [],
+				shops: [],
+				length:0,
+				restaurants: [],
+				selectCategoriesSearch:'',
+				selectShopsSearch:'',
+				selectOficientsSearch:'',
+				search: '',
+				sort: false,
+				printFlag: false,
+				selectCategories: [],
+				selectShops: [],
+				selectOficiants: [],
 				selectColumn: ["Название","Категория","Штрихкод","SKU","Цех","Тип","Весовой товар","Ед.измерения","Себестоимость","Цена","Прибыль","Наценка"],
 
 				selectFilterSearch: '',
@@ -587,7 +540,7 @@ export default {
 					})
 				}
 			},
-			
+
 			filterByONews(product){
 				if (this.selectFilters.length === 0){
 					return true
@@ -606,197 +559,239 @@ export default {
 				} else return true;
 			},
 			filterByONews2(product,val){
+			try { // statements to try
 				if (val.length === 0){
 					return true
 				} else {
 					return (eval(val))
 				}
-			},
-			sortByColumn(productA, productB){
-				if ((this.sortColumn == 'title') || (this.sortColumn == 'category') || (this.sortColumn == 'oficient') || (this.sortColumn == 'restaurant') ||(this.sortColumn == 'shop')){
-					if (this.sort){
-						return productA[this.sortColumn].localeCompare(productB[this.sortColumn]);
-					} else {
-						return !productA[this.sortColumn].localeCompare(productB[this.sortColumn]);
-					}
-				} else if (this.sort){
-					return productA.count - productB.count;
+			}
+			catch (e) {
+			}
+
+		},
+		sortByColumn(productA, productB){
+			if ((this.sortColumn == 'title') || (this.sortColumn == 'category') || (this.sortColumn == 'oficient') || (this.sortColumn == 'restaurant') ||(this.sortColumn == 'shop')){
+				if (this.sort){
+					return productA[this.sortColumn].localeCompare(productB[this.sortColumn]);
 				} else {
-					return productB.count - productA.count;
+					return !productA[this.sortColumn].localeCompare(productB[this.sortColumn]);
 				}
-			},
-			sortEvent(message){
-				console.log(message);
-				if (this.sortColumn == message){
-					this.sort = !this.sort;
-				} else {
-					this.sortColumn = message;
-				}
-			},
-			filterBySearchCategories(categories){
-				if (this.selectCategoriesSearch.length === 0) {
-					return true;
-				}
-				return categories.title.toLowerCase().indexOf(this.selectCategoriesSearch.toLowerCase()) > -1 
-			},
-			filterBySearchShops(shops){
-				if (this.selectShopsSearch.length === 0) {
-					return true;
-				}
-				return shops.title.toLowerCase().indexOf(this.selectShopsSearch.toLowerCase()) > -1 
-			},
-			
-			filterBySearchfilter(NameFilter){
-				if (this.selectFilter.length === 0) {
-					return true;
-				}
-				return NameFilter.toLowerCase().indexOf(this.selectFilter.toLowerCase()) > -1
-			},
+			} else if (this.sort){
+				return productA.count - productB.count;
+			} else {
+				return productB.count - productA.count;
+			}
+		},
+		sortEvent(message){
+			console.log(message);
+			if (this.sortColumn == message){
+				this.sort = !this.sort;
+			} else {
+				this.sortColumn = message;
+			}
+		},
+		filterBySearchCategories(categories){
+			if (this.selectCategoriesSearch.length === 0) {
+				return true;
+			}
+			return categories.title.toLowerCase().indexOf(this.selectCategoriesSearch.toLowerCase()) > -1 
+		},
+		filterBySearchShops(shops){
+			if (this.selectShopsSearch.length === 0) {
+				return true;
+			}
+			return shops.title.toLowerCase().indexOf(this.selectShopsSearch.toLowerCase()) > -1 
+		},
 
-			addFilter() {
-				self = this;
+		filterBySearchfilter(NameFilter){
+			if (this.selectFilter.length === 0) {
+				return true;
+			}
+			return NameFilter.toLowerCase().indexOf(this.selectFilter.toLowerCase()) > -1
+		},
 
-				this.filterList.forEach(function(item, i){
-					var NameFilter = '';
-					if (self.selectFilterSearch == item.NameFilter){
-						self.selectFilter = 'product.' + item.NameVar;
-						NameFilter += item.NameFilter;
-						console.log(self.selectFilter);
-						item.MenuList.forEach((menuItem, index) => {
-							if (self.selectConditionSearch == menuItem){
+		addFilter() {
+			self = this;
 
-								NameFilter += ' ' + menuItem + ' ' + self.countFilterValue;
+			this.filterList.forEach(function(item, i){
+				var NameFilter = '';
+				if ((self.selectFilterSearch == item.NameFilter)){
+					self.selectFilter = 'product.' + item.NameVar;
+					NameFilter += item.NameFilter;
+					console.log(self.selectFilter);
+					item.MenuList.forEach((menuItem, index) => {
+						if (self.selectConditionSearch == menuItem){
 
-								if (item.NameFilter == 'Название'){
-									if (menuItem == "Содержит"){
-										self.selectFilter += menuItem + '("' + self.countFilterValue + '") > -1';
-										menuListWord.forEach((item) => {
-											self.selectFilter = self.selectFilter.replace(item.title, item.sign);
-										})
-									} else {
-										self.selectFilter += menuItem + '("' + self.countFilterValue + '")';
-										menuListWord.forEach((item) => {
-											self.selectFilter = self.selectFilter.replace(item.title, item.sign);
-										})
-									}
-								} else if (item.NameFilter == 'Цех'){
-									self.selectFilter += "==" + "('" +  self.selectConditionSearch + "')";
-									console.log(self.selectFilter); 
+							NameFilter += ' ' + menuItem + ' ' + self.countFilterValue;
+
+							if ((item.NameFilter == 'Название')||(item.NameFilter == 'Штрихкод')||(item.NameFilter == 'SKU')){
+								if (menuItem == "Содержит"){
+									self.selectFilter += menuItem + '("' + self.countFilterValue + '") > -1';
+									menuListWord.forEach((item) => {
+										self.selectFilter = self.selectFilter.replace(item.title, item.sign);
+									})
 								} else {
-									self.selectFilter += menuItem + self.countFilterValue;
-									menuListNum.forEach((item) => {
+									self.selectFilter += menuItem + '("' + self.countFilterValue + '")';
+									menuListWord.forEach((item) => {
 										self.selectFilter = self.selectFilter.replace(item.title, item.sign);
 									})
 								}
-
-
-								console.log(self.selectFilter);
-								self.selectFilters.push(self.selectFilter);
-								self.selectFiltersNames.push(NameFilter);
-								console.log(self.selectFiltersNames);
-								console.log(self.selectFilters);
-								self.selectFilterSearch = '';
-								self.selectFilter = ''
-								self.countFilterValue = ''
+							} else if (item.NameFilter == 'Цех'){
+								self.selectFilter += "==" + "('" +  self.selectConditionSearch + "')";
+								console.log(self.selectFilter); 
+							}else if (item.NameFilter == 'Весовой товар'){
+								self.selectFilter += menuItem + self.countFilterValue;
+								menuListWeightGoods.forEach((item) => {
+									self.selectFilter = self.selectFilter.replace(item.title, item.sign);
+								}) 
+							}else if (item.NameFilter == 'Тип'){
+								self.flagType = menuItem;
+								menuListType.forEach((item) => {
+									self.flagType = self.flagType.replace(item.title, item.sign);
+								})
+							} else {
+								self.selectFilter += menuItem + self.countFilterValue;
+								menuListNum.forEach((item) => {
+									self.selectFilter = self.selectFilter.replace(item.title, item.sign);
+								})
 							}
-						})
-					}
 
-				})
-			},
-			getMenuListName(obj){
-				return obj.map((item, i) => {
-					return item.title;
-				})
-			},
-			getMenuListWordSign(){
-				return menuListWord.map((item, i) => {
-					return item.sign;
-				})
-			},
-			getMenuListNumSign(){
-				return menuListNum.map((item, i) => {
-					return item.sign;
-				})
-			},
-			deleteFilter(index){
-				console.log(index);
-				this.selectFiltersNames.splice(index, 1);
-				this.selectFilters.splice(index, 1);
-			},
+
+							console.log(self.selectFilter);
+							if (item.NameFilter != 'Тип')
+							{
+								self.selectFilters.push(self.selectFilter);
+							}
+							self.selectFiltersNames.push(NameFilter);
+							console.log(self.selectFiltersNames);
+							console.log(self.selectFilters);
+							self.selectFilterSearch = '';
+							self.selectFilter = ''
+							self.countFilterValue = ''
+						}
+					})
+				}
+
+			})
 		},
-		computed: {
+		getMenuListName(obj){
+			return obj.map((item, i) => {
+				return item.title;
+			})
+		},
+		getMenuListWordSign(){
+			return menuListWord.map((item, i) => {
+				return item.sign;
+			})
+		},
+		getMenuListNumSign(){
+			return menuListNum.map((item, i) => {
+				return item.sign;
+			})
+		},
+		deleteFilter(index){
+			console.log(index);
+			if(this.selectFiltersNames[index].indexOf("Тип")>-1)
+				this.flagType=''
+			this.selectFiltersNames.splice(index, 1);
+			this.selectFilters.splice(index, 1);
 
-			sCount(){
-				return this.FilterProducts.reduce(function(sum, current){
-					return sum + Number(current.count);
-				}, 0);
-			},
-			sGross_turnover(){
-				return this.FilterProducts.reduce(function(sum, current){
-					return sum + Number(current.gross_turnover);
-				}, 0).toFixed(2);
-			},
-			sDiscount(){
-				return this.FilterProducts.reduce(function(sum, current){
-					return sum + Number(current.discount);
-				}, 0).toFixed(2);
-			},
-			sReceipts(){
-				return this.FilterProducts.reduce(function(sum, current){
-					return sum + Number(current.receipts);
-				}, 0).toFixed(2);
-			},
-			sProfit(){
-				return this.FilterProducts.reduce(function(sum, current){
-					return sum + Number(current.profit);
-				}, 0).toFixed(2);
-			},
-			FilterProducts(){
-				return this.products
+		},
+		addModif(filtered){
+			this.length=0;
+			console.log(filtered);
+			var filtered2 = []
+			for (var i = 0; i < filtered.length; i++) {
+				if((this.flagType!='modif')||((this.flagType=='modif')&&(filtered[i].types==1)))
+				{
+					this.length++;
+					filtered2[filtered2.length] = filtered[i]
+				}
+				if(this.flagType!='tovar'){filtered[i].modification.forEach((item, index, arr) => {
+					filtered2[filtered2.length] = item
+				})}
+
+
+			}
+			return filtered2
+			console.log(filtered);
+		}
+	},
+	computed: {
+
+		sCount(){
+			return this.FilterProducts.reduce(function(sum, current){
+				return sum + Number(current.count);
+			}, 0);
+		},
+		sGross_turnover(){
+			return this.FilterProducts.reduce(function(sum, current){
+				return sum + Number(current.gross_turnover);
+			}, 0).toFixed(2);
+		},
+		sDiscount(){
+			return this.FilterProducts.reduce(function(sum, current){
+				return sum + Number(current.discount);
+			}, 0).toFixed(2);
+		},
+		sReceipts(){
+			return this.FilterProducts.reduce(function(sum, current){
+				return sum + Number(current.receipts);
+			}, 0).toFixed(2);
+		},
+		sProfit(){
+			return this.FilterProducts.reduce(function(sum, current){
+				return sum + Number(current.profit);
+			}, 0).toFixed(2);
+		},
+		FilterProducts(){
+			return this.addModif(
+				this.products
 				.filter(this.filterBySearch)
 				.filter(this.filterByCategory)
 				.filter(this.filterByShop)
 				.filter(this.filterByONews)
-				.sort(this.sortByColumn);
-			},
-			FilterCategories(){
-				return this.categories
-				.filter(this.filterBySearchCategories)
-			},
-			FilterShops(){
-				return this.shops
-				.filter(this.filterBySearchShops)
-			},
-			FilterFilter(){
-				return this.getNameFilterList
-				.filter(this.filterBySearchfilter)
-			},
-			getNameFilterList(){
-				return this.filterList.map(function(item, i){
-					return item.NameFilter;
-				})
-			},
-			getNameVarFilterList(){
-				return this.filterList.map(function(item, i){
-					return item.NameVar;
-				})
-			},
-			getShopNames(){
-				return this.shops.map((item, i) => {
-					return item.title;
-				})
-			},
-			getOptionsFilter(){
-				console.log(this.filterList[this.getNameFilterList.indexOf(this.selectFilterSearch)].MenuList);
-				return this.filterList[this.getNameFilterList.indexOf(this.selectFilterSearch)].MenuList;
-			},
-		}
+				.sort(this.sortByColumn)
+				)
+		},
+		FilterCategories(){
+			return this.categories
+			.filter(this.filterBySearchCategories)
+		},
+		FilterShops(){
+			return this.shops
+			.filter(this.filterBySearchShops)
+		},
+		FilterFilter(){
+			return this.getNameFilterList
+			.filter(this.filterBySearchfilter)
+		},
+		getNameFilterList(){
+			return this.filterList.map(function(item, i){
+				return item.NameFilter;
+			})
+		},
+		getNameVarFilterList(){
+			return this.filterList.map(function(item, i){
+				return item.NameVar;
+			})
+		},
+		getShopNames(){
+			return this.shops.map((item, i) => {
+				return item.title;
+			})
+		},
+		getOptionsFilter(){
+			console.log(this.filterList[this.getNameFilterList.indexOf(this.selectFilterSearch)].MenuList);
+			return this.filterList[this.getNameFilterList.indexOf(this.selectFilterSearch)].MenuList;
+		},
 	}
-	</script>
+}
+</script>
 
-	<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-	<style src="../../../static/style/main.css"></style>
-	<style lang="scss">
-	@import '../../assets/less/menu.less'
-	</style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="../../../static/style/main.css"></style>
+<style lang="scss">
+@import '../../assets/less/menu.less'
+</style>

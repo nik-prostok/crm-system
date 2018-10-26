@@ -77,7 +77,7 @@ router.post('/productsMod',upload.single('avatar'), (req, res) => {
       if(Array.isArray(data.modification))
       {
         data.modification.forEach(function(item, i, arr) {
-          connection.query("INSERT INTO modifications   (bar_code,title_product,title_mode,self_cost,price,markup,profit) VALUES (?,?,?,?,?,?,?)",[item.bar_code,data.title,item.title_mode,item.self_cost,item.price,item.markup, item.profit], function (err, result, fields) {
+          connection.query("INSERT INTO modifications   (bar_code,title_product,title,self_cost,price,markup,profit,weight_goods) VALUES (?,?,?,?,?,?,?,?)",[item.bar_code,data.title,item.title_mode,item.self_cost,item.price,item.markup, item.profit,data.weight_goods], function (err, result, fields) {
             if (err) console.log(err);
           })
         })
@@ -88,7 +88,7 @@ router.post('/productsMod',upload.single('avatar'), (req, res) => {
 })
 
 router.post('/modifications', (req, res) => {
- bd(req,res,"INSERT INTO modifications   (bar_code,title_product,title_mode,self_cost,price,markup) VALUES (?,?,?,?,?,?)",[req.body.bar_code,req.body.title_product,req.body.title_mode,req.body.self_cost,req.body.price,req.body.markup]);
+ bd(req,res,"INSERT INTO modifications   (bar_code,title_product,title,self_cost,price,markup,weight_goods) VALUES (?,?,?,?,?,?,?)",[req.body.bar_code,req.body.title_product,req.body.title_mode,req.body.self_cost,req.body.price,req.body.markup,req.body.weight_goods]);
 })
 router.post('/oficients', (req, res) => {
   bd(req,res,"INSERT INTO oficients SET fio = ?",[req.body.fio]);

@@ -29,6 +29,9 @@ Vue.component('p-input', PrettyInput);
 Vue.component('p-check', PrettyCheck);
 Vue.component('p-radio', PrettyRadio);
 
+import { ClientTable, Event} from 'vue-tables-2';
+Vue.use(ClientTable);
+
 const options = {
 	name: '_blank',
 	specs: [
