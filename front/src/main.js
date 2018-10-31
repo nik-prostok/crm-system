@@ -18,7 +18,6 @@ Vue.use(BootstrapVue);
 import Multiselect from 'vue-multiselect'
 Vue.component('multiselect', Multiselect)
 
-import FileUpload from 'vue-upload-component'
 
 import 'pretty-checkbox/src/pretty-checkbox.scss';
 import PrettyInput from 'pretty-checkbox-vue/input';
@@ -28,9 +27,6 @@ import PrettyRadio from 'pretty-checkbox-vue/radio';
 Vue.component('p-input', PrettyInput);
 Vue.component('p-check', PrettyCheck);
 Vue.component('p-radio', PrettyRadio);
-
-import { ClientTable, Event} from 'vue-tables-2';
-Vue.use(ClientTable);
 
 const options = {
 	name: '_blank',

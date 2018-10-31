@@ -175,6 +175,11 @@ hr.line {
 	text-align: center;
 }
 
+.tr-th-custom-left {
+	border: 10px solid #F2F3F4; 
+	text-align: left;
+}
+
 .tr-th-custom .td-th-custom:hover {
 	background-color: #dfdfdf;
 }
@@ -191,4 +196,13 @@ hr.line {
 	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */ 
 	font-size: 0.95em; /* Размер текста */ 
 	text-align: center; 
+}
+
+.tr-td-custom .td-custom-left {
+	background: #FFFFFF; /* Цвет фона */ 
+	border: 5px solid #F2F3F4; /* Граница вокруг ячеек */ 
+	padding: 10px; /* Поля в ячейках */ 
+	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */ 
+	font-size: 0.95em; /* Размер текста */ 
+	text-align: left; 
 }

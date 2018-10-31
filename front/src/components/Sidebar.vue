@@ -2,6 +2,7 @@
 
 	<div id="sidebar">
 		<!-- Sidebar -->
+		
 
 		<div id="mySidenav" class="sidenav bg-dark">
 			<a v-on:click="navAction" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" style="height: 80px;">
@@ -27,6 +28,7 @@
 				</div>
 
 			</ul>
+			
 		</div>
 	</div>
 </template>
