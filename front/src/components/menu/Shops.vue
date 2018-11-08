@@ -17,15 +17,15 @@
 					<div class="container-fluid mt-2 pl-0">
 						<div class="row">
 							<div class="col-md-4 col-lg-5">
-								<h1 class="head-text mt-3">Категории <small class="text-muted">{{length}}</small></h1>
+								<h1 class="head-text mt-3">Цеха <small class="text-muted">{{length}}</small></h1>
 							</div>
 							<div class="col-md-8 col-lg-7">
 								<div class="float-right">
 
-									<router-link  to="/menu/category_prod_cards/add" class="main-text" style="text-decoration: none;">
+									<router-link  to="/menu/shops/add" class="main-text" style="text-decoration: none;">
 										<div class=" btn-group btn-group-custom mt-3 " >
 											<div class="btn btn-shadow btn-custom-border" >
-												<a class="main-text" style="text-decoration: none;">Добавить категорию</a>
+												<a class="main-text" style="text-decoration: none;">Добавить цех</a>
 											</div>
 
 										</div>
@@ -63,37 +63,37 @@
 									<thead>
 										<tr class="tr-th-custom-left"> 
 											<th @click="sortEvent('count')" class="td-th-custom align-content-start">
-												Категория
-												<div v-if="sortColumn == 'category'">
+												Название
+												<div v-if="sortColumn == 'title'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th> 
+											<th class="td-th-custom align-content-start">Бегунки</th>
 											<th class="td-th-custom" style="width: 50px;">
 
 											</th>
 										</tr> 
 									</thead>
 									<tbody >
-										<tr class="tr-td-custom" v-for="category in categories">
+										<tr class="tr-td-custom" v-for="shop in shops">
 											
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
+											<td class="td-custom align-middle" style="text-align: left;">{{shop.title}}</td>
+											<td class="td-custom align-middle" style="text-align: left;">{{shop.print_runners}}</td>
 											<td class="td-custom align-middle">
 												<div class="d-flex flex-row">
 													<div class="mr-2">
-														<b-link :to=getHrefEdit(category.id) class="main-text">
+														<b-link :to=getHrefEdit(shop.id) class="main-text">
 															<div class="link-blue link-hover">Ред.</div>
 														</b-link>
 													</div>
 													<div class="ml-2">
-														<button class="btn-icon popoverButton" :id=getPopoverId(category.id)>
+														<button class="btn-icon popoverButton" :id=getPopoverId(shop.id)>
 															<i class="fa fa-ellipsis-h"></i>
 														</button>
-														<b-popover :target=getPopoverId(category.id) triggers="focus">
+														<b-popover :target=getPopoverId(shop.id) triggers="focus">
 															<ul class="actions-popover">
-																<li @click=deleteCategory(category.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
-
-																<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Скрыть</a></li>
+																<li @click=deleteShop(shop.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
 															</ul>
 														</b-popover>
 													</div>
@@ -103,7 +103,7 @@
 									</tbody>
 								</table>
 							</div>
-							<p class="text-center" v-if="length == 0 "> Нет категорий, подходящим по выбранным фильтрам.</p>
+							<p class="text-center" v-if="length == 0 "> Нет цехов, подходящим по выбранным фильтрам.</p>
 						</div>
 					</div>
 				</div>
@@ -128,36 +128,35 @@
 		data () {
 			return {
 				search: '',
-				categories: [],
+				shops: [],
 				sortColumn: 'count',
-
 			}
 		},
 		mounted () {
-			this.getCategories()
+			this.getShop()
 		},
 		methods: {
-			async deleteCategory(id){
+			async deleteShop(id){
 				console.log(id);
 				const response = await ProductsService.deleteProduct({
 					'id': id
 				});
 
 				if (response.status == 200){
-					this.products = [];
-					this.getCategories();
+					this.shops = [];
+					this.getShops();
 				}
 			},
-			async getCategories () {
-				const response = await ProductsService.fetchCategories()
-				this.categories = response.data
-				console.log(this.categories);
+			async getShop () {
+				const response = await ProductsService.fetchShops()
+				this.shops = response.data
+				console.log(this.shops);
 			},
-			filterBySearch(category){
+			filterBySearch(shop){
 				if (this.search.length === 0) {
 					return true;
 				}
-				return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
+				return shop.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
 			},
 			getPopoverId(id){
 				return "popover" + id;
@@ -177,7 +176,7 @@
 		computed: {
 			length(){
 				let length = 0;
-				this.categories.forEach(item => {
+				this.shops.forEach(item => {
 					length++
 				})
 				return length;

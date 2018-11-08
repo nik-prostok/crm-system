@@ -35,8 +35,8 @@ router.get('/', (req, res) => {
   res.send('ok');
 })
 
-router.post('/category', (req, res) => {
-  bd(req,res,"INSERT INTO category  SET title=? ",[req.body.title]);
+router.post('/categories', (req, res) => {
+  bd(req,res,"INSERT INTO categories  SET (title,flag_income,flag_consumption,parent_title) VALUES(?,?,?,?) ",[req.body.title,req.body.flag_income,req.body.flag_consumption,req.body.parent_title]);
 })
 
 router.post('/sales', (req, res) => {
@@ -55,10 +55,45 @@ router.post('/deleteProduct', (req, res) => {
 	  			fs.unlinkSync("dest/"+String(result[0].photo));
 	  			console.log("DELETE FILE");
 	  		}
+	  		else
 	  		console.log("NOT FILE");
 	  		connection.query("DELETE FROM products WHERE id = ?",[req.body.id], function (err, result, fields) {
 	  	res.send("OK");
 	  	})
+	})
+})
+
+router.post('/deleteOnlyProduct', (req, res) => {
+	console.log("AAAAAAAAAAA");
+		console.log(req.body);
+	  		connection.query("DELETE FROM products WHERE id = ?",[Number(req.body.id)], function (err, result, fields) {
+	  	 if (err) console.log(err);
+	  	res.send("OK");
+	})
+})
+
+router.post('/deleteOnlyPhoto', (req, res) => {
+	
+	connection.query("SELECT photo FROM products WHERE id = ?",[Number(req.body.id)], function (err, result, fields) {
+	  	if(fs.existsSync("dest/"+String(result[0].photo))) 
+	  		{
+	  			fs.unlinkSync("dest/"+String(result[0].photo));
+	  			console.log("DELETE FILE");
+	  		}
+	  		else
+	  		console.log("NOT FILE");
+})
+	})
+router.post('/deleteCategory', (req, res) => {
+	
+	  		connection.query("DELETE FROM categories WHERE id = ? OR parent_id = ?",[req.body.id,req.body.id], function (err, result, fields) {
+	  	res.send("OK");
+	})
+})
+
+router.post('/editCategory', (req, res) => {
+connection.query("UPDATE categories SET title = ?,flag_income = ?,flag_consumption = ?,parent_id = ? WHERE id = ?",[req.body.title,req.body.flag_income,req.body.flag_consumption,req.body.parent_id,req.body.id], function (err, result, fields) {
+	  	res.send("OK");
 	})
 })
 
@@ -70,9 +105,13 @@ router.post('/productsMod',upload.single('avatar'), (req, res) => {
 	if (req.file){
 		filename = req.file.filename;
 	}
+	  if(data.photo!=undefined)
+		filename=data.photo;
   if(data.title!=undefined)
   {
-    connection.query("INSERT INTO products   (title,markup,category,shop,self_cost,color,photo,weight_goods,bar_code,types,price,SKU,profit, no_dicsount) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[data.title,data.markup,data.category,data.shop,data.self_cost,data.color,filename,data.weight_goods,data.bar_code,data.types,data.price,data.SKU, data.profit, data.no_dicsount], function (err, result, fields) {
+  	connection.query("DELETE FROM products WHERE id = ?",[Number(data.id)], function (err, result, fields) {
+	  	 if (err) console.log(err);
+connection.query("INSERT INTO products   (title,markup,category,shop,self_cost,color,photo,weight_goods,bar_code,types,price,SKU,profit, no_dicsount) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",[data.title,data.markup,data.category,data.shop,data.self_cost,data.color,filename,data.weight_goods,data.bar_code,data.types,data.price,data.SKU, data.profit, data.no_dicsount], function (err, result, fields) {
       if (err) console.log(err);
       if(Array.isArray(data.modification))
       {
@@ -82,9 +121,20 @@ router.post('/productsMod',upload.single('avatar'), (req, res) => {
           })
         })
       }
-    }) 
+    })
+	  	})
+     
   }
 
+})
+
+
+router.get('/catIngrid', (req, res) => {
+
+})
+
+router.post('/catIngrid', (req, res) => {
+  console.log(req.body);
 })
 
 router.post('/modifications', (req, res) => {
@@ -99,7 +149,7 @@ router.post('/restaurants', (req, res) => {
 })
 
 router.post('/shops', (req, res) => {
-  bd(req,res,"INSERT INTO shops SET title = ?",[req.body.title]);
+  bd(req,res,"INSERT INTO shops SET title = ?,print_runners = ?",[req.body.title,req.body.print_runners]);
 })
 
 

@@ -339,241 +339,241 @@
 
 <script>
 
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService'
+import Sidebar from '@/components/Sidebar'
 
-	var menuListWord = [
-	{
-		title: "Равно", 
-		sign: "==",
-	},
-	{
-		title: "Не равно",
-		sign: "!=",
-	},
-	{
-		title: "Содержит",
-		sign: ".indexOf",
-	}];
+var menuListWord = [
+{
+	title: "Равно", 
+	sign: "==",
+},
+{
+	title: "Не равно",
+	sign: "!=",
+},
+{
+	title: "Содержит",
+	sign: ".indexOf",
+}];
 
-	var menuListNum = [
-	{
-		title: "Больше", 
-		sign: ">",
-	},
-	{
-		title: "Меньше",
-		sign: "<",
-	},
-	{
-		title: "Равно",
-		sign: "==",
-	},
-	{
-		title: "Не равно",
-		sign: "!=",
-	}];
-	var menuListType = [
-	{
-		title: "Товар", 
-		sign: "tovar",
-	},
-	{
-		title: "Модификация товара",
-		sign: "modif",
-	},
-	];
-	var menuListWeightGoods = [
-	{
-		title: "Да", 
-		sign: "==1",
-	},
-	{
-		title: "Нет",
-		sign: "==0",
-	},
-	];
+var menuListNum = [
+{
+	title: "Больше", 
+	sign: ">",
+},
+{
+	title: "Меньше",
+	sign: "<",
+},
+{
+	title: "Равно",
+	sign: "==",
+},
+{
+	title: "Не равно",
+	sign: "!=",
+}];
+var menuListType = [
+{
+	title: "Товар", 
+	sign: "tovar",
+},
+{
+	title: "Модификация товара",
+	sign: "modif",
+},
+];
+var menuListWeightGoods = [
+{
+	title: "Да", 
+	sign: "==1",
+},
+{
+	title: "Нет",
+	sign: "==0",
+},
+];
 
-	export default {
-		name: 'products',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data () {
-			return {
-				NameColumn: ["Название","Категория","Штрихкод","SKU","Цех","Тип","Весовой товар","Ед.измерения","Себестоимость","Цена","Прибыль","Наценка"],
+export default {
+	name: 'products',
+	components: {
+		'sidebar': Sidebar,
+	},
+	data () {
+		return {
+			NameColumn: ["Название","Категория","Штрихкод","SKU","Цех","Тип","Весовой товар","Ед.измерения","Себестоимость","Цена","Прибыль","Наценка"],
 
-				filterList: [
-				{
-					NameFilter: 'Название',
-					NameVar: 'title',
-					MenuList: this.getMenuListName(menuListWord),
-				},
-				{
-					NameFilter: 'Штрихкод',
-					NameVar: 'bar_code',
-					MenuList: this.getMenuListName(menuListWord),
-				},
-				{
-					NameFilter: 'SKU',
-					NameVar: 'SKU',
-					MenuList: this.getMenuListName(menuListWord),
-				},
-				{
-					NameFilter: 'Тип',
-					NameVar: '',
-					MenuList: this.getMenuListName(menuListType),
-				},
-				{
-					NameFilter: 'Весовой товар',
-					NameVar: 'weight_goods',
-					MenuList: this.getMenuListName(menuListWeightGoods),
-				},
-				{
-					NameFilter: 'Себестоимость',
-					NameVar: 'self_cost',
-					MenuList: this.getMenuListName(menuListWord),
-				},
-				{
-					NameFilter: 'Цена',
-					NameVar: 'price',
-					MenuList: this.getMenuListName(menuListNum),
-				},
+			filterList: [
+			{
+				NameFilter: 'Название',
+				NameVar: 'title',
+				MenuList: this.getMenuListName(menuListWord),
+			},
+			{
+				NameFilter: 'Штрихкод',
+				NameVar: 'bar_code',
+				MenuList: this.getMenuListName(menuListWord),
+			},
+			{
+				NameFilter: 'SKU',
+				NameVar: 'SKU',
+				MenuList: this.getMenuListName(menuListWord),
+			},
+			{
+				NameFilter: 'Тип',
+				NameVar: '',
+				MenuList: this.getMenuListName(menuListType),
+			},
+			{
+				NameFilter: 'Весовой товар',
+				NameVar: 'weight_goods',
+				MenuList: this.getMenuListName(menuListWeightGoods),
+			},
+			{
+				NameFilter: 'Себестоимость',
+				NameVar: 'self_cost',
+				MenuList: this.getMenuListName(menuListWord),
+			},
+			{
+				NameFilter: 'Цена',
+				NameVar: 'price',
+				MenuList: this.getMenuListName(menuListNum),
+			},
 
-				{
-					NameFilter: 'Прибыль',
-					NameVar: 'profit',
-					MenuList: this.getMenuListName(menuListNum),
-				},{
-					NameFilter: 'Наценка',
-					NameVar: 'markup',
-					MenuList: this.getMenuListName(menuListNum),
-				},
-				],
-				flagType:'',
-				products: [],
-				filtered: [],
-				categories: [],
-				oficients: [],
-				shops: [],
-				length:0,
-				restaurants: [],
-				selectCategoriesSearch:'',
-				selectShopsSearch:'',
-				selectOficientsSearch:'',
-				search: '',
-				sort: false,
-				printFlag: false,
-				selectCategories: [],
-				selectShops: [],
-				selectOficiants: [],
-				selectColumn: ["Название","Категория","Штрихкод","SKU","Цех","Тип","Весовой товар","Ед.измерения","Себестоимость","Цена","Прибыль","Наценка"],
+			{
+				NameFilter: 'Прибыль',
+				NameVar: 'profit',
+				MenuList: this.getMenuListName(menuListNum),
+			},{
+				NameFilter: 'Наценка',
+				NameVar: 'markup',
+				MenuList: this.getMenuListName(menuListNum),
+			},
+			],
+			flagType:'',
+			products: [],
+			filtered: [],
+			categories: [],
+			oficients: [],
+			shops: [],
+			length:0,
+			restaurants: [],
+			selectCategoriesSearch:'',
+			selectShopsSearch:'',
+			selectOficientsSearch:'',
+			search: '',
+			sort: false,
+			printFlag: false,
+			selectCategories: [],
+			selectShops: [],
+			selectOficiants: [],
+			selectColumn: ["Название","Категория","Штрихкод","SKU","Цех","Тип","Весовой товар","Ед.измерения","Себестоимость","Цена","Прибыль","Наценка"],
 
-				selectFilterSearch: '',
-				selectConditionSearch: '',
-				countFilterValue: '',
-				selectFilter: '',
-				selectFilters: [],
-				selectFiltersNames: [],
+			selectFilterSearch: '',
+			selectConditionSearch: '',
+			countFilterValue: '',
+			selectFilter: '',
+			selectFilters: [],
+			selectFiltersNames: [],
 
-				startDate: 1539032429,
-				endDate: 1546117229,
-				nameDate: '9 октября 2018 - 30 декабря 2018',
+			startDate: 1539032429,
+			endDate: 1546117229,
+			nameDate: '9 октября 2018 - 30 декабря 2018',
 
-				sortColumn: 'count',
+			sortColumn: 'count',
+		}
+	},
+	mounted () {
+		this.getProducts()
+		this.getCategories()
+		this.getShops()
+	},
+	methods: {
+		async deleteProduct(id){
+			console.log(id);
+			const response = await ProductsService.deleteProduct({
+				'id': id
+			});
+
+			if (response.status == 200){
+				this.products = [];
+				this.getProducts();
 			}
 		},
-		mounted () {
-			this.getProducts()
-			this.getCategories()
-			this.getShops()
+		async getProducts(){
+			const response = await ProductsService.fetchProducts()
+			console.log(response);
+			this.products = response.data
+			this.products.forEach(item => {
+				if (item.photo != 'null'){
+					item.photo = "http://89.223.27.152:8080/" + item.photo;
+				}
+			})
 		},
-		methods: {
-			async deleteProduct(id){
-				console.log(id);
-				const response = await ProductsService.deleteProduct({
-					'id': id
-				});
-
-				if (response.status == 200){
-					this.products = [];
-					this.getProducts();
-				}
-			},
-			async getProducts(){
-				const response = await ProductsService.fetchProducts()
-				console.log(response);
-				this.products = response.data
-				this.products.forEach(item => {
-					if (item.photo != 'null'){
-						item.photo = "http://89.223.27.152:8080/" + item.photo;
-					}
+		async getShops () {
+			const response = await ProductsService.fetchShops()
+			this.shops = response.data
+		},
+		async getCategories () {
+			const response = await ProductsService.fetchCategories()
+			this.categories = response.data
+		},
+		getHrefEdit(id){
+			return '/menu/products/edit/' + id;
+		},
+		print () {
+			this.$htmlToPaper('printMe');
+		},
+		clearFilter() {
+			this.selectFilterSearch = '';
+			this.selectConditionSearch = '';
+			this.countFilterValue = '';
+		},
+		filterBySearch(product){
+			if (this.search.length === 0) {
+				return true;
+			}
+			return product.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
+		},
+		filterByCategory(product){
+			if (this.selectCategories.length === 0){
+				return true
+			} else {
+				return this.selectCategories.some(function(item){
+					return product.category.toLowerCase().indexOf(item.toLowerCase()) > -1
 				})
-			},
-			async getShops () {
-				const response = await ProductsService.fetchShops()
-				this.shops = response.data
-			},
-			async getCategories () {
-				const response = await ProductsService.fetchCategories()
-				this.categories = response.data
-			},
-			getHrefEdit(id){
-				return '/menu/products/edit/' + id;
-			},
-			print () {
-				this.$htmlToPaper('printMe');
-			},
-			clearFilter() {
-				this.selectFilterSearch = '';
-				this.selectConditionSearch = '';
-				this.countFilterValue = '';
-			},
-			filterBySearch(product){
-				if (this.search.length === 0) {
+			}
+		},
+		filterByShop(product){
+			if (this.selectShops.length === 0){
+				return true
+			} else {
+				return this.selectShops.some(function(item){
+					return product.shop.toLowerCase().indexOf(item.toLowerCase()) > -1
+				})
+			}
+		},
+
+		filterByONews(product){
+			if (this.selectFilters.length === 0){
+				return true
+			} else {
+				return this.selectFilters.every(item => {
+					return this.filterByONews2(product, item)
+				})
+			}
+
+		},
+		filterByDate(product){
+			if ((this.startDate != 0) || (this.endDate != 0)){
+				if ((product.date > this.startDate) && (product.date < this.endDate)){
 					return true;
-				}
-				return product.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
-			},
-			filterByCategory(product){
-				if (this.selectCategories.length === 0){
-					return true
-				} else {
-					return this.selectCategories.some(function(item){
-						return product.category.toLowerCase().indexOf(item.toLowerCase()) > -1
-					})
-				}
-			},
-			filterByShop(product){
-				if (this.selectShops.length === 0){
-					return true
-				} else {
-					return this.selectShops.some(function(item){
-						return product.shop.toLowerCase().indexOf(item.toLowerCase()) > -1
-					})
-				}
-			},
-
-			filterByONews(product){
-				if (this.selectFilters.length === 0){
-					return true
-				} else {
-					return this.selectFilters.every(item => {
-						return this.filterByONews2(product, item)
-					})
-				}
-
-			},
-			filterByDate(product){
-				if ((this.startDate != 0) || (this.endDate != 0)){
-					if ((product.date > this.startDate) && (product.date < this.endDate)){
-						return true;
-					} else return false;
-				} else return true;
-			},
-			filterByONews2(product,val){
+				} else return false;
+			} else return true;
+		},
+		filterByONews2(product,val){
 			try { // statements to try
 				if (val.length === 0){
 					return true

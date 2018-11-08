@@ -223,7 +223,7 @@
 						<div class="col-lg-2">
 							<p class="title-form mt-2">Фотография</p>
 						</div>
-						<b-form-file accept="image/*" v-model="product.avatar" id="upload" class="mt-3" plain></b-form-file>
+						<b-form-file accept="image/*" v-model="file" id="upload" class="mt-3" plain></b-form-file>
 						<div class="col-lg-4 align-self-center">
 							<b-link @click="selectFile" class="main-text">
 								<div class="link-green link-hover">
@@ -231,7 +231,7 @@
 								</div>
 							</b-link>
 
-							<div v-if="product.avatar" class="mt-3">
+							<div v-if="!file" class="mt-3">
 								<img v-b-modal.modal1 style="height: 50px; width: auto; cursor: pointer;" :src="photo_src" alt="" :href="photo_src" class="img-thumbnail">
 								{{product.avatar}} 
 								<i @click="resetFile" class="fas fa-times"></i>
@@ -239,14 +239,11 @@
 									<img :src="photo_src" alt=""  style="width: 600px; height: auto;">
 								</b-modal>
 							</div>
-							<!-- <div>
-								<b-btn v-b-modal.modal1>Launch demo modal</b-btn>
-							
-								Modal Component
-								<b-modal id="modal1" title="Bootstrap-Vue">
-									<p class="my-4">Hello from modal!</p>
-								</b-modal>
-							</div> -->
+							<div v-else>
+								{{file.name}}
+								<i @click="resetFile" class="fas fa-times"></i>
+							</div>
+
 
 						</div>
 					</div>
@@ -382,185 +379,201 @@
 </template>
 
 <script>
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService'
+import Sidebar from '@/components/Sidebar'
 
-	export default {
-		
-		name: 'edit_product',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data() {
-			return {
-				editId: null,
-				stateSaving: false,
-				mod: 'without_mod',
-				with_mod: false,
-				without_mod: true,
-				countMod: 1,
+export default {
+	
+	name: 'edit_product',
+	components: {
+		'sidebar': Sidebar,
+	},
+	data() {
+		return {
+			editId: null,
+			stateSaving: false,
+			mod: 'without_mod',
+			with_mod: false,
+			without_mod: true,
+			countMod: 1,
 
-				photo_src: null,
+			photo_src: null,
 
-				key: null,
+			key: null,
 
-				categories: [],
-				shops: [],
+			categories: [],
+			shops: [],
 
-				file: null,
+			file: null,
 
-				product: {
+			product: {
+				title: '',
+				category: '',
+				shop: '',
+				bar_code: null,
+				self_cost: null,
+				markup: null,
+				price: null,
+				color: [],
+				weight_goods: 0,
+				types: 0,
+				SKU: 0,
+				avatar: null,
+				profit: null,
+				no_dicsount: false,
+
+				modification: [
+				{
+					bar_code: '',
+					title_product: '',
 					title: '',
-					category: '',
-					shop: '',
-					bar_code: null,
 					self_cost: null,
 					markup: null,
 					price: null,
-					color: [],
-					weight_goods: 0,
-					types: 0,
-					SKU: 0,
-					avatar: null,
 					profit: null,
-					no_dicsount: false,
-
-					modification: [
-					{
-						bar_code: '',
-						title_product: '',
-						title: '',
-						self_cost: null,
-						markup: null,
-						price: null,
-						profit: null,
-					}],
-				}
+				}],
 			}
-		},
-		mounted() {
-			this.getCategories()
-			this.getShops()
-			this.setEditId(this.$route.params.id)
-			this.setValueIntoForm()
-		},
-		methods: {
-			async setValueIntoForm(){
-				const response = await ProductsService.fetchProducts()
-				response.data.forEach(item => {
-					if (item.id == this.editId){
-						this.product = item
-						if (this.product.types){
-							this.mod = "with_mod"
-						} else {
-							this.mod = "without_mod"
-						}
-						this.open_collapse()
-						if (this.product.photo != null){
+		}
+	},
+	mounted() {
+		this.getCategories()
+		this.getShops()
+		this.setEditId(this.$route.params.id)
+		this.setValueIntoForm()
+	},
+	methods: {
+		async setValueIntoForm(){
+			const response = await ProductsService.fetchProducts()
+			response.data.forEach(item => {
+				if (item.id == this.editId){
+					this.product = item
+					if (this.product.types){
+						this.mod = "with_mod"
+					} else {
+						this.mod = "without_mod"
+					}
+					this.open_collapse()
+					if (this.product.photo != null){
 							//http://89.223.27.152:8080/164a1a3d-1025-4c6f-be2f-7385cd0b67fe.png
 							this.product.avatar = this.product.photo
 							this.photo_src = 'http://89.223.27.152:8080/' + this.product.avatar
 							console.log(this.photo_src);
 						}
+						/*if (this.product.avatar != null){
+							this.file = this.product.avatar;
+						}*/
 						console.log(this.product);
 						console.log(item);
 					}
 				})
-			},
-			setEditId(id){
-				this.editId = id;
-			},
-			selectFile(){
-				$("#upload:hidden").trigger('click');
-			},
-			resetFile(){
-				this.product.avatar = null;
-				this.photo_src = null;
-			},
-			async sendProducts(){
-				this.stateSaving = true;
-				console.log(this.product);
+		},
+		setEditId(id){
+			this.editId = id;
+		},
+		selectFile(){
+			$("#upload:hidden").trigger('click');
+		},
+		resetFile(){
+			this.product.avatar = null;
+			this.photo_src = null;
+			this.file = null;
+		},
+		sendProducts(){
+			this.stateSaving = true;
+			console.log(this.product);
 
-				if (this.product.types == 0){
-					this.product.modification = []
-					this.product.profit = this.product.price - this.product.self_cost
-				}
+			if (this.product.types == 0){
+				this.product.modification = []
+				this.product.profit = this.product.price - this.product.self_cost
+			}
 
+			if (this.product.color != null){
 				if (this.product.color.length == 0){
 					this.product.color = null;
 				}
+			}
+			
+			this.product.modification.forEach(item => {
+				item.profit = item.price - item.self_cost
+				item.title_product = this.product.title
+			})
+
+			var formData = new FormData();
+
+			formData.append('product', JSON.stringify(this.product))
+			
 
 
-				this.product.modification.forEach(item => {
-					item.profit = item.price - item.self_cost
-					item.title_product = this.product.title
-				})
+			console.log(formData.getAll('avatar'));
+			console.log(this.product.id);
 
-				var formData = new FormData();
-
-				formData.append('product', JSON.stringify(this.product))
+			if (this.file != null){
+				ProductsService.deleteOnlyPhoto(this.product.id)
+				formData.append('avatar', this.file);
+			} else {
 				formData.append('avatar', this.product.avatar);
+			}
 
+			ProductsService.deleteOnlyProduct(this.product.id)
 
-				console.log(formData.getAll('avatar'));
-				await ProductsService.addProduct(formData)
-				this.$router.push('/menu/products')
-			},
-			async getCategories (){
-				var res = await ProductsService.fetchCategories()
-				this.categories = res.data.map((item) => {
-					return item.title
-				})
-			},
-			async getShops(){
-				const res = await ProductsService.fetchShops()
-				this.shops = res.data.map((item) => {
-					return item.title
-				})
-			},
-			open_collapse() {
-				if (this.mod == "without_mod"){
-					this.without_mod = true;
-					this.with_mod = false;
-					this.product.types = 0;
-				} else {
-					this.without_mod = false;
-					this.with_mod = true;
-					this.product.types = 1;
-				}
-			},
-			addBlankMod(){
-				this.product.modification.push({
-					bar_code: '',
-					title_product: '',
-					title_mode: '',
-					self_cost: null,
-					markup: null,
-					price: null,
-					profit: null,
-				})
-			},
-			deleteMod(key){
-				console.log(key);
-
-				this.product.modification.splice(key, 1);
-			},
-			updatePrice(key, markup, self_cost){
-				this.product.modification[key].markup = markup;
-				this.product.modification[key].self_cost = self_cost;
-
-				this.product.modification[key].price = this.product.modification[key].self_cost + (this.product.modification[key].self_cost / 100) * this.product.modification[key].markup;
+			ProductsService.addProduct(formData)
+			this.$router.push('/menu/products')
+		},
+		async getCategories (){
+			var res = await ProductsService.fetchCategories()
+			this.categories = res.data.map((item) => {
+				return item.title
+			})
+		},
+		async getShops(){
+			const res = await ProductsService.fetchShops()
+			this.shops = res.data.map((item) => {
+				return item.title
+			})
+		},
+		open_collapse() {
+			if (this.mod == "without_mod"){
+				this.without_mod = true;
+				this.with_mod = false;
+				this.product.types = 0;
+			} else {
+				this.without_mod = false;
+				this.with_mod = true;
+				this.product.types = 1;
 			}
 		},
-		computed: {
-			getPrice(){
-				this.product.price = this.product.self_cost + (this.product.self_cost / 100) * this.product.markup;
-				return this.product.price;
-			},
+		addBlankMod(){
+			this.product.modification.push({
+				bar_code: '',
+				title_product: '',
+				title_mode: '',
+				self_cost: null,
+				markup: null,
+				price: null,
+				profit: null,
+			})
 		},
-	}
+		deleteMod(key){
+			console.log(key);
+
+			this.product.modification.splice(key, 1);
+		},
+		updatePrice(key, markup, self_cost){
+			this.product.modification[key].markup = markup;
+			this.product.modification[key].self_cost = self_cost;
+
+			this.product.modification[key].price = this.product.modification[key].self_cost + (this.product.modification[key].self_cost / 100) * this.product.modification[key].markup;
+		}
+	},
+	computed: {
+		getPrice(){
+			this.product.price = this.product.self_cost + (this.product.self_cost / 100) * this.product.markup;
+			return this.product.price;
+		},
+	},
+}
 </script>
 
 <style lang="scss">

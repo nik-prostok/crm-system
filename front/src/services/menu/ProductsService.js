@@ -17,5 +17,23 @@ export default {
 	},
 	fetchShops () {
 		return api().get('shops')
-	}
+	},
+	addShop(shop){
+		return api().post('shops', shop)
+	},
+	addCategory(category){
+		return api().post('categories', category)
+	},
+	addCategoryIng(category){
+		return api().post('catIngrid', category)
+	},
+	fetchCategoryIng(){
+		return api().get('catIngrid')
+	},
+	deleteOnlyProduct (id) {
+		return api().post('deleteOnlyProduct', {id: id})
+	},
+	deleteOnlyPhoto (id) {
+		return api().post('deleteOnlyPhoto', {id: id})
+	},
 }
