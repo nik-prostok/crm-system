@@ -10,9 +10,8 @@
 			
 
 
-
 			<div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
-				<!-- <button @click="getProducts" class="btn">Обновить...</button> -->
+				<button class="btn" @click="getCategories">Обновить</button>
 				<div id="printMe">
 					<div class="container-fluid mt-2 pl-0">
 						<div class="row">
@@ -23,12 +22,16 @@
 								<div class="float-right">
 
 									<router-link  to="/menu/category_prod_cards/add" class="main-text" style="text-decoration: none;">
-										<div class=" btn-group btn-group-custom mt-3 " >
+										<button class="btn mt-3 btn-success btn-add btn-lg">
+											<div  style="color: white;" class="main-text">Добавить категорию</div>
+											
+										</button>
+										<!-- <div class=" btn-group btn-group-custom mt-3 " >
 											<div class="btn btn-shadow btn-custom-border" >
 												<a class="main-text" style="text-decoration: none;">Добавить категорию</a>
 											</div>
 
-										</div>
+										</div> -->
 									</router-link>
 								</div>
 
@@ -76,8 +79,23 @@
 									</thead>
 									<tbody >
 										<tr class="tr-td-custom" v-for="category in categories">
-											
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
+
+											<td class="td-custom align-middle" style="text-align: left;">
+												
+												<div class="row">
+													<div v-if="category.photo != 'null'" class="col-1">
+														<!-- style="height: 40px; width: auto;"  -->
+														<img class="img-fluid" :src=category.photo alt="">
+													</div>
+													<div v-else class="rectangle col-1">
+														<div :class=category.color class="h-100">
+															<p style="color: white; text-align: center;" class="pt-2">{{ category.title.slice(0,1) }}</p>
+														</div>
+													</div>
+													<div class="col-6 align-self-center">{{ category.title }}</div>
+												</div>
+											</td>
+
 											<td class="td-custom align-middle">
 												<div class="d-flex flex-row">
 													<div class="mr-2">
@@ -91,9 +109,9 @@
 														</button>
 														<b-popover :target=getPopoverId(category.id) triggers="focus">
 															<ul class="actions-popover">
-																<li @click=deleteCategory(category.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
+																<li @click=deleteCategory(category.id) class="action-item"><a style="text-decoration: none; cursor: pointer;" class="main-text">Удалить</a></li>
 
-																<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Скрыть</a></li>
+																<li class="action-item"><a style="text-decoration: none; cursor: pointer;" class="main-text">Скрыть</a></li>
 															</ul>
 														</b-popover>
 													</div>
@@ -136,21 +154,30 @@
 		mounted () {
 			this.getCategories()
 		},
+		watch: {
+			'$route'(){
+				this.getCategories()
+			}
+		},
 		methods: {
 			async deleteCategory(id){
 				console.log(id);
-				const response = await ProductsService.deleteProduct({
-					'id': id
-				});
+				const response = await ProductsService.deleteCategory(id);
 
 				if (response.status == 200){
-					this.products = [];
+					this.category = [];
 					this.getCategories();
 				}
 			},
+
 			async getCategories () {
 				const response = await ProductsService.fetchCategories()
 				this.categories = response.data
+				this.categories.forEach(item => {
+					if (item.photo != 'null'){
+						item.photo = "http://89.223.27.152:8080/" + item.photo;
+					}
+				})
 				console.log(this.categories);
 			},
 			filterBySearch(category){

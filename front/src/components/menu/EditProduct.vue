@@ -233,8 +233,8 @@
 
 							<div v-if="!file" class="mt-3">
 								<img v-b-modal.modal1 style="height: 50px; width: auto; cursor: pointer;" :src="photo_src" alt="" :href="photo_src" class="img-thumbnail">
-								{{product.avatar}} 
-								<i @click="resetFile" class="fas fa-times"></i>
+								
+								<i @click="resetFile" style="cursor: pointer;" class="fas fa-times"></i>
 								<b-modal id="modal1" size="lg" :title="product.avatar" style="text-align: center;">
 									<img :src="photo_src" alt=""  style="width: 600px; height: auto;">
 								</b-modal>
@@ -456,7 +456,6 @@ export default {
 					}
 					this.open_collapse()
 					if (this.product.photo != null){
-							//http://89.223.27.152:8080/164a1a3d-1025-4c6f-be2f-7385cd0b67fe.png
 							this.product.avatar = this.product.photo
 							this.photo_src = 'http://89.223.27.152:8080/' + this.product.avatar
 							console.log(this.photo_src);
@@ -494,6 +493,15 @@ export default {
 					this.product.color = null;
 				}
 			}
+
+			if (this.product.weight_goods == false){
+				this.product.weight_goods = 0;
+			} else if (this.product.weight_goods == true){
+				this.product.weight_goods = 1;
+			}
+
+
+			this.product.photo = this.product.avatar;
 			
 			this.product.modification.forEach(item => {
 				item.profit = item.price - item.self_cost
@@ -503,22 +511,19 @@ export default {
 			var formData = new FormData();
 
 			formData.append('product', JSON.stringify(this.product))
-			
 
 
-			console.log(formData.getAll('avatar'));
 			console.log(this.product.id);
 
 			if (this.file != null){
 				ProductsService.deleteOnlyPhoto(this.product.id)
 				formData.append('avatar', this.file);
-			} else {
-				formData.append('avatar', this.product.avatar);
 			}
 
 			ProductsService.deleteOnlyProduct(this.product.id)
 
 			ProductsService.addProduct(formData)
+			console.log(this.product)
 			this.$router.push('/menu/products')
 		},
 		async getCategories (){

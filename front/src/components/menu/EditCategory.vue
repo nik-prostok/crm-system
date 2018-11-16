@@ -1,5 +1,5 @@
 <template>
-	<div id="add_products">
+	<div id="edit_category">
 		<div class="row no-gutters" id="body-row">
 			<div class="col-lg-1">
 				<sidebar></sidebar>
@@ -13,7 +13,7 @@
 							<router-link to="/menu/category_prod_cards">
 								<img class="back-arrow mt-2 mr-4" src="/static/image/arrow_back.png" alt="Back">
 							</router-link>
-							<h1 class="head-text">Добавление категории</h1>
+							<h1 class="head-text">Редактировать категорию</h1>
 						</div>
 					</div>
 
@@ -47,14 +47,27 @@
 						<div class="col-lg-2">
 							<p class="title-form mt-2">Фотография</p>
 						</div>
-						<b-form-file accept="image/*" v-model="avatar" id="upload" class="mt-3" plain></b-form-file>
+						<b-form-file accept="image/*" v-model="file" id="upload" class="mt-3" plain></b-form-file>
 						<div class="col-lg-4 align-self-center">
 							<b-link @click="selectFile" class="main-text">
 								<div class="link-green link-hover">
 									<u id="upload_link">Загрузить</u>
 								</div>
 							</b-link>
-							<div v-if="avatar" class="mt-3">{{avatar && avatar.name}} <i @click="resetFile" class="fas fa-times"></i></div>
+							<div v-if="!file" class="mt-3">
+								<div v-if="category.avatar != null">
+									<img v-b-modal.modal1 style="height: 50px; width: auto; cursor: pointer;" :src="photo_src" alt="" :href="photo_src" class="img-thumbnail">
+									<i @click="resetFile" style="cursor: pointer;" class="fas fa-times"></i>
+								</div>
+								
+								<b-modal id="modal1" size="lg" :title="category.avatar" style="text-align: center;">
+									<img :src="photo_src" alt=""  style="width: 600px; height: auto;">
+								</b-modal>
+							</div>
+							<div v-else>
+								{{file.name}}
+								<i @click="resetFile" class="fas fa-times"></i>
+							</div>
 
 						</div>
 					</div>
@@ -161,8 +174,8 @@
 
 					<hr class="hr-page">
 					<button type="button" @click="sendProducts" class="btn btn-success btn-lg btn-save">
-						<div v-if="!stateSaving" style="color: white;" class="main-text">Добавить категорию</div>
-						<div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
+						<div v-if="!stateSaving" style="color: white;" class="main-text">Сохранить категорию</div>
+						<div v-if="stateSaving" style="color: white;" class="main-text">Сохранение...</div>
 					</button>
 				</div>
 			</div>
@@ -171,78 +184,119 @@
 </template>
 
 <script>
-import Vue from 'vue';
+	import Vue from 'vue';
 
-import ProductsService from '@/services/menu/ProductsService'
-import Sidebar from '@/components/Sidebar'
+	import ProductsService from '@/services/menu/ProductsService'
+	import Sidebar from '@/components/Sidebar'
 
-export default {
-	name: 'add_products',
-	components: {
-		'sidebar': Sidebar,
-	},
-	data() {
-		return {
-			stateSaving: false,
-			mod: 'without_mod',
-			with_mod: false,
-			without_mod: true,
-			countMod: 1,
+	export default {
+		name: 'edit_category',
+		components: {
+			'sidebar': Sidebar,
+		},
+		data() {
+			return {
+				stateSaving: false,
+				mod: 'without_mod',
+				with_mod: false,
+				without_mod: true,
+				countMod: 1,
 
-			avatar: null,
+				editId: null,
 
-			key: null,
+				avatar: null,
+				photo_src: null,
+				file: null,
 
-			parent: null,
+				key: null,
 
-			categories: [],
+				parent: {
+					id: null,
+					title: null,
+				},
 
-			category: {
-				title: '',
-				parent_id: null,
-				color: '',
+				categories: [],
+
+				category: {
+					title: '',
+					parent_id: null,
+					color: '',
+
+				},
+			}
+		},
+		mounted() {
+			this.getCategories()
+			this.setEditId(this.$route.params.id)
+		},
+		methods: {
+			setEditId(id){
+				this.editId = id;
+			},
+			resetFile(){
+				this.file = null;
+			},
+			selectFile(){
+				$("#upload:hidden").trigger('click');
+			},
+			async sendProducts(){
+
+				console.log(this.category);
+
+				this.category.parent_id = this.parent.id;
+
+				var formData = new FormData();
+				formData.append('category', JSON.stringify(this.category))
+				if (this.file != null){
+					formData.append('avatar', this.file);
+				}
+
+				ProductsService.addCategory(formData)
+
+				this.$router.push('/menu/category_prod_cards')
 
 			},
-		}
-	},
-	mounted() {
-		this.getCategories()
-	},
-	methods: {
-		resetFile(){
-			this.avatar = null;
+			async getCategories (){
+				var res = await ProductsService.fetchCategories()
+				console.log(res);
+				this.categories = res.data.map((item) => {
+					return {id: item.id, title: item.title}
+				})
+
+
+				res.data.forEach(item => {
+
+					if (item.id == this.editId){
+						this.category = item;
+						this.categories.forEach(item2 => {
+							if (item2.id == item.parent_id){
+								this.parent.id = item2.id;
+								this.parent.title = item2.title;
+							}
+						})
+					}
+				})
+
+				if (this.category.photo != null){
+					this.category.avatar = this.category.photo
+					this.photo_src = 'http://89.223.27.152:8080/' + this.category.avatar
+					console.log(this.photo_src);
+				}
+
+				this.categories = res.data.map((item) => {
+					return {id: item.id, title: item.title}
+				})
+			},
+			resetFile(){
+				this.category.avatar = null;
+				this.photo_src = null;
+				this.file = null;
+			},
 		},
-		selectFile(){
-			$("#upload:hidden").trigger('click');
-		},
-		async sendProducts(){
-
-			console.log(this.category);
-
-			this.category.parent_id = this.parent.id;
-
-			var formData = new FormData();
-			formData.append('category', JSON.stringify(this.category))
-			formData.append('avatar', this.avatar);
-
-			ProductsService.addCategory(formData)
-
-			this.$router.push('/menu/category_prod_cards')
+		computed: {
 
 		},
-		async getCategories (){
-			var res = await ProductsService.fetchCategories()
-			console.log(res);
-			this.categories = res.data.map((item) => {
-				return {id: item.id, title: item.title}
-			})
-		},
-
-	},
-	computed: {
-
-	},
-}
+	}
 </script>
 
 <style lang="scss">

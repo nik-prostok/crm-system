@@ -155,6 +155,10 @@
 						id: "/menu/products"	
 					},
 					{
+						title: "Ингридиенты",
+						id: "/menu/ingridients"
+					},
+					{
 						title: "Тех. карты",
 						id: "/menu/tech_cards"
 					},

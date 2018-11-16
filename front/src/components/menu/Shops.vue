@@ -162,7 +162,7 @@
 				return "popover" + id;
 			},
 			getHrefEdit(id){
-				return '/menu/category_prod_cards/edit/' + id;
+				return '/menu/shops/edit/' + id;
 			},
 			sortEvent(message){
 				console.log(message);

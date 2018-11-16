@@ -508,6 +508,9 @@
 		computed: {
 			getPrice(){
 				this.product.price = this.product.self_cost + (this.product.self_cost / 100) * this.product.markup;
+				if (this.product.price == 0){
+					this.product.price = null;
+				}
 				return this.product.price;
 			},
 		},
