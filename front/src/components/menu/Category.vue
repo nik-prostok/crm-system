@@ -54,6 +54,10 @@
 							</div>
 						</div>
 
+						<ul id="demo">
+							<item :model="getTransformCategories"></item>
+						</ul>
+
 						<div class="mt-4">
 							<div class="table-responsive">
 								<table class="table table-custom table-bordered">
@@ -72,75 +76,7 @@
 										</tr> 
 									</thead>
 									<tbody >
-										<tr class="tr-td-custom" v-for="category in parentCategory">
-											<td class="td-custom align-middle" style="text-align: left;">
-												
-												<!-- <div class="row ml-1">
-													<div v-if="!category.collapse">
-														<i @click="setCollapse(category)" v-b-toggle='category.id' class="fas fa-angle-right arrow-more mt-1"></i>
-													</div>
-													<div v-if="category.collapse">
-														<i @click="setCollapse(category)" v-b-toggle='category.id' class="fas fa-angle-down arrow-more mt-1"></i>
-													</div>
-													
-													<div v-if="category.photo != 'null'" class="col-1">
-														<img class="img-fluid" :src=category.photo alt="">
-													</div>
-													<div v-else class="rectangle col-1">
-														<div :class=category.color class="h-100">
-															<p style="color: white; text-align: center;" class="pt-2">{{ category.title.slice(0,1) }}</p>
-														</div>
-													</div>
-
-													<div class="col-6 align-self-center">{{ category.title }}</div>
-												</div>
-												<b-collapse :id="category.id">
-													<div class="row ml-5 mt-2">
-														<div v-if="!category.collapse">
-															<i @click="setCollapse(category)" v-b-toggle='category.id' class="fas fa-angle-right arrow-more mt-1"></i>
-														</div>
-														<div v-if="category.collapse">
-															<i @click="setCollapse(category)" v-b-toggle='category.id' class="fas fa-angle-down arrow-more mt-1"></i>
-														</div>
-														
-														<div v-if="category.photo != 'null'" class="col-1">
-															<img class="img-fluid" :src=category.photo alt="">
-														</div>
-														<div v-else class="rectangle col-1">
-															<div :class=category.color class="h-100">
-																<p style="color: white; text-align: center;" class="pt-2">{{ category.title.slice(0,1) }}</p>
-															</div>
-														</div>
-
-														<div class="col-6 align-self-center">{{ category.title }}</div>
-													</div>
-													
-												</b-collapse> -->
-											</td>
-
-											<td class="td-custom align-middle">
-												<div class="d-flex flex-row">
-													<div class="mr-2">
-														<b-link :to=getHrefEdit(category.id) class="main-text">
-															<div class="link-blue link-hover">Ред.</div>
-														</b-link>
-													</div>
-													<div class="ml-2">
-														<button class="btn-icon popoverButton" :id=getPopoverId(category.id)>
-															<i class="fa fa-ellipsis-h"></i>
-														</button>
-														<b-popover :target=getPopoverId(category.id) triggers="focus">
-															<ul class="actions-popover">
-																<li @click=deleteCategory(category.id) class="action-item"><a style="text-decoration: none; cursor: pointer;" class="main-text">Удалить</a></li>
-
-																<li class="action-item"><a style="text-decoration: none; cursor: pointer;" class="main-text">Скрыть</a></li>
-															</ul>
-														</b-popover>
-													</div>
-												</div>
-											</td>
-										</tr>
-
+										
 									</tbody>
 								</table>
 							</div>
@@ -160,24 +96,58 @@
 
 	import ProductsService from '@/services/menu/ProductsService'
 	import Sidebar from '@/components/Sidebar'
+	import item from '@/components/menu/TreeList'
+
 	var arrayToTree = require('array-to-tree');
+
 
 	export default {
 		name: 'category',
 		components: {
 			'sidebar': Sidebar,
+			'item': item,
 		},
 		data () {
 			return {
+				data: {
+					name: 'My Tree',
+					children: [
+					{ name: 'hello' },
+					{ name: 'wat' },
+					{
+						name: 'child folder',
+						children: [
+						{
+							name: 'child folder',
+							children: [
+							{ name: 'hello' },
+							{ name: 'wat' }
+							]
+						},
+						{ name: 'hello' },
+						{ name: 'wat' },
+						{
+							name: 'child folder',
+							children: [
+							{ name: 'hello' },
+							{ name: 'wat' }
+							]
+						}
+						]
+					}
+					]
+				},
+				open: false,
+
 				search: '',
 				categories: [],
 				parentCategory:[],
 				sortColumn: 'count',
-				transformListCategories: [],
-
+				transformListCategories: null,
 			}
 		},
 		mounted () {
+
 			this.getCategories()
 		},
 		watch: {
@@ -203,20 +173,17 @@
 					if (item.photo != 'null'){
 						item.photo = "http://89.223.27.152:8080/" + item.photo;
 					}
-					if (item.parent_id != 60){
-						item.collapse = false;
-					}
 				})
-				this.getParentCategory()
-				this.getTransformCategories()
+				//this.getTransformCategories()
 
 				console.log(this.categories);
 			},
 			setCollapse(category){
-				this.getParentCategory()
-				this.parentCategory.forEach(item => {
+			//	this.getTransformCategories()
+				this.transformListCategories.forEach(item => {
 					if (item.id == category.id){
-						item.collapse = !item.collapse;
+						console.log("title: " + category.title + " id: " + category.collapse)
+						item.collapse = !category.collapse;
 					}
 				})
 			},
@@ -250,17 +217,43 @@
 			getParentCategory(){
 				this.parentCategory = this.categories.filter(this.filterByParentCategory)
 			},
-			getTransformCategories(){
-				console.log(arrayToTree(this.categories))
-			}
-
+			/*getTransformCategories(){
+				var withoutStart = this.categories.filter(item => {
+					if (item.id != 60) return true;
+					else return false;
+				})
+				withoutStart.forEach(item => {
+					if ((item.children == null) && (item.collapse == null)){
+						item.collapse = false;
+					}
+				})
+				this.transformListCategories = arrayToTree(withoutStart);
+				console.log(this.transformListCategories)
+			},*/
 		},
 		computed: {
+			getTransformCategories(){
+				var withoutStart = this.categories.filter(item => {
+					if (item.id != 60) return true;
+					else return false;
+				})
+				withoutStart.forEach(item => {
+					if ((item.children == null) && (item.collapse == null)){
+						item.collapse = false;
+					}
+				})
+				this.transformListCategories = {
+					children: arrayToTree(withoutStart),
+					name: "My tree"
+				}
+				console.log(this.transformListCategories)
+				return this.transformListCategories
+			},
 			length(){
 				let length = 0;
-				this.categories.forEach(item => {
+				/*this.transformListCategories.children.forEach(item => {
 					length++
-				})
+				})*/
 				return length;
 			},
 			getParentCategories(){
