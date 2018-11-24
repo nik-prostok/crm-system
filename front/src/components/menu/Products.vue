@@ -260,6 +260,7 @@
 															</div>
 														</div>
 														<div class="col-6 align-self-center">{{ product.title }}</div>
+														<div class="col-6 align-self-center" v-if="product.title==null">{{ product.title_product }}</div>
 													</div>
 												</td>
 												

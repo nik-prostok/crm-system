@@ -188,6 +188,7 @@
 
 	import ProductsService from '@/services/menu/ProductsService'
 	import Sidebar from '@/components/Sidebar'
+	
 
 	export default {
 		name: 'edit_category',
