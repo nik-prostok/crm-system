@@ -46,13 +46,26 @@ export default {
 	fetchCategoryIng(){
 		return api().get('catIngrid')
 	},
+	deleteCatIng(id){
+		return api().post('deleteCatIng', id)
+	},
 
 	//Ingridients
 	fetchIngridients(){
 		return api().get('ingridients')
 	},
-	addIngridients(){
-		return api().post('ingridients')
+	addIngridients(ingridient){
+		return api().post('ingridients', ingridient)
 	},
 	
+	//Semi
+	addSemi(semi){
+		return api().post('semi', semi)
+	},
+	fetchSemi(){
+		return api().get('semi')
+	}
+	
 }
+
+

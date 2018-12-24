@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-lg-10">
 							<div class="row ml-1">
-								<p-check v-model="shop.printRunners" style="font-size: 24px;" class="p-icon p-smooth mt-0 mb-2" color="success" >
+								<p-check v-model="shop.print_runners" style="font-size: 24px;" class="p-icon p-smooth mt-0 mb-2" color="success" >
 									<i slot="extra" class="icon fa fa-check"></i>
 									<div style="font-size: 18px;" class="main-text">Печатать бегунки</div>
 								</p-check>
@@ -79,7 +79,7 @@
 
 				shop: {
 					title: '',
-					printRunners: false,
+					print_runners: false,
 				},
 			}
 		},

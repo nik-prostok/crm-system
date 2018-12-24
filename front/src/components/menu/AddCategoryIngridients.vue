@@ -10,7 +10,7 @@
 
 					<div class="row">
 						<div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
-							<router-link to="/menu/category_prod_cards">
+							<router-link to="/menu/cat_ingridients">
 								<img class="back-arrow mt-2 mr-4" src="/static/image/arrow_back.png" alt="Back">
 							</router-link>
 							<h1 class="head-text">Новая категория ингредиентов</h1>

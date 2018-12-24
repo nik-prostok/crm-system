@@ -11,6 +11,11 @@ body::-webkit-scrollbar-thumb {
 	outline: 1px solid slategrey;
 }
 
+.background-green{
+	background-color: #EEFFFA;
+	margin-right: 50px;
+}
+
 h1.head-text {
 	font-family: 'Myriad Pro Regular';
 	font-size: 36px;
@@ -47,6 +52,31 @@ button.btn-icon {
 	border-style: solid;
 }
 
+.clipse-active {
+	background-color: rgb(230, 230, 230);
+	padding: 10px;
+	border-radius: 10px;
+	font-size: 1.7em; 
+	cursor: pointer;
+}
+
+.clipse-active:hover{
+	background-color: rgb(235, 235, 235);
+}
+
+.clipse-disactive {
+	background-color: rgb(180, 180, 180);
+	padding: 10px;
+	border-radius: 10px;
+	font-size: 1.7em; 
+	cursor: pointer;
+}
+
+.clipse-disactive:hover{
+	background-color: rgb(175, 175, 175);
+}
+
+
 hr.line {
 	background-color: rgb(232, 232, 232);
 	height: 1px;
@@ -62,7 +92,9 @@ hr.line {
 	size: 18px;
 	color: black;
 	text-decoration: none;
+	margin: 0px;
 	.link-green {
+		cursor: pointer;
 		color: rgb(54, 187, 76);
 	}
 	.link-blue {
@@ -72,7 +104,8 @@ hr.line {
 		color: #bb3c3c;
 	}
 	.link-hover:hover {
-		color: #2688cd;
+		text-decoration: underline;
+		color: #99cc00;
 	}
 }
 
@@ -93,7 +126,7 @@ hr.line {
 	height: 57px;
 }
 
-btn-add {
+.btn-add {
 	border-width: 1px;
 	border-color: rgb(236, 235, 235);
 	border-style: solid;
@@ -169,6 +202,20 @@ btn-add {
 	height: 40px;
 }
 
+.table-ing {
+	
+}
+
+.tr-ing {
+	.th-ing {
+		border: 0px;
+		background-color: rgb(249, 249, 249);
+	}
+	border: 0px;
+}
+
+
+
 
 .form-group {
 	.checkbox-custom{
@@ -188,10 +235,10 @@ btn-add {
 		border-color: rgb(236, 235, 235);
 		border-style: solid;
 		border-radius: 7px;
-		height: 50px;
+		height: 40px;
 
 		.multiselect__tags {
-			height: 50px;
+			height: 40px;
 			.multiselect__placeholder{
 				font-size: 1rem;
 				line-height: 1.5;

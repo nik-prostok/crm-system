@@ -11,7 +11,7 @@
 
 
 			<div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
-				<button class="btn" @click="getCategories">Обновить</button>
+				<!-- <button class="btn" @click="getCategories">Обновить</button> -->
 				<div id="printMe">
 					<div class="container-fluid mt-2 pl-0">
 						<div class="row">
@@ -54,9 +54,6 @@
 							</div>
 						</div>
 
-						<ul id="demo">
-							<item :model="getTransformCategories"></item>
-						</ul>
 
 						<div class="mt-4">
 							<div class="table-responsive">
@@ -70,13 +67,11 @@
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th> 
-											<th class="td-th-custom" style="width: 50px;">
-
-											</th>
 										</tr> 
 									</thead>
-									<tbody >
-										
+									<tbody>
+										<item :field="1" style="width: 100%" :model="getTransformCategories" @deleteCat=deleteCategory></item>
+
 									</tbody>
 								</table>
 							</div>
@@ -100,7 +95,6 @@
 
 	var arrayToTree = require('array-to-tree');
 
-
 	export default {
 		name: 'category',
 		components: {
@@ -109,34 +103,6 @@
 		},
 		data () {
 			return {
-				data: {
-					name: 'My Tree',
-					children: [
-					{ name: 'hello' },
-					{ name: 'wat' },
-					{
-						name: 'child folder',
-						children: [
-						{
-							name: 'child folder',
-							children: [
-							{ name: 'hello' },
-							{ name: 'wat' }
-							]
-						},
-						{ name: 'hello' },
-						{ name: 'wat' },
-						{
-							name: 'child folder',
-							children: [
-							{ name: 'hello' },
-							{ name: 'wat' }
-							]
-						}
-						]
-					}
-					]
-				},
 				open: false,
 
 				search: '',
@@ -150,6 +116,11 @@
 
 			this.getCategories()
 		},
+		created() {
+			this.$root.$on('deleteCat', (id) => {
+				this.deleteCategory(id);
+			});
+		},
 		watch: {
 			'$route'(){
 				this.getCategories()
@@ -157,7 +128,6 @@
 		},
 		methods: {
 			async deleteCategory(id){
-				console.log(id);
 				const response = await ProductsService.deleteCategory(id);
 
 				if (response.status == 200){
@@ -165,7 +135,6 @@
 					this.getCategories();
 				}
 			},
-
 			async getCategories () {
 				const response = await ProductsService.fetchCategories()
 				this.categories = response.data
@@ -174,49 +143,48 @@
 						item.photo = "http://89.223.27.152:8080/" + item.photo;
 					}
 				})
-				//this.getTransformCategories()
 
 				console.log(this.categories);
 			},
 			setCollapse(category){
 			//	this.getTransformCategories()
-				this.transformListCategories.forEach(item => {
-					if (item.id == category.id){
-						console.log("title: " + category.title + " id: " + category.collapse)
-						item.collapse = !category.collapse;
-					}
-				})
-			},
-			filterBySearch(category){
-				if (this.search.length === 0) {
-					return true;
+			this.transformListCategories.forEach(item => {
+				if (item.id == category.id){
+					console.log("title: " + category.title + " id: " + category.collapse)
+					item.collapse = !category.collapse;
 				}
-				return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
-			},
-			getPopoverId(id){
-				return "popover" + id;
-			},
-			getHrefEdit(id){
-				return '/menu/category_prod_cards/edit/' + id;
-			},
-			sortEvent(message){
-				console.log(message);
-				if (this.sortColumn == message){
-					this.sort = !this.sort;
-				} else {
-					this.sortColumn = message;
-				}
-			},
-			filterByParentCategory(category){
-				if (category.parent_id == 60){
-					return true;
-				} else {
-					return false;
-				}
-			},
-			getParentCategory(){
-				this.parentCategory = this.categories.filter(this.filterByParentCategory)
-			},
+			})
+		},
+		filterBySearch(category){
+			if (this.search.length === 0) {
+				return true;
+			}
+			return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
+		},
+		getPopoverId(id){
+			return "popover" + id;
+		},
+		getHrefEdit(id){
+			return '/menu/category_prod_cards/edit/' + id;
+		},
+		sortEvent(message){
+			console.log(message);
+			if (this.sortColumn == message){
+				this.sort = !this.sort;
+			} else {
+				this.sortColumn = message;
+			}
+		},
+		filterByParentCategory(category){
+			if (category.parent_id == 60){
+				return true;
+			} else {
+				return false;
+			}
+		},
+		getParentCategory(){
+			this.parentCategory = this.categories.filter(this.filterByParentCategory)
+		},
 			/*getTransformCategories(){
 				var withoutStart = this.categories.filter(item => {
 					if (item.id != 60) return true;
@@ -244,17 +212,18 @@
 				})
 				this.transformListCategories = {
 					children: arrayToTree(withoutStart),
-					name: "My tree"
+					title: "My tree",
+					id: 60,
 				}
 				console.log(this.transformListCategories)
 				return this.transformListCategories
 			},
 			length(){
 				let length = 0;
-				/*this.transformListCategories.children.forEach(item => {
+				this.categories.forEach(item => {
 					length++
-				})*/
-				return length;
+				})
+				return length-1;
 			},
 			getParentCategories(){
 				return this.categories.filter(this.filterByParentCategory)

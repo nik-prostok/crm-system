@@ -135,6 +135,11 @@
 		mounted () {
 			this.getShop()
 		},
+		watch: {
+			'$route'(){
+				this.getShop()
+			}
+		},
 		methods: {
 			async deleteShop(id){
 				console.log(id);
@@ -150,6 +155,13 @@
 			async getShop () {
 				const response = await ProductsService.fetchShops()
 				this.shops = response.data
+				this.shops.forEach(item => {
+					if (item.print_runners){
+						item.print_runners = "Да"
+					} else {
+						item.print_runners = "Нет"
+					}
+				})
 				console.log(this.shops);
 			},
 			filterBySearch(shop){

@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-lg-10">
 							<div class="row ml-1">
-								<p-check v-model="shop.printRunners" style="font-size: 24px;" class="p-icon p-smooth mt-0 mb-2" color="success" >
+								<p-check v-model="shop.print_runners" style="font-size: 24px;" class="p-icon p-smooth mt-0 mb-2" color="success" >
 									<i slot="extra" class="icon fa fa-check"></i>
 									<div style="font-size: 18px;" class="main-text">Печатать бегунки</div>
 								</p-check>
@@ -61,21 +61,14 @@
 	import Sidebar from '@/components/Sidebar'
 
 	export default {
-		name: 'add_products',
+		name: 'edit_shop',
 		components: {
 			'sidebar': Sidebar,
 		},
 		data() {
 			return {
+				editId: null,
 				stateSaving: false,
-				mod: 'without_mod',
-				with_mod: false,
-				without_mod: true,
-				countMod: 1,
-
-				key: null,
-
-				categories: [],
 
 				shop: {
 					title: '',
@@ -84,12 +77,29 @@
 			}
 		},
 		mounted() {
-			
+			this.setEditId(this.$route.params.id)
+			this.getShop()
 		},
 		methods: {
 			async sendShop(){
 				ProductsService.addShop(this.shop)
 				this.$router.push('/menu/shops')
+			},
+			setEditId(id){
+				this.editId = id;
+			},
+			async getShop () {
+				const response = await ProductsService.fetchShops()
+				response.data.forEach(item => {
+					if (item.id == this.editId){
+						this.shop = item;
+						if (this.shop.print_runners){
+							this.shop.print_runners = true;
+						} else {
+							this.shop.print_runners = false;
+						}
+					}
+				})
 			},
 		},
 		computed: {

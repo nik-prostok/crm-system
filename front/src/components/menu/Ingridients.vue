@@ -61,43 +61,57 @@
 							<div class="table-responsive">
 								<table class="table table-custom table-bordered">
 									<thead>
-										<tr class="tr-th-custom-left"> 
-											<th @click="sortEvent('title')" class="td-th-custom align-content-start">
+										<tr class="tr-th-custom"> 
+											<th @click="sortEvent('title')" class="td-th-custom">
 												Название
 												<div v-if="sortColumn == 'title'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th> 
-											<th @click="sortEvent('category')" class="td-th-custom align-content-start">
+											<th @click="sortEvent('ingridients')" class="td-th-custom">
 												Категория
-												<div v-if="sortColumn == 'category'">
+												<div v-if="sortColumn == 'cat'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th> 
-											<th @click="sortEvent('losses')" class="td-th-custom align-content-start">
+											<th @click="sortEvent('losses')" class="td-th-custom">
 												Единица измерения
+												<div v-if="sortColumn == 'unit'">
+													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+												</div>
+											</th> 
+											<th @click="sortEvent('losses')" class="td-th-custom">
+												Вес шт. ингридиента
+												<div v-if="sortColumn == 'weight'">
+													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+												</div>
+											</th>
+											<th @click="sortEvent('losses')" class="td-th-custom">
+												Потери
 												<div v-if="sortColumn == 'losses'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th> 
-											<th @click="sortEvent('remains')" class="td-th-custom align-content-start">
+											<th @click="sortEvent('remains')" class="td-th-custom">
 												Остатки на складах
 												<div v-if="sortColumn == 'remains'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th> 
-											<th @click="sortEvent('cost')" class="td-th-custom align-content-start">
+											<th @click="sortEvent('cost')" class="td-th-custom">
 												Себестоимость
 												<div v-if="sortColumn == 'cost'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th>
-											<th @click="sortEvent('amount_balances')" class="td-th-custom align-content-start">
+											<th @click="sortEvent('amount_balances')" class="td-th-custom">
 												Сумма остатков	
 												<div v-if="sortColumn == 'amount_balances'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
@@ -110,14 +124,24 @@
 										</tr> 
 									</thead>
 									<tbody >
-										<tr class="tr-td-custom" v-for="category in categories">
+										<tr class="tr-td-custom" v-for="ingridient in ingridients">
 											
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
+											<td class="td-custom align-middle" style="">{{ingridient.title}}</td>
+											<td class="td-custom align-middle" style="">{{ingridient.cat_title}}</td>
+											<td class="td-custom align-middle" style="">{{ingridient.unit}}</td>
+											<td class="td-custom align-middle" style="">{{ingridient.weight}}</td>
+											<td v-if="ingridient.unit != 'кг'" class="td-custom align-middle" style="">—</td>
+
+											<td v-else class="td-custom align-middle" style="width: 100%;">
+												{{ingridient.losses_clean}}%  
+												{{ingridient.losses_cooking}}%  
+												{{ingridient.losses_frying}}%  
+												{{ingridient.losses_stew}}%  
+												{{ingridient.losses_bak}}%  
+											</td>
+											<td class="td-custom align-middle" style="">—</td>
+											<td class="td-custom align-middle" style="">—</td>
+											<td class="td-custom align-middle" style="">—</td>
 											<td class="td-custom align-middle">
 												<div class="d-flex flex-row">
 													<div class="mr-2">
@@ -126,17 +150,17 @@
 														</b-link>
 													</div>
 													<div class="mr-2">
-														<b-link :to=getHrefEdit(category.id) class="main-text">
+														<b-link :to=getHrefEdit(ingridients.id) class="main-text">
 															<div class="link-blue link-hover">Ред.</div>
 														</b-link>
 													</div>
 													<div class="ml-2">
-														<button class="btn-icon popoverButton" :id=getPopoverId(category.id)>
+														<button class="btn-icon popoverButton" :id=getPopoverId(ingridients.id)>
 															<i class="fa fa-ellipsis-h"></i>
 														</button>
-														<b-popover :target=getPopoverId(category.id) triggers="focus">
+														<b-popover :target=getPopoverId(ingridients.id) triggers="focus">
 															<ul class="actions-popover">
-																<li @click=deleteCategory(category.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
+																<li @click=deleteIngridients(ingridients.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
 
 																<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Скрыть</a></li>
 															</ul>
@@ -166,23 +190,23 @@
 	import Sidebar from '@/components/Sidebar'
 
 	export default {
-		name: 'category',
+		name: 'ingridients',
 		components: {
 			'sidebar': Sidebar,
 		},
 		data () {
 			return {
 				search: '',
-				categories: [],
+				ingridients: [],
 				sortColumn: 'count',
 
 			}
 		},
 		mounted () {
-			this.getCategories()
+			this.getIngridients()
 		},
 		methods: {
-			async deleteCategory(id){
+			async deleteIngridients(id){
 				console.log(id);
 				const response = await ProductsService.deleteProduct({
 					'id': id
@@ -193,16 +217,21 @@
 					this.getCategories();
 				}
 			},
-			async getCategories () {
-				const response = await ProductsService.fetchCategories()
-				this.categories = response.data
-				console.log(this.categories);
+			async getIngridients () {
+				const response = await ProductsService.fetchIngridients()
+				this.ingridients = response.data
+				this.ingridients.forEach(item => {
+					if (item.weight == null){
+						item.weight = "—";
+					}
+				})
+				console.log(this.ingridients);
 			},
-			filterBySearch(category){
+			filterBySearch(ingridients){
 				if (this.search.length === 0) {
 					return true;
 				}
-				return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
+				return ingridients.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
 			},
 			getPopoverId(id){
 				return "popover" + id;
@@ -222,7 +251,7 @@
 		computed: {
 			length(){
 				let length = 0;
-				this.categories.forEach(item => {
+				this.ingridients.forEach(item => {
 					length++
 				})
 				return length;

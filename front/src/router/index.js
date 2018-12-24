@@ -22,6 +22,9 @@ import AddIngridients from '@/components/menu/AddIngridients'
 import Semi from '@/components/menu/Semi'
 import AddSemi from '@/components/menu/AddSemi'
 
+import TechMaps from '@/components/menu/TechMaps'
+import AddTechMaps from '@/components/menu/AddTechMaps'
+
 import SaleProducts from '@/components/statistic/SaleProducts'
 import Sale from '@/components/statistic/Category'
 
@@ -100,6 +103,16 @@ const routes = [
 {
 	path: '/menu/semi/add',
 	component: AddSemi,
+},
+
+//menu//tech_maps
+{
+	path: '/menu/tech_maps',
+	component: TechMaps,
+},
+{
+	path: '/menu/tech_maps/add',
+	component: AddTechMaps,
 },
 
 //*****SALES*****//

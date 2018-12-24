@@ -77,7 +77,7 @@
 									<tbody >
 										<tr class="tr-td-custom" v-for="category in categories">
 											
-											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
+											<td class="td-custom align-middle" style="text-align: left;">{{category.cat_title}}</td>
 											<td class="td-custom align-middle">
 												<div class="d-flex flex-row">
 													<div class="mr-2">
@@ -86,12 +86,12 @@
 														</b-link>
 													</div>
 													<div class="ml-2">
-														<button class="btn-icon popoverButton" :id=getPopoverId(category.id)>
+														<button class="btn-icon popoverButton" :id=getPopoverId(category.cat_id)>
 															<i class="fa fa-ellipsis-h"></i>
 														</button>
-														<b-popover :target=getPopoverId(category.id) triggers="focus">
+														<b-popover :target=getPopoverId(category.cat_id) triggers="focus">
 															<ul class="actions-popover">
-																<li @click=deleteCategory(category.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
+																<li @click=deleteCategory(category.cat_id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
 
 																<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Скрыть</a></li>
 															</ul>
@@ -139,17 +139,17 @@
 		methods: {
 			async deleteCategory(id){
 				console.log(id);
-				const response = await ProductsService.deleteProduct({
+				const response = await ProductsService.deleteCatIng({
 					'id': id
 				});
 
 				if (response.status == 200){
-					this.products = [];
+					this.categories = [];
 					this.getCategories();
 				}
 			},
 			async getCategories () {
-				const response = await ProductsService.fetchCategories()
+				const response = await ProductsService.fetchCategoryIng()
 				this.categories = response.data
 				console.log(this.categories);
 			},
@@ -163,7 +163,7 @@
 				return "popover" + id;
 			},
 			getHrefEdit(id){
-				return '/menu/category_prod_cards/edit/' + id;
+				return '/menu/catIng/edit/' + id;
 			},
 			sortEvent(message){
 				console.log(message);

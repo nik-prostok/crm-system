@@ -160,7 +160,7 @@
 					},
 					{
 						title: "Тех. карты",
-						id: "/menu/tech_cards"
+						id: "/menu/tech_maps"
 					},
 					{
 						title: "Полуфабрикаты",

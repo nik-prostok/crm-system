@@ -104,10 +104,25 @@ router.post('/deleteOnlyPhoto', (req, res) => {
 	})
 })
 router.post('/deleteCategory', (req, res) => {
-	connection.query("DELETE FROM categories WHERE id = ? OR parent_id = ?",[req.body.id,req.body.id], function (err, result, fields) {
-		if (err) console.log(err);
-		res.send("OK");
-	})
+	var id = [];
+	id[0] = req.body.id;
+	count = 0;
+	while(count!=id.length)
+	{
+		connection.query("SELECT id FROM categories WHERE parent_id = ?",[Number(id[count])], function (err, result, fields) {
+			if (err) console.log(err);
+			result.forEach(item =>{
+				id.push(item);
+			});
+			count++;
+		})
+	}
+	console.log("RESULT");
+	console.log(id);
+	// connection.query("DELETE FROM categories WHERE id = ? OR parent_id = ?",[req.body.id,req.body.id], function (err, result, fields) {
+	// 	if (err) console.log(err);
+	// 	res.send("OK");
+	// })
 })
 
 router.post('/productsMod',upload.single('avatar'), (req, res) => {
@@ -130,9 +145,10 @@ router.post('/productsMod',upload.single('avatar'), (req, res) => {
 				if(Array.isArray(data.modification))
 				{
 					data.modification.forEach(function(item, i, arr) {
-						connection.query("INSERT INTO modifications   (bar_code,title_product,title,self_cost,price,markup,profit) VALUES (?,?,?,?,?,?,?)",[item.bar_code,data.title,item.title_mode,item.self_cost,item.price,item.markup, item.profit], function (err, result, fields) {
-							if (err) console.log(err);
-						})
+						connection.query("INSERT INTO modifications   (bar_code,title_product,title,self_cost,price,markup,profit) VALUES (?,?,?,?,?,?,?)",
+							[item.bar_code,data.title,item.title_mode,item.self_cost,item.price,item.markup, item.profit], function (err, result, fields) {
+								if (err) console.log(err);
+							})
 					})
 				}
 			})
@@ -142,13 +158,39 @@ router.post('/productsMod',upload.single('avatar'), (req, res) => {
 
 })
 
+router.post('/ingridients', (req, res) => {
+	var item = req.body;
 
-router.get('/catIngrid', (req, res) => {
-
+	connection.query("INSERT INTO ingridients (title, cat_id, unit, losses_clean, losses_cooking, losses_frying, losses_stew, losses_bak, weight, round) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+		[item.title, item.cat_id, item.unit, item.losses_clean, item.losses_cooking, item.losses_frying, item.losses_stew, item.losses_bak, item.weight, item.round], function (err, result, fields){
+			if (err) console.log(err);
+		})
 })
 
 router.post('/catIngrid', (req, res) => {
-	console.log(req.body);
+	connection.query("INSERT INTO category_ing (cat_title) VALUES (?)", [req.body.title], function(err, result, fields){
+		if (err) console.log(err);
+	})
+})
+
+router.post('/deleteCatIng', (req, res) => {
+	connection.query("DELETE FROM category_ing WHERE cat_id = ?", [req.body.id], function(err, result, fields){
+		if (err) console.log(err);
+	})
+})
+
+
+router.get('/catIngrid', (req, res) => {
+	bd(req,res,"SELECT * FROM category_ing");
+})
+
+router.get("/ingridients", (req, res) => {
+	connection.query("SELECT * FROM ingridients LEFT JOIN category_ing using(cat_id)", function (err, result, fields) {
+		if (err) console.log(err);
+		console.log(result);
+		res.send(result)
+
+	})
 })
 
 router.post('/modifications', (req, res) => {
