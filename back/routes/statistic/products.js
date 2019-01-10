@@ -4,6 +4,10 @@ var mysql = require('mysql');
 var multer  = require('multer')
 var fs = require('fs');
 
+
+var delcat = [];
+var countdelcat = 0;
+
 var uuid = require('node-uuid');
 
 var upload = multer({ dest: 'uploads/' })
@@ -104,25 +108,11 @@ router.post('/deleteOnlyPhoto', (req, res) => {
 	})
 })
 router.post('/deleteCategory', (req, res) => {
-	var id = [];
-	id[0] = req.body.id;
-	count = 0;
-	while(count!=id.length)
-	{
-		connection.query("SELECT id FROM categories WHERE parent_id = ?",[Number(id[count])], function (err, result, fields) {
-			if (err) console.log(err);
-			result.forEach(item =>{
-				id.push(item);
-			});
-			count++;
-		})
-	}
-	console.log("RESULT");
-	console.log(id);
-	// connection.query("DELETE FROM categories WHERE id = ? OR parent_id = ?",[req.body.id,req.body.id], function (err, result, fields) {
-	// 	if (err) console.log(err);
-	// 	res.send("OK");
-	// })
+	delcat = [];
+	countdelcat = 0;
+	delcat.push(req.body.id);
+	fdelcat();
+	res.send("OK");
 })
 
 router.post('/productsMod',upload.single('avatar'), (req, res) => {
@@ -207,6 +197,75 @@ router.post('/restaurants', (req, res) => {
 router.post('/shops', (req, res) => {
 	bd(req,res,"INSERT INTO shops SET title = ?,print_runners = ?",[req.body.title,req.body.print_runners]);
 })
+router.post('/addmap',upload.single('avatar'), (req, res) => {
+	console.log(req.body);
+	var filename = 'null';
+	if (req.file){
+		filename = req.file.filename;
+	}
+	bd(req,res,"INSERT INTO technical_cards  (title,bar_code,cat_id,shop_id,colour,no_dicsount,weight,cooking_process,time_cooking_m,time_cooking_s,photo)VALUES (?,?,?,?,?,?,?,?,?,?,?) ",[req.body.title,req.body.bar_code,req.body.category.id,req.body.shop.id,req.body.color,req.body.weight,req.body.no_dicsount,req.body.process_cooking,req.body.min_cook,req.body.sec_cook,filename]);
+	connection.query("SELECT id FROM technical_cards ORDER BY id DESC LIMIT 1", function (err, result, fields) {
+		if (err) console.log(err);
+
+		var a = result[0].id;
+		req.body.ingridients.forEach(item =>{
+			connection.query("INSERT INTO cards_and_ingridients  (id_cards,id_ingridients,brutto,netto,price) VALUES (?,?,?,?,?) ",[a,item.id,item.brutto,item.netto,item.price], function (err, result, fields) {
+				if(item.method_cooking!=undefined)
+				{
+					connection.query("SELECT id FROM cards_and_ingridients ORDER BY id DESC LIMIT 1", function (err, result2, fields) {
+						if (err) console.log(err);
+
+						var b = result2[0].id;
+						item.method_cooking.forEach(item2 =>{
+							connection.query("INSERT INTO cards_and_ingridients_cooking  (id_cards_and_ingridients,id_method_cooking) VALUES (?,?) ",[b,item2.id], function (err, result, fields) {
+								if (err) console.log(err);
+
+							})
+						})
+					})
+				}
+			})
+		})
+		req.body.modificators.forEach(item3 =>{
+			connection.query("INSERT INTO modifiers SET title = ?,type = ?,max = ?,min = ?",[item3.title,item3.type,item3.max,item3.min],function (err, result2, fields) {
+				if (err) console.log(err);
+
+				connection.query("SELECT id FROM modifiers ORDER BY id DESC LIMIT 1", function (err, result7, fields) {
+					if (err) console.log(err);
+
+					var c = result7[0].id;
+					connection.query("INSERT INTO cards_and_mods SET id_cards = ?,id_mods = ?",[a,c],function (err, result2, fields) {
+						if (err) console.log(err);
+					})
+
+
+					item3.ingridients.forEach(item4 =>{
+						connection.query("INSERT INTO modifications_and_ingridients  (id_mods,id_ingridients,brutto,netto,price) VALUES (?,?,?,?,?) ",[c,item4.id,item4.brutto,item4.netto,item4.price], function (err, result, fields) {
+							if (err) console.log(err);
+							if(item4.method_cooking!=undefined)
+							{
+								connection.query("SELECT id FROM modifications_and_ingridients ORDER BY id DESC LIMIT 1", function (err, result8, fields) {
+									if (err) console.log(err);
+
+									var d = result8[0].id;
+									item4.method_cooking.forEach(item5 =>{
+										connection.query("INSERT INTO modifications_and_ingridients_cooking  (id_mods_and_ingridients,id_method_cooking) VALUES (?,?) ",[d,item5.id], function (err, result, fields) {
+											if (err) console.log(err);
+
+										})
+									})
+								})
+							}
+						})
+					})
+
+				})
+			})
+
+
+		})
+	})
+})
 
 
 router.get('/products', (req, res) => {
@@ -248,6 +307,56 @@ router.get('/shops', (req, res) => {
 router.get('/sales', (req, res) => {
 	bd(req,res,"SELECT * FROM sales");
 })
+router.get('/map', (req, res) => {
+	/*connection.query("SELECT t1.title, t1.bar_code, t1.colour, t1.no_dicsount, t1.time_cooking_m, t1.time_cooking_s, t1.weight, t2.brutto, t2.netto, t2.price, t2.id_ingridients, t2.id_cards, cat_table.title AS cat_title, shops_table.title AS shop_title, modifiers_table.title AS title_mod, modifiers_table.type AS type_mod, modifiers_table.max AS max_mod, modifiers_table.min AS min_mod, mod_ing_table.brutto AS brutto_mod, mod_ing_table.netto AS netto_mod, mod_ing_table.price AS price_mod, mod_ing_table.id_ingridients FROM technical_cards, technical_cards AS t1 LEFT JOIN cards_and_ingridients AS t2 ON t2.id_cards = t1.id LEFT JOIN categories AS cat_table ON cat_table.id = t1.cat_id LEFT JOIN shops AS shops_table ON shops_table.id = t1.shop_id LEFT JOIN cards_and_mods AS cards_mods_table ON cards_mods_table.id_cards = t1.id LEFT JOIN modifiers AS modifiers_table ON cards_mods_table.id_mods = modifiers_table.id LEFT JOIN modifications_and_ingridients AS mod_ing_table ON mod_ing_table.id_mods = modifiers_table.id", function (err, result, fields) {
+		console.log(err);
+		console.log(result);
+		res.send(result);
+	})*/
+
+
+
+	connection.query("SELECT t1.id, t1.title, t1.bar_code, t1.colour, t1.no_dicsount, t1.time_cooking_m, t1.time_cooking_s, t1.weight, cat_table.title AS cat_title, shops_table.title AS shop_title FROM technical_cards AS t1 LEFT JOIN categories AS cat_table ON cat_table.id = t1.cat_id LEFT JOIN shops AS shops_table ON shops_table.id = t1.shop_id", function (err, result, fields) {
+		result.forEach(function(item, i, arr) {
+			connection.query("SELECT * FROM cards_and_ingridients WHERE id_cards = ?  ",[item.id], function (err, result2, fields) {
+				item.ingridients=result2;
+				item.ingridients.forEach(function(item2, i, arr) {
+					connection.query("SELECT * FROM cards_and_ingridients_cooking WHERE id_cards_and_ingridients = ?  ",[item2.id], function (err, result3, fields) {
+						item2.listMethodsCooking=result3;
+					})
+				})
+			})
+			connection.query("SELECT * FROM cards_and_mods WHERE id_cards = ?  ",[item.id], function (err, result3, fields) {
+				result3.forEach(function(item2, i, arr) {
+					connection.query("SELECT * FROM modifiers WHERE id = ?  ",[item2.id_mods], function (err, result4, fields) {
+						item.modificators=result4;
+						item.modificators.forEach(function(item5, i, arr) {
+							connection.query("SELECT * FROM modifications_and_ingridients WHERE id_mods = ?  ",[item5.id], function (err, result5, fields) {
+								item5.ingridients = result5;
+								item5.ingridients.forEach(function(item6, i, arr) {
+									connection.query("SELECT * FROM modifications_and_ingridients_cooking WHERE id_mods_and_ingridients = ?  ",[item6.id], function (err, result6, fields) {
+										item6.listMethodsCooking=result6;
+
+									})
+								})
+							})
+						})
+					})
+				})
+			})
+
+		})
+		setTimeout( function(){
+			console.log(result);
+			res.send(result);
+
+		}, 500 );
+	})
+	
+})
+router.get('/mods', (req, res) => {
+	bd(req,res,"SELECT * FROM modifications");
+})
 function bd(req,res,sql,meanings)
 {
 	connection.query(sql,meanings, function (err, result, fields) {
@@ -255,5 +364,27 @@ function bd(req,res,sql,meanings)
 		res.send(result);
 	})
 }
-
+function fdelcat()
+{
+	connection.query("SELECT id FROM categories WHERE parent_id = ?",[Number(delcat[countdelcat])], function (err, result, fields) {
+		if (err) console.log(err);
+		result.forEach(item =>{
+			delcat.push(item.id);
+		});
+		countdelcat++;
+		console.log(delcat);
+		if(countdelcat!=delcat.length)
+		{
+			fdelcat();
+		}
+		else
+		{
+			delcat.forEach(item =>{
+				connection.query("DELETE FROM categories WHERE id = ?",[item], function (err, result, fields) {
+					if (err) console.log(err);
+				})
+			});
+		}
+	})
+}
 module.exports = router;

@@ -349,7 +349,10 @@
 							<h3 class="head-text">Модификаторы</h3>
 
 							<p class="title-form" style="font-size: 1em;">Выбор среди разновидностей или возможность добавить дополнительные ингредиенты</p>
-							<div class="table-responsive">
+							<div v-for="mod in map.modificators" class="table-responsive">
+								<span class="head-text" style="font-weight: bold; font-size: 1.2em;">{{mod.title}}</span>
+								<span v-if="mod.type == 'one'" class="main-text">(Несколько из набора)</span>
+								<span v-if="mod.type == 'some'" class="main-text">(Выбор одного вида из нескольких)</span>
 								<table class="table table-ing">
 									<thead>
 										<tr class="tr-ing"> 
@@ -395,7 +398,7 @@
 										</tr> 
 									</thead>
 									<tbody>
-										<tr class="tr-td-custom" v-for="ing in map.ingridients">
+										<tr class="tr-td-custom" v-for="ing in mod.ingridients">
 											<td class="td-custom align-middle">
 												<div class="form-group">
 													<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ing.object_ing" :multiple="false" :close-on-select="true" label="title" track-by="id" :options="ingridientsList" :option-height="104"></multiselect>
@@ -444,7 +447,7 @@
 										</tr>
 										<tr>
 											<td class="main-text">
-												<p class="link-green link-hover" data-toggle="modal" data-target="#exampleModal">+ Добавить ингридиент</p>
+												<p class="link-green link-hover" @click="addRowToMod(mod.id)">+ Добавить ингридиент</p>
 											</td>
 											<td></td>
 											<td></td>
@@ -455,6 +458,10 @@
 
 									</tbody>
 								</table>
+							</div>
+							<hr class="hr-page mt-2 mb-4">
+							<div class="main-text">
+								<p class="link-green link-hover" data-toggle="modal" data-target="#exampleModal">+ Добавить модификатор</p>
 							</div>
 						</div>
 					</div>
@@ -482,11 +489,9 @@
 										<hr class="hr-page mt-2 mb-4">
 
 										<p class="main-text">Сколько модификаторов можно выбрать одновременно:</p>
-										<p-radio style="font-size: 20px;" v-model="nowNewModif.type" value="one" class="p-icon p-smooth m-2" color="success" >
+										<p-radio style="font-size: 20px;" v-model="nowNewModif.type" value='one' class="p-icon p-smooth m-2" color="success" >
 											<i slot="extra" class="icon fa fa-check"></i>
-											<p class="main-text" style="font-size: 0.9em; font-weight: bold;">
-												
-											Только один</p>
+											<p class="main-text" style="font-size: 0.9em; font-weight: bold;">Только один</p>
 										</p-radio>
 										<div class="row">
 											<div class="col-lg-6">
@@ -501,10 +506,9 @@
 										
 
 										<hr class="hr-page mt-2 mb-2">
-										<p-radio v-b-toggle.collapse2 style="font-size: 20px;" v-model="nowNewModif.type" value="some" class="p-icon p-smooth m-2" color="success" >
+										<p-radio style="font-size: 20px;" v-model="nowNewModif.type" value="some" class="p-icon p-smooth m-2" color="success" >
 											<i slot="extra" class="icon fa fa-check"></i>
-											<p class="main-text" style="font-size: 0.9em; font-weight: bold;">
-											Несколько</p>
+											<p class="main-text" style="font-size: 0.9em; font-weight: bold;">Несколько</p>
 										</p-radio>
 										<div class="row">
 											<div class="col-lg-6">
@@ -517,18 +521,20 @@
 											
 										</div>
 										<div class="row ml-5">
-											<b-collapse id="collapse2">
-												<b-card>
-													<div class="row">
+											<transition name="fade">
+												<b-card v-if="nowNewModif.type == 'some'">
+													<div class="row mb-2">
 														<div class="col-lg-6">
 															<p-check style="font-size: 24px;" v-model="nowNewModif.setMin" class="p-icon p-smooth mt-0 mb-2" color="success" >
 																<i slot="extra" class="icon fa fa-check"></i>
 																<div style="font-size: 18px;"  class="main-text">Установить минимум</div>
 															</p-check>
 														</div>
-														
+
 														<div class="col-lg-4">
-															<input v-if="nowNewModif.setMin" type="text" ref="search" class="form-control input-param" v-model="nowNewModif.min" placeholder="Минимум">
+															<transition name="fade">
+																<input v-if="nowNewModif.setMin" type="text" ref="search" class="form-control input-param" v-model="nowNewModif.min" placeholder="Минимум">
+															</transition>
 														</div>
 													</div>
 													<div class="row">
@@ -538,20 +544,22 @@
 																<div style="font-size: 18px;"  class="main-text">Установить максимум</div>
 															</p-check>
 														</div>
-														
+
 														<div class="col-lg-4">
-															<input v-if="nowNewModif.setMax" type="text" ref="search" class="form-control input-param" v-model="nowNewModif.max" placeholder="Максимум">
+															<transition name="fade">
+																<input v-if="nowNewModif.setMax" type="text" ref="search" class="form-control input-param" v-model="nowNewModif.max" placeholder="Максимум">
+															</transition>
 														</div>
 													</div>
 												</b-card>
-											</b-collapse>
+											</transition>
 										</div>
 
 									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary" @click="resetNowNewModif" data-dismiss="modal">Отмена</button>
-									<button type="button" class="btn btn-success">Добавить</button>
+									<button type="button" class="btn btn-success" @click="addNewModificators" data-dismiss="modal">Добавить</button>
 								</div>
 							</div>
 						</div>
@@ -570,111 +578,124 @@
 </template>
 
 <script>
-import Vue from 'vue';
+	import Vue from 'vue';
 
-import ProductsService from '@/services/menu/ProductsService'
-import Sidebar from '@/components/Sidebar'
+	import ProductsService from '@/services/menu/ProductsService'
+	import Sidebar from '@/components/Sidebar'
 
-export default {
-	name: 'add_products',
-	components: {
-		'sidebar': Sidebar,
-	},
-	data() {
-		return {
-			stateSaving: false,
-			mod: 'without_mod',
-			with_mod: false,
-			without_mod: true,
-			countMod: 1,
+	export default {
+		name: 'add_products',
+		components: {
+			'sidebar': Sidebar,
+		},
+		data() {
+			return {
+				stateSaving: false,
+				mod: 'without_mod',
+				with_mod: false,
+				without_mod: true,
+				countMod: 1,
+				idMod: -1,
 
 
-			key: null,
+				key: null,
 
-			ingridientsList: [],
-			categories: [],
-			shops: [],
-			listModificators: [
-			{
-				title: 'Создать новый набор',
-				id: 0,
-			},
-			{
-				title: 'Диаметр пиццы',
-				id: 1,
-			}],
-			setIngridient: [],
+				ingridientsList: [],
+				categories: [],
+				shops: [],
+				listModificators: [
+				{
+					title: 'Создать новый набор',
+					id: 0,
+				},
+				{
+					title: 'Диаметр пиццы',
+					id: 1,
+				}],
+				setIngridient: [],
 
-			listMethodsCooking: [
-			{
-				title: 'Очистка',
-				id: 1,
-			},
-			{
-				title: 'Варка',
-				id: 2,
-			},
-			{
-				title: 'Жарка',
-				id: 3,
-			},
-			{
-				title: 'Тушение',
-				id: 4,
-			},
-			{
-				title: 'Запекание',
-				id: 5,
+				listMethodsCooking: [
+				{
+					title: 'Очистка',
+					id: 1,
+				},
+				{
+					title: 'Варка',
+					id: 2,
+				},
+				{
+					title: 'Жарка',
+					id: 3,
+				},
+				{
+					title: 'Тушение',
+					id: 4,
+				},
+				{
+					title: 'Запекание',
+					id: 5,
+				}
+				],
+
+				nowModif: {
+					title: 'Создать новый набор',
+					id: 0,
+				},
+				nowNewModif: {
+					title: null,
+					id: null,
+					type: 'one',
+					min: null,
+					max: null,
+					setMax: false,
+					setMin: false,
+					ingridients:[],
+				},
+
+
+
+				map: {
+					title: '',
+					avatar: null,
+					category: null,
+					shop: null,
+					color: null,
+					min: null,
+					bar_code: null,
+					sec: null,
+					weight: false,
+					no_dicsount: false,
+					process_cooking: '',
+					sum_mass: 0,
+					price: 0,
+					ingridients: [],
+					modificators: [],
+				},
+
 			}
-			],
-
-			nowModif: {
-				title: 'Создать новый набор',
-				id: 0,
-			},
-			nowNewModif: {
-				title: null,
-				id: null,
-				type: null,
-				min: 1,
-				max: 10,
-				setMax: false,
-				setMin: false,
-			},
-
-
-
-			map: {
-				title: '',
-				avatar: null,
-				category: null,
-				shop: null,
-				color: null,
-				min: null,
-				sec: null,
-				weight: false,
-				no_dicsount: false,
-				process_cooking: '',
-				sum_mass: 0,
-				price: 0,
-				ingridients: [],
-				modificators: [],
-				newModificators: [],
-			},
-
-		}
-	},
-	mounted() {
-		this.fetchIngridients();
-		this.fetchCategories();
-		this.fetchShops();
-	},
-	methods: {
-		async sendMap(){
+		},
+		mounted() {
+			this.fetchIngridients();
+			this.fetchCategories();
+			this.fetchShops();
+		},
+		methods: {
+			async sendMap(){
 				//this.map.cat_id = this.ingridient.category.cat_id;
 				/*if (this.ingridient.round != null) 
 				this.ingridient.round = this.ingridient.round.value;*/
-				ProductsService.addMap(this.map)
+				
+				this.map.ingridients.forEach(item => {
+					item.id = item.object_ing.id;
+				})
+				this.map.modificators.forEach(itemMod => {
+					console.log(itemMod);
+					itemMod.ingridients.forEach(itemIng => {
+						itemIng.id = itemIng.object_ing.id;
+					})
+				})
+				//console.log(this.map);
+				ProductsService.addMap(this.map);
 				//this.$router.push('/menu/tech_maps')
 			},
 			async fetchIngridients(){
@@ -696,9 +717,12 @@ export default {
 				this.nowNewModif = {
 					title: null,
 					id: null,
-					type: null,
+					type: 'one',
 					min: null,
 					max: null,
+					setMax: false,
+					setMin: false,
+					ingridients:[],
 				};
 			},
 			addRow(){
@@ -712,14 +736,29 @@ export default {
 					brutto: 0,
 					netto: 0,
 					price: 0,	
+					bind: false,					
+				})
+			},
+			addRowToMod(id){
+				console.log(id);
+				this.map.modificators[id].ingridients.push({
+					object_ing: {
+						unit: '',
+					},
+					title: null,
+					id_ingridient: null,
+					method_cooking: null,
+					brutto: 0,
+					netto: 0,
+					price: 0,	
 					bind: false,						
 				})
 			},
-			addModificators(){
-				this.map.modificators.push(nowModif);
-			},
 			addNewModificators(){
-				this.map.newModificators.push(nowNewModif);
+				this.idMod++;
+				this.nowNewModif.id = this.idMod;
+				this.map.modificators.push(this.nowNewModif);
+				this.resetNowNewModif();
 			},
 			changeBind(ing){
 				ing.bind = !ing.bind;
@@ -733,16 +772,16 @@ export default {
 		},
 	}
 
-	</script>
+</script>
 
-	<style lang="scss">
-	@import '../../assets/less/menu.less'
-	</style>
+<style lang="scss">
+@import '../../assets/less/menu.less'
+</style>
 
-	<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
-	<style>
-	#upload {
-		display: none;
-	}
-	</style>
+<style>
+#upload {
+	display: none;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-	<div class="products">
+	<div class="ingridients">
 		
 		<!-- Bootstrap row -->
 		<div class="row no-gutters" id="body-row">

@@ -64,8 +64,16 @@ export default {
 	},
 	fetchSemi(){
 		return api().get('semi')
-	}
+	},
 	
+
+	//Map
+	addMap(map){
+		return api().post('addmap', map)
+	},
+	fetchMaps(){
+		return api().get('map')
+	}
 }
 
 
