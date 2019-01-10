@@ -142,14 +142,15 @@
 											
 											<td class="td-custom align-middle" style="">{{map.title}}</td>
 											<td class="td-custom align-middle" style="">{{map.cat_title}}</td>
-											<td class="td-custom align-middle" style="">{{map.unit}}</td>
-											<td class="td-custom align-middle" style="">{{map.weight}}</td>
-											<td v-if="map.unit != 'кг'" class="td-custom align-middle" style="">—</td>
-
+											<td class="td-custom align-middle" style="">{{map.bar_code}}</td>
+											<td class="td-custom align-middle" style="">{{map.shop_title}}</td>
+											
+											<td v-if="map.weight" class="td-custom align-middle" style="">Да</td>
 											<td v-else class="td-custom align-middle" style="width: 100%;">
-												
+												Нет
 											</td>
-											<td class="td-custom align-middle" style="">—</td>
+											
+											<td class="td-custom align-middle" style="">{{map.netto}}</td>
 											<td class="td-custom align-middle" style="">—</td>
 											<td class="td-custom align-middle" style="">—</td>
 											<td class="td-custom align-middle" style="">—</td>
@@ -202,7 +203,7 @@ import ProductsService from '@/services/menu/ProductsService'
 import Sidebar from '@/components/Sidebar'
 
 export default {
-	name: 'ingridients',
+	name: 'TechMaps',
 	components: {
 		'sidebar': Sidebar,
 	},
@@ -244,11 +245,21 @@ export default {
 		async getMaps() {
 			const response = await ProductsService.fetchMaps()
 			this.maps = response.data
-			/*this.maps.forEach(item => {
-				if (item.weight == null){
-					item.weight = "—";
+			this.maps.forEach(map => {
+				map.netto = 0;
+				if (map.modificators != null){
+					map.modificators.forEach(mod => {
+						mod.ingridients.forEach(ing => {
+							map.netto += Number(ing.netto);
+						})
+					})
 				}
-			})*/
+				if (map.ingridients != null){
+					map.ingridients.forEach(ing => {
+						map.netto += Number(ing.netto);
+					})
+				}
+			})
 			console.log(this.maps);
 		},
 		filterBySearch(ingridients){
@@ -275,7 +286,7 @@ export default {
 	computed: {
 		length(){
 			let length = 0;
-			this.ingridients.forEach(item => {
+			this.maps.forEach(item => {
 				length++
 			})
 			return length;
