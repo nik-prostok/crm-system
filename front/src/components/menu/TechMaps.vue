@@ -159,7 +159,7 @@
 												<div class="d-flex flex-row">
 													<div class="mr-2">
 														<b-link class="main-text">
-															<div class="link-blue link-hover">Состав</div>
+															<div class="link-blue link-hover" @click>Состав</div>
 														</b-link>
 													</div>
 													<div class="mr-2">
