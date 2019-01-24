@@ -189,10 +189,9 @@ hr.line {
 	font-family: 'Open Sans', sans-serif;
 }
 
-.tr-td-custom .td-custom {
+.tr-td-custom {
 	background: #FFFFFF; /* Цвет фона */ 
 	border: 5px solid #F2F3F4; /* Граница вокруг ячеек */ 
-	padding: 10px; /* Поля в ячейках */ 
 	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */ 
 	font-size: 0.95em; /* Размер текста */ 
 	text-align: center; 
@@ -201,7 +200,6 @@ hr.line {
 .tr-td-custom .td-custom-left {
 	background: #FFFFFF; /* Цвет фона */ 
 	border: 5px solid #F2F3F4; /* Граница вокруг ячеек */ 
-	padding: 10px; /* Поля в ячейках */ 
 	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */ 
 	font-size: 0.95em; /* Размер текста */ 
 	text-align: left; 

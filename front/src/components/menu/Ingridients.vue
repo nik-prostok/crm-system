@@ -160,9 +160,9 @@
 														</button>
 														<b-popover :target=getPopoverId(ingridients.id) triggers="focus">
 															<ul class="actions-popover">
-																<li @click=deleteIngridients(ingridients.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
+																<li @click=deleteIngridients(ingridients.id) class="action-item"><a style="text-decoration: none; cursor: pointer;"class="main-text">Удалить</a></li>
 
-																<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Скрыть</a></li>
+																<li class="action-item"><a style="text-decoration: none; cursor: pointer;" href="" class="main-text">Скрыть</a></li>
 															</ul>
 														</b-popover>
 													</div>

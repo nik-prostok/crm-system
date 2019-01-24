@@ -22,6 +22,7 @@ var connection = mysql.createConnection({
 var storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'dest')
+		console.log("ASDASDASDASD");
 	},
 	filename: function (req, file, cb) {
 		cb(null, uuid.v4() + '.png')
@@ -267,7 +268,18 @@ router.post('/addmap',upload.single('avatar'), (req, res) => {
 	})
 })
 
+router.post('/deleteCard', (req, res) => {
+	connection.query("DELETE FROM technical_cards WHERE id = ?", [req.body.id], function(err, result, fields){
+		if (err){
+			console.log(err);
+			res.send(500);
+		}
+		else {
+			res.send(200);
+		}
 
+	})
+})
 router.get('/products', (req, res) => {
 	bd(req,res,"SELECT * FROM products");
 })
@@ -308,14 +320,6 @@ router.get('/sales', (req, res) => {
 	bd(req,res,"SELECT * FROM sales");
 })
 router.get('/map', (req, res) => {
-	/*connection.query("SELECT t1.title, t1.bar_code, t1.colour, t1.no_dicsount, t1.time_cooking_m, t1.time_cooking_s, t1.weight, t2.brutto, t2.netto, t2.price, t2.id_ingridients, t2.id_cards, cat_table.title AS cat_title, shops_table.title AS shop_title, modifiers_table.title AS title_mod, modifiers_table.type AS type_mod, modifiers_table.max AS max_mod, modifiers_table.min AS min_mod, mod_ing_table.brutto AS brutto_mod, mod_ing_table.netto AS netto_mod, mod_ing_table.price AS price_mod, mod_ing_table.id_ingridients FROM technical_cards, technical_cards AS t1 LEFT JOIN cards_and_ingridients AS t2 ON t2.id_cards = t1.id LEFT JOIN categories AS cat_table ON cat_table.id = t1.cat_id LEFT JOIN shops AS shops_table ON shops_table.id = t1.shop_id LEFT JOIN cards_and_mods AS cards_mods_table ON cards_mods_table.id_cards = t1.id LEFT JOIN modifiers AS modifiers_table ON cards_mods_table.id_mods = modifiers_table.id LEFT JOIN modifications_and_ingridients AS mod_ing_table ON mod_ing_table.id_mods = modifiers_table.id", function (err, result, fields) {
-		console.log(err);
-		console.log(result);
-		res.send(result);
-	})*/
-
-
-
 	connection.query("SELECT t1.id, t1.title, t1.bar_code, t1.colour, t1.no_dicsount, t1.time_cooking_m, t1.time_cooking_s, t1.weight, cat_table.title AS cat_title, shops_table.title AS shop_title FROM technical_cards AS t1 LEFT JOIN categories AS cat_table ON cat_table.id = t1.cat_id LEFT JOIN shops AS shops_table ON shops_table.id = t1.shop_id", function (err, result, fields) {
 		result.forEach(function(item, i, arr) {
 			connection.query("SELECT * FROM cards_and_ingridients WHERE id_cards = ?  ",[item.id], function (err, result2, fields) {
@@ -354,6 +358,11 @@ router.get('/map', (req, res) => {
 	})
 	
 })
+
+router.get('/modificators', (req, res) => {
+	
+})
+
 router.get('/mods', (req, res) => {
 	bd(req,res,"SELECT * FROM modifications");
 })

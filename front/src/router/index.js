@@ -24,6 +24,7 @@ import AddSemi from '@/components/menu/AddSemi'
 
 import TechMaps from '@/components/menu/TechMaps'
 import AddTechMaps from '@/components/menu/AddTechMaps'
+import EditTechMaps from '@/components/menu/EditTechMaps'
 
 import SaleProducts from '@/components/statistic/SaleProducts'
 import Sale from '@/components/statistic/Category'
@@ -113,6 +114,11 @@ const routes = [
 {
 	path: '/menu/tech_maps/add',
 	component: AddTechMaps,
+},
+,
+{
+	path: '/menu/products/edit/:id',
+	component: EditTechMaps,
 },
 
 //*****SALES*****//

@@ -73,7 +73,10 @@ export default {
 	},
 	fetchMaps(){
 		return api().get('map')
-	}
+	},
+	delMap(id){
+		return api().post('deleteCard', id)
+	},
 }
 
 
