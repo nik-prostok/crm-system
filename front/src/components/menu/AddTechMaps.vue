@@ -283,7 +283,7 @@
 												</div>
 											</td>
 											<td class="td-custom align-middle" >
-												<div v-if="ing.object_ing.unit == 'кг'" class="form-group">
+												<div v-if="ing.unit == 'кг'" class="form-group">
 													<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ing.method_cooking" :multiple="true" :close-on-select="false" label="title" track-by="id" :options="listMethodsCooking"></multiselect>
 												</div>
 											</td>
@@ -294,7 +294,7 @@
 															<input type="text" ref="search" class="form-control input-param" v-model="ing.brutto" placeholder="Введите">
 														</div>
 														<div class="col-lg-1">
-															<p class="main-text ml-1 mt-2">{{ing.object_ing.unit}}</p>
+															<p class="main-text ml-1 mt-2">{{ing.unit}}</p>
 														</div>
 													</div>	
 												</div>
@@ -351,8 +351,8 @@
 							<p class="title-form" style="font-size: 1em;">Выбор среди разновидностей или возможность добавить дополнительные ингредиенты</p>
 							<div v-for="mod in map.modificators" class="table-responsive">
 								<span class="head-text" style="font-weight: bold; font-size: 1.2em;">{{mod.title}}</span>
-								<span v-if="mod.type == 'one'" class="main-text">(Несколько из набора)</span>
-								<span v-if="mod.type == 'some'" class="main-text">(Выбор одного вида из нескольких)</span>
+								<span v-if="mod.type == 'one'" class="main-text">(Выбор одного вида из нескольких)</span>
+								<span v-if="mod.type == 'some'" class="main-text">(Несколько из набора)</span>
 								<table class="table table-ing">
 									<thead>
 										<tr class="tr-ing"> 
@@ -405,7 +405,7 @@
 												</div>
 											</td>
 											<td class="td-custom align-middle" >
-												<div v-if="ing.object_ing.unit == 'кг'" class="form-group">
+												<div v-if="ing.unit == 'кг'" class="form-group">
 													<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ing.method_cooking" :multiple="true" :close-on-select="false" label="title" track-by="id" :options="listMethodsCooking"></multiselect>
 												</div>
 											</td>
@@ -416,7 +416,7 @@
 															<input type="text" ref="search" class="form-control input-param" v-model="ing.brutto" placeholder="Введите">
 														</div>
 														<div class="col-lg-1">
-															<p class="main-text ml-1 mt-2">{{ing.object_ing.unit}}</p>
+															<p class="main-text ml-1 mt-2">{{ing.unit}}</p>
 														</div>
 													</div>	
 												</div>
@@ -578,127 +578,135 @@
 </template>
 
 <script>
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService'
+import Sidebar from '@/components/Sidebar'
 
-	export default {
-		name: 'add_products',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data() {
-			return {
-				stateSaving: false,
-				mod: 'without_mod',
-				with_mod: false,
-				without_mod: true,
-				countMod: 1,
-				idMod: -1,
-
-
-				key: null,
-
-				ingridientsList: [],
-				categories: [],
-				shops: [],
-				listModificators: [
-				{
-					title: 'Создать новый набор',
-					id: 0,
-				}
-				],
-				setIngridient: [],
-
-				listMethodsCooking: [
-				{
-					title: 'Очистка',
-					id: 1,
-				},
-				{
-					title: 'Варка',
-					id: 2,
-				},
-				{
-					title: 'Жарка',
-					id: 3,
-				},
-				{
-					title: 'Тушение',
-					id: 4,
-				},
-				{
-					title: 'Запекание',
-					id: 5,
-				}
-				],
-
-				nowModif: {
-					title: 'Создать новый набор',
-					id: 0,
-				},
-				nowNewModif: {
-					title: null,
-					id: null,
-					type: 'one',
-					min: null,
-					max: null,
-					setMax: false,
-					setMin: false,
-					ingridients:[],
-				},
+export default {
+	name: 'add_products',
+	components: {
+		'sidebar': Sidebar,
+	},
+	data() {
+		return {
+			stateSaving: false,
+			mod: 'without_mod',
+			with_mod: false,
+			without_mod: true,
+			countMod: 1,
+			idMod: -1,
 
 
+			key: null,
 
-				map: {
-					title: '',
-					avatar: null,
-					category: null,
-					shop: null,
-					color: null,
-					min: null,
-					bar_code: null,
-					sec: null,
-					weight: false,
-					no_dicsount: false,
-					process_cooking: '',
-					sum_mass: 0,
-					price: 0,
-					ingridients: [],
-					modificators: [],
-				},
-
+			ingridientsList: [],
+			categories: [],
+			shops: [],
+			listModificators: [
+			{
+				title: 'Создать новый набор',
+				id: 0,
 			}
-		},
-		mounted() {
-			this.fetchIngridients();
-			this.fetchCategories();
-			this.fetchShops();
-			this.fetchModificators();
-		},
-		methods: {
-			async fetchModificators(){
-				const response = await ProductsService.fetchModificators();
-				response.data.forEach(item => {
-					this.listModificators.push(item)
-				})
-				console.log(response.data);
+			],
+			setIngridient: [],
+
+			listMethodsCooking: [
+			{
+				title: 'Очистка',
+				id: 1,
 			},
-			async sendMap(){
-				//this.map.cat_id = this.ingridient.category.cat_id;
-				/*if (this.ingridient.round != null) 
-				this.ingridient.round = this.ingridient.round.value;*/
-				
-				this.map.ingridients.forEach(item => {
-					item.id = item.object_ing.id;
-				})
-				this.map.modificators.forEach(itemMod => {
-					console.log(itemMod);
-					itemMod.ingridients.forEach(itemIng => {
-						itemIng.id = itemIng.object_ing.id;
+			{
+				title: 'Варка',
+				id: 2,
+			},
+			{
+				title: 'Жарка',
+				id: 3,
+			},
+			{
+				title: 'Тушение',
+				id: 4,
+			},
+			{
+				title: 'Запекание',
+				id: 5,
+			}
+			],
+
+			nowModif: {
+				title: 'Создать новый набор',
+				id: 0,
+			},
+			nowNewModif: {
+				title: null,
+				id: null,
+				type: 'one',
+				min: null,
+				max: null,
+				setMax: false,
+				setMin: false,
+				ingridients:[],
+			},
+
+
+
+			map: {
+				title: '',
+				avatar: null,
+				category: null,
+				shop: null,
+				color: null,
+				min: null,
+				bar_code: null,
+				sec: null,
+				weight: false,
+				no_dicsount: false,
+				process_cooking: '',
+				sum_mass: 0,
+				price: 0,
+				ingridients: [],
+				modificators: [],
+			},
+
+		}
+	},
+	mounted() {
+		this.fetchIngridients();
+		this.fetchCategories();
+		this.fetchShops();
+		this.fetchModificators();
+	},
+	methods: {
+		async fetchModificators(){
+			const response = await ProductsService.fetchModificators();
+			response.data.forEach(item => {
+				this.listModificators.push(item)
+			})
+			this.listModificators.forEach(mod => {
+				if (mod.ingridients != null){
+					mod.ingridients.forEach(ing =>{
+						ing.object_ing = {
+							title: ing.title,
+							id: ing.id
+						}
 					})
+				}
+				
+			})
+			console.log(response.data);
+		},
+		async sendMap(){
+
+			this.map.ingridients.forEach(item => {
+				item.id = item.object_ing.id;
+			})
+			this.map.modificators.forEach(itemMod => {
+				console.log(itemMod);
+				itemMod.ingridients.forEach(itemIng => {
+					itemIng.id = itemIng.object_ing.id;
 				})
+			})
 				//console.log(this.map);
 				ProductsService.addMap(this.map);
 				//this.$router.push('/menu/tech_maps')
@@ -732,9 +740,7 @@
 			},
 			addRow(){
 				this.map.ingridients.push({
-					object_ing: {
-						unit: '',
-					},
+					unit: '',
 					title: null,
 					id_ingridient: null,
 					method_cooking: null,
@@ -747,9 +753,7 @@
 			addRowToMod(id){
 				console.log(id);
 				this.map.modificators[id].ingridients.push({
-					object_ing: {
-						unit: '',
-					},
+					unit: '',
 					title: null,
 					id_ingridient: null,
 					method_cooking: null,
@@ -762,8 +766,15 @@
 			addNewModificators(){
 				this.idMod++;
 				this.nowNewModif.id = this.idMod;
-				this.map.modificators.push(this.nowNewModif);
-				//this.resetNowNewModif();
+				
+				//this.nowNewModif = this.nowModif;
+				if (this.nowModif.id == 0){
+					this.map.modificators.push(this.nowNewModif);
+				} else {
+					this.map.modificators.push(this.nowModif);
+				}
+				
+				this.resetNowNewModif();
 			},
 			changeBind(ing){
 				ing.bind = !ing.bind;
@@ -777,16 +788,16 @@
 		},
 	}
 
-</script>
+	</script>
 
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>
+	<style lang="scss">
+	@import '../../assets/less/menu.less'
+	</style>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+	<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
-<style>
-#upload {
-	display: none;
-}
-</style>
+	<style>
+	#upload {
+		display: none;
+	}
+	</style>

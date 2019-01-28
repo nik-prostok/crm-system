@@ -371,7 +371,7 @@ router.get('/map', (req, res) => {
 router.get('/modificators', (req, res) => {
 	connection.query("SELECT * FROM modifiers   ", function (err, result4, fields) {
 						result4.forEach(function(item5, i, arr) {
-							connection.query("SELECT c.brutto,c.netto,c.price,i.title,i.unit,i.cat_id,i.losses_clean,i.losses_cooking,i.losses_frying,i.losses_stew,i.losses_bak,i.weight,i.round FROM modifications_and_ingridients AS c LEFT JOIN ingridients AS i ON c.id_ingridients=i.id WHERE id_mods = ?  ",[item5.id], function (err, result5, fields) {
+							connection.query("SELECT c.brutto,c.netto,c.price, i.title, i.id, i.unit,i.cat_id,i.losses_clean,i.losses_cooking,i.losses_frying,i.losses_stew,i.losses_bak,i.weight,i.round FROM modifications_and_ingridients AS c LEFT JOIN ingridients AS i ON c.id_ingridients=i.id WHERE id_mods = ?  ",[item5.id], function (err, result5, fields) {
 		if (err) console.log(err);
 								item5.ingridients = result5;
 								item5.ingridients.forEach(function(item6, i, arr) {
