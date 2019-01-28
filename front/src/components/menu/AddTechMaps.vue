@@ -607,11 +607,8 @@
 				{
 					title: 'Создать новый набор',
 					id: 0,
-				},
-				{
-					title: 'Диаметр пиццы',
-					id: 1,
-				}],
+				}
+				],
 				setIngridient: [],
 
 				listMethodsCooking: [
@@ -678,8 +675,16 @@
 			this.fetchIngridients();
 			this.fetchCategories();
 			this.fetchShops();
+			this.fetchModificators();
 		},
 		methods: {
+			async fetchModificators(){
+				const response = await ProductsService.fetchModificators();
+				response.data.forEach(item => {
+					this.listModificators.push(item)
+				})
+				console.log(response.data);
+			},
 			async sendMap(){
 				//this.map.cat_id = this.ingridient.category.cat_id;
 				/*if (this.ingridient.round != null) 
@@ -758,7 +763,7 @@
 				this.idMod++;
 				this.nowNewModif.id = this.idMod;
 				this.map.modificators.push(this.nowNewModif);
-				this.resetNowNewModif();
+				//this.resetNowNewModif();
 			},
 			changeBind(ing){
 				ing.bind = !ing.bind;

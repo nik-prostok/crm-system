@@ -77,6 +77,9 @@ export default {
 	delMap(id){
 		return api().post('deleteCard', id)
 	},
+	fetchModificators(){
+		return api().get('modificators')
+	},
 }
 
 

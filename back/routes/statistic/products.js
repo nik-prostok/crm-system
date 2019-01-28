@@ -319,11 +319,20 @@ router.get('/shops', (req, res) => {
 router.get('/sales', (req, res) => {
 	bd(req,res,"SELECT * FROM sales");
 })
+router.post('/updateHiding', (req, res) => {
+	var str = "UPDATE "+String(req.body.NameTable) + " SET hiding = ? WHERE id = ?";
+	connection.query(str,[req.body.hiding,req.body.id],function (err, result, fields) {
+		if (err) console.log(err);
+	})
+	res.send("Ok");
+})
+
 router.get('/map', (req, res) => {
 	connection.query("SELECT t1.id, t1.title, t1.bar_code, t1.colour, t1.no_dicsount, t1.time_cooking_m, t1.time_cooking_s, t1.weight, cat_table.title AS cat_title, shops_table.title AS shop_title FROM technical_cards AS t1 LEFT JOIN categories AS cat_table ON cat_table.id = t1.cat_id LEFT JOIN shops AS shops_table ON shops_table.id = t1.shop_id", function (err, result, fields) {
 		result.forEach(function(item, i, arr) {
 			connection.query("SELECT * FROM cards_and_ingridients WHERE id_cards = ?  ",[item.id], function (err, result2, fields) {
 				item.ingridients=result2;
+				item.NameTable = "technical_cards";
 				item.ingridients.forEach(function(item2, i, arr) {
 					connection.query("SELECT * FROM cards_and_ingridients_cooking WHERE id_cards_and_ingridients = ?  ",[item2.id], function (err, result3, fields) {
 						item2.listMethodsCooking=result3;
@@ -360,6 +369,25 @@ router.get('/map', (req, res) => {
 })
 
 router.get('/modificators', (req, res) => {
+	connection.query("SELECT * FROM modifiers   ", function (err, result4, fields) {
+						result4.forEach(function(item5, i, arr) {
+							connection.query("SELECT c.brutto,c.netto,c.price,i.title,i.unit,i.cat_id,i.losses_clean,i.losses_cooking,i.losses_frying,i.losses_stew,i.losses_bak,i.weight,i.round FROM modifications_and_ingridients AS c LEFT JOIN ingridients AS i ON c.id_ingridients=i.id WHERE id_mods = ?  ",[item5.id], function (err, result5, fields) {
+		if (err) console.log(err);
+								item5.ingridients = result5;
+								item5.ingridients.forEach(function(item6, i, arr) {
+									connection.query("SELECT * FROM modifications_and_ingridients_cooking WHERE id_mods_and_ingridients = ?  ",[item6.id], function (err, result6, fields) {
+										item6.listMethodsCooking=result6;
+
+									})
+									
+								})
+							})
+						})
+					setTimeout( function(){
+			res.send(result4);
+
+		}, 500 );
+					})
 	
 })
 
