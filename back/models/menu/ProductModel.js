@@ -7,31 +7,49 @@ var ProductSchema = new Schema({
     	type: String,
     	reqired: true
     },
-    /*category: { 
-    	type: String,
-    	reqired: true
+    bar_code: {
+        type: String,
+        required: true
     },
-    barcode: {
-    	type: String,
-    	required: true
-    },
-    SKU: {
-    	type: Number,
-    	required: true
+    category: {
+        type: Schema.Types.ObjectId, 
+        ref: 'Category',
+        required: true
     },
     shop: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: 'Shops',
         required: true,
     },
-    type: {
-        type: Boolean,
-        required: true,
+    
+    color: {
+        type: String
     },
+    avatar: {
+        type: String
+    },
+    
+    
     weight_goods: {
         type: Boolean,
         required: true,
     },
+    no_dicsount: {
+        type: Boolean,
+        required: true
+    },
+    types: {
+        type: Boolean,
+        required: true,
+    },
+    isHidden: {
+        type: Boolean,
+    },
+
     self_cost: {
+        type: Number,
+    },
+    SKU: {
         type: Number,
     },
     price: {
@@ -43,9 +61,17 @@ var ProductSchema = new Schema({
     markup: {
         type: Number,
     },
-    isHidden: {
-        type: Boolean,
-    }*/
+
+    modification: [
+        {
+            bar_code: String,
+            title_mode: String,
+            self_cost: Number,
+            markup: Number,
+            price: Number,
+            profit: Number,
+        }
+    ]
 });
 
 module.exports = {
