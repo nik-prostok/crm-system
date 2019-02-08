@@ -4,6 +4,6 @@ const product = require('../../controllers/menu/product')
 module.exports = function(app) {
 	app.post('/products', product.create);
 	app.get('/products', product.fetch)
-	app.delete('/prod/:id', product.delete)
-	app.put('/payments/:id', product.update)
+	app.delete('/products/:id', product.delete)
+	app.put('/products/:id', product.update)
 };

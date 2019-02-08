@@ -11,16 +11,16 @@ var ProductSchema = new Schema({
         type: String,
         required: true
     },
-    category: {
+    /*category: {
         type: Schema.Types.ObjectId, 
         ref: 'Category',
-        required: true
+       // required: true
     },
     shop: {
         type: Schema.Types.ObjectId,
         ref: 'Shops',
-        required: true,
-    },
+        //required: true,
+    },*/
     
     color: {
         type: String

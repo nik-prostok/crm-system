@@ -8,14 +8,14 @@ module.exports = {
 		var RequestProduct = req.body;
 		console.log(RequestProduct);
 		Product.ProductModel.create(
-			RequestProduct, function (err, awesome_instance) {
-			if (err){
-				console.log(err);
-				res.sendStatus(400);
-			} else {
-				res.sendStatus(200);
-			}
-		});
+			RequestProduct, function (err) {
+				if (err){
+					console.log(err);
+					res.sendStatus(400);
+				} else {
+					res.sendStatus(200);
+				}
+			}); 
 	},
 	fetch: (req, res) => {
 		var products = Product.ProductModel.find((err, arr) => {
@@ -32,26 +32,14 @@ module.exports = {
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
+			} else {
+				res.sendStatus(200);
 			}
-			res.sendStatus(200);
 		})
 	},
 	update: (req, res) => {
-		console.log(req.params.id);
-		Product.ProductModel.findByIdAndUpdate(req.params.id, {
-			title: req.body.title,
-			category: req.body.category,
-			barcode: req.body.barcode,
-			SKU: req.body.SKU,
-			shop: req.body.shop,
-			type: req.body.type,
-			weight_goods: req.body.weight_goods,
-			self_cost: req.body.self_cost,
-			price: req.body.price,
-			profit: req.body.profit,
-			markup: req.body.markup,
-			isHidden: req.body.isHidden,
-		}, 
+		var ProductRequest = req.body;
+		Product.ProductModel.findByIdAndUpdate(req.params.id, {'$set': ProductRequest}, 
 		(err)=>{
 			if (err){
 				console.log(err);

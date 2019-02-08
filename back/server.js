@@ -5,7 +5,7 @@ const logger		 = require('morgan');
 const cors 			 = require('cors')
 
 app.use(logger('dev'))
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json({ extended: true }))
 app.use(cors())
 require('./routes/index')(app);
 
