@@ -2,16 +2,13 @@ var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 
-var ShopSchema = new Schema({
+var CatIngSchema = new Schema({
     title: {
     	type: String,
     	reqired: true
-    },
-    print_runners: {
-        type: Boolean
     }
 });
 
 module.exports = {
-	ShopModel: mongoose.model('Shop', ShopSchema )
+	CatIngModel: mongoose.model('CatIng', CatIngSchema )
 }

@@ -1,13 +1,13 @@
 const connectDB = require('../../utils/connectDB')
-const Category = require('../../models/menu/CategoryModel')
+const Semi = require('../../models/menu/SemiModel')
 const db = connectDB.db;
 
 
 module.exports = {
 	create: (req, res) => {
-		var RequestCategory = req.body;
-		console.log(RequestCategory);
-		Category.CategoryModel.create(RequestCategory, function (err) {
+		var RequestSemi = req.body;
+		console.log(RequestSemi);
+		Semi.SemiModel.create(RequestSemi, function (err) {
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
@@ -17,21 +17,26 @@ module.exports = {
 		}); 
 	},
 	fetch: (req, res) => {
-		var categories = Category.CategoryModel
+		Semi.SemiModel
 		.find()
-		.populate('parent')
-		.exec((err, arr) => {
+		.populate({
+			path: 'ingridients',
+			populate: {
+				path: 'category'
+			}
+		})
+		.exec((err, semi) => {
 			if (err){
 				console.log(err)
 				res.sendStatus(400)
 			} else {
-				res.send(arr)
+				res.send(semi)
 			}
 		})
 	},
 	delete: (req, res) => {
 		console.log(req.params.id);
-		Category.CategoryModel.findByIdAndRemove(req.params.id, (err)=>{
+		Semi.SemiModel.findByIdAndRemove(req.params.id, (err)=>{
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
@@ -41,8 +46,8 @@ module.exports = {
 		})
 	},
 	update: (req, res) => {
-		var CategoryRequest = req.body;
-		Category.CategoryModel.findByIdAndUpdate(req.params.id, {'$set': CategoryRequest}, 
+		var SemiRequest = req.body;
+		Semi.SemiModel.findByIdAndUpdate(req.params.id, {'$set': SemiRequest}, 
 			(err)=>{
 				if (err){
 					console.log(err);

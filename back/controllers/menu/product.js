@@ -18,7 +18,11 @@ module.exports = {
 			}); 
 	},
 	fetch: (req, res) => {
-		var products = Product.ProductModel.find((err, arr) => {
+		var products = Product.ProductModel
+		.find()
+		.populate('shop')
+		.populate('category')
+		.exec((err, arr) => {
 			if (err){
 				console.log(err)
 				res.sendStatus(400)

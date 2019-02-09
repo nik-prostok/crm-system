@@ -1,13 +1,13 @@
 const connectDB = require('../../utils/connectDB')
-const Category = require('../../models/menu/CategoryModel')
+const CatIng = require('../../models/menu/CatIngModel')
 const db = connectDB.db;
 
 
 module.exports = {
 	create: (req, res) => {
-		var RequestCategory = req.body;
-		console.log(RequestCategory);
-		Category.CategoryModel.create(RequestCategory, function (err) {
+		var RequestCatIng = req.body;
+		console.log(RequestCatIng);
+		CatIng.CatIngModel.create(RequestCatIng, function (err) {
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
@@ -17,9 +17,8 @@ module.exports = {
 		}); 
 	},
 	fetch: (req, res) => {
-		var categories = Category.CategoryModel
+		CatIng.CatIngModel
 		.find()
-		.populate('parent')
 		.exec((err, arr) => {
 			if (err){
 				console.log(err)
@@ -31,7 +30,7 @@ module.exports = {
 	},
 	delete: (req, res) => {
 		console.log(req.params.id);
-		Category.CategoryModel.findByIdAndRemove(req.params.id, (err)=>{
+		CatIng.CatIngModel.findByIdAndRemove(req.params.id, (err)=>{
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
@@ -41,8 +40,8 @@ module.exports = {
 		})
 	},
 	update: (req, res) => {
-		var CategoryRequest = req.body;
-		Category.CategoryModel.findByIdAndUpdate(req.params.id, {'$set': CategoryRequest}, 
+		var CatIngRequest = req.body;
+		CatIng.CatIngModel.findByIdAndUpdate(req.params.id, {'$set': CatIngRequest}, 
 			(err)=>{
 				if (err){
 					console.log(err);

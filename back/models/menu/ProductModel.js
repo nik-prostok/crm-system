@@ -11,16 +11,16 @@ var ProductSchema = new Schema({
         type: String,
         required: true
     },
-    /*category: {
+    category: {
         type: Schema.Types.ObjectId, 
         ref: 'Category',
-       // required: true
+        required: true
     },
     shop: {
         type: Schema.Types.ObjectId,
-        ref: 'Shops',
-        //required: true,
-    },*/
+        ref: 'Shop',
+        required: true,
+    },
     
     color: {
         type: String
@@ -63,14 +63,14 @@ var ProductSchema = new Schema({
     },
 
     modification: [
-        {
-            bar_code: String,
-            title_mode: String,
-            self_cost: Number,
-            markup: Number,
-            price: Number,
-            profit: Number,
-        }
+    {
+        bar_code: String,
+        title_mode: String,
+        self_cost: Number,
+        markup: Number,
+        price: Number,
+        profit: Number,
+    }
     ]
 });
 

@@ -1,13 +1,13 @@
 const connectDB = require('../../utils/connectDB')
-const Category = require('../../models/menu/CategoryModel')
+const Ing = require('../../models/menu/IngModel')
 const db = connectDB.db;
 
 
 module.exports = {
 	create: (req, res) => {
-		var RequestCategory = req.body;
-		console.log(RequestCategory);
-		Category.CategoryModel.create(RequestCategory, function (err) {
+		var RequestIng = req.body;
+		console.log(RequestIng);
+		Ing.IngModel.create(RequestIng, function (err) {
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
@@ -17,9 +17,9 @@ module.exports = {
 		}); 
 	},
 	fetch: (req, res) => {
-		var categories = Category.CategoryModel
+		Ing.IngModel
 		.find()
-		.populate('parent')
+		.populate('category')
 		.exec((err, arr) => {
 			if (err){
 				console.log(err)
@@ -31,7 +31,7 @@ module.exports = {
 	},
 	delete: (req, res) => {
 		console.log(req.params.id);
-		Category.CategoryModel.findByIdAndRemove(req.params.id, (err)=>{
+		Ing.IngModel.findByIdAndRemove(req.params.id, (err)=>{
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
@@ -41,8 +41,8 @@ module.exports = {
 		})
 	},
 	update: (req, res) => {
-		var CategoryRequest = req.body;
-		Category.CategoryModel.findByIdAndUpdate(req.params.id, {'$set': CategoryRequest}, 
+		var IngRequest = req.body;
+		Ing.IngModel.findByIdAndUpdate(req.params.id, {'$set': IngRequest}, 
 			(err)=>{
 				if (err){
 					console.log(err);

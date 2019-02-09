@@ -17,5 +17,5 @@ var CategorySchema = new Schema({
 });
 
 module.exports = {
-	CategoryModel: mongoose.model('Product', CategorySchema )
+	CategoryModel: mongoose.model('Category', CategorySchema )
 }
