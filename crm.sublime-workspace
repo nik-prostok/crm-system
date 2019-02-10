@@ -4,6 +4,30 @@
 		"selected_items":
 		[
 			[
+				"mod",
+				"modificatorRoutes\tconst"
+			],
+			[
+				"set",
+				"setMax\twarning"
+			],
+			[
+				"con",
+				"console\twarning"
+			],
+			[
+				"Shop",
+				"ShopModel\tproperty"
+			],
+			[
+				"Ca",
+				"Category\tconst"
+			],
+			[
+				"Cate",
+				"Category\twarning"
+			],
+			[
 				"Pr",
 				"ProductModel\tproperty"
 			],
@@ -22,10 +46,6 @@
 			[
 				"req",
 				"require\twarning"
-			],
-			[
-				"con",
-				"console\tvar"
 			],
 			[
 				"fun",
@@ -150,10 +170,6 @@
 			[
 				"max",
 				"max-width\tproperty"
-			],
-			[
-				"set",
-				"setTimeout"
 			],
 			[
 				"v-",
@@ -498,22 +514,6 @@
 			[
 				"padding",
 				"padding-top\tproperty"
-			],
-			[
-				"bak",
-				"background-color\tproperty"
-			],
-			[
-				"bac",
-				"background-color\tproperty"
-			],
-			[
-				"op",
-				"option\tTag"
-			],
-			[
-				"margin",
-				"margin-top\tproperty"
 			]
 		]
 	},
@@ -572,6 +572,18 @@
 		"selected_items":
 		[
 			[
+				"Package Control: re",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"Package Control: in",
+				"Package Control: Install Package"
+			],
+			[
 				"Package Control: inst",
 				"Package Control: Install Package"
 			],
@@ -586,18 +598,6 @@
 			[
 				"Package Control: isnt",
 				"Package Control: Install Package"
-			],
-			[
-				"Package Control: in",
-				"Package Control: Install Package"
-			],
-			[
-				"Package Control: re",
-				"Package Control: Remove Package"
-			],
-			[
-				"Package Control: ",
-				"Package Control: Remove Package"
 			],
 			[
 				"Package Control: int",
@@ -665,21 +665,69 @@
 	},
 	"expanded_folders":
 	[
-		"/D/Workspace/crm-system"
+		"/D/Workspace/crm-system",
+		"/D/Workspace/crm-system/back",
+		"/D/Workspace/crm-system/back/controllers",
+		"/D/Workspace/crm-system/back/controllers/menu",
+		"/D/Workspace/crm-system/back/models",
+		"/D/Workspace/crm-system/back/models/menu",
+		"/D/Workspace/crm-system/back/models/statistic",
+		"/D/Workspace/crm-system/back/routes",
+		"/D/Workspace/crm-system/back/routes/menu",
+		"/D/Workspace/crm-system/front",
+		"/D/Workspace/crm-system/front/build",
+		"/D/Workspace/crm-system/front/config",
+		"/D/Workspace/crm-system/front/src",
+		"/D/Workspace/crm-system/front/src/components",
+		"/D/Workspace/crm-system/front/src/components/menu"
 	],
 	"file_history":
 	[
+		"/D/Workspace/crm-system/back/controllers/menu/modificator.js",
+		"/D/Workspace/crm-system/back/models/menu/TechMapsModel.js",
+		"/D/Workspace/crm-system/back/controllers/menu/techMaps.js",
+		"/D/Workspace/crm-system/back/models/menu/ModificatorModel.js",
+		"/D/Workspace/crm-system/back/routes/menu/modificator.js",
+		"/D/Workspace/crm-system/back/routes/menu/menu.js",
+		"/D/Workspace/crm-system/back/routes/menu/tech_maps.js",
+		"/D/Workspace/crm-system/back/routes/menu/shop.js",
+		"/D/Workspace/crm-system/back/controllers/menu/product.js",
+		"/D/Workspace/crm-system/front/src/components/menu/AddTechMaps.vue",
+		"/D/Workspace/crm-system/back/models/menu/SemiModel.js",
+		"/D/Workspace/crm-system/back/models/menu/ShopModel.js",
+		"/D/Workspace/crm-system/front/.babelrc",
+		"/D/Workspace/crm-system/front/src/main.js",
+		"/C/Users/Nik/AppData/Roaming/Sublime Text 3/Installed Packages/VueFormatter.sublime-package/.vuebeautifyrc",
+		"/D/Workspace/crm-system/front/.editorconfig",
+		"/D/Workspace/crm-system/front/.postcssrc.js",
+		"/D/Workspace/crm-system/back/controllers/menu/semi.js",
+		"/D/Workspace/crm-system/.git/COMMIT_EDITMSG",
+		"/D/Workspace/crm-system/back/models/menu/IngModel.js",
+		"/D/Workspace/crm-system/back/routes/menu/semi.js",
+		"/D/Workspace/crm-system/back/routes/menu/product.js",
+		"/D/Workspace/crm-system/back/controllers/menu/category.js",
+		"/D/Workspace/crm-system/back/controllers/menu/ing.js",
+		"/D/Workspace/crm-system/back/routes/menu/ing.js",
+		"/D/Workspace/crm-system/front/src/components/menu/AddIngridients.vue",
+		"/D/Workspace/crm-system/front/src/components/menu/Ingridients.vue",
+		"/D/Workspace/crm-system/back/models/menu/ProductModel.js",
+		"/D/Workspace/crm-system/back/models/menu/CatIngModel.js",
+		"/D/Workspace/crm-system/back/controllers/menu/cat_ing.js",
+		"/D/Workspace/crm-system/back/controllers/menu/shop.js",
+		"/D/Workspace/crm-system/back/models/statistic/category-model.js",
+		"/D/Workspace/crm-system/back/routes/menu/cat_ing.js",
+		"/D/Workspace/crm-system/front/src/components/menu/AddCategoryIngridients.vue",
+		"/D/Workspace/crm-system/back/dumpfile.sql",
+		"/D/Workspace/crm-system/back/models/menu/CategoryModel.js",
+		"/D/Workspace/crm-system/back/routes/menu/category.js",
+		"/D/Workspace/crm-system/back/server.js",
 		"/C/Users/Nik/AppData/Roaming/Sublime Text 3/Packages/Terminal/Terminal.sublime-settings",
 		"/C/Users/Nik/AppData/Roaming/Sublime Text 3/Packages/User/untitled.sublime-build",
-		"/D/Workspace/crm-system/back/server.js",
 		"/D/Workspace/crm-system/back/package.json",
-		"/D/Workspace/crm-system/.git/COMMIT_EDITMSG",
 		"/D/Workspace/test/index.js",
-		"/D/Workspace/crm-system/front/.editorconfig",
 		"/D/Workspace/crm-system/front/src/components/menu/AddCategory.vue",
 		"/D/Workspace/crm-system/front/src/components/menu/AddProducts.vue",
 		"/D/Workspace/ShopSystem/api-server/controllers/products.js",
-		"/D/Workspace/crm-system/back/controllers/menu/category.js",
 		"/C/Users/Nik/Downloads/Telegram Desktop/product.json",
 		"/D/Workspace/MeteoDisplay/.git/COMMIT_EDITMSG",
 		"/D/Workspace/MeteoDisplay/README.md",
@@ -762,45 +810,11 @@
 		"/E/plugin/var/keys/newcamd.list",
 		"/E/plugin/var/keys/replace.list",
 		"/E/plugin/var/keys/ignore.list",
-		"/E/plugin/var/keys/priority.list",
-		"/E/plugin/var/bin/mgcamd.sh4",
-		"/C/Users/Nik/Downloads/plugin_MGCamd_1.35/plugin/var/keys/newcamd.list",
-		"/C/Windows/Temp/Rar$DIa0.086/newcamd.list",
-		"/C/Windows/Temp/Rar$DIa0.182/newcamd.list",
-		"/C/Users/Nik/Downloads/instrukcia.txt",
-		"/C/Windows/Temp/Rar$DIa0.836/ignore.list",
-		"/C/Windows/Temp/Rar$DIa0.158/priority.list",
-		"/C/Windows/Temp/Rar$DIa0.710/mg_cfg",
-		"/C/Windows/Temp/Rar$DIa0.408/replace.list",
-		"/C/Windows/Temp/Rar$DIa0.312/SoftCam.Key",
-		"/C/Windows/Temp/scp54593/home/crm/crm/back/routes/statistic/products.js",
-		"/C/Windows/Temp/scp57794/home/crm/crm/front/src/components/menu/AddTechMaps.vue",
-		"/C/Users/Nik/Documents/webstorm.key",
-		"/D/Soft/JetBrains WebStorm 2018.1.4/JetBrains.WebStorm.2018.1.4.Incl.KeyMaker.14TH.BIRTHDAY-DVT/install.txt",
-		"/C/Windows/Temp/scp22597/home/crm/crm/back/index.js",
-		"/C/Windows/Temp/scp42301/home/crm/crm/front/src/services/menu/ProductsService.js",
-		"/C/Windows/Temp/scp22467/home/crm/crm/front/src/components/menu/AddTechMaps.vue",
-		"/C/Windows/Temp/scp07251/home/crm/crm/front/src/components/menu/AddTechMaps.vue",
-		"/C/Users/Nik/Documents/Arduino/sketch_sep19a/sketch_sep19a.ino",
-		"/C/Windows/Temp/Rar$DIa0.955/DeepSleepExample.ino",
-		"/C/Windows/Temp/scp29625/home/crm/projects/masCopy/fun.c",
-		"/C/Windows/Temp/scp25298/home/crm/crm/front/src/components/menu/AddTechMaps.vue",
-		"/C/Users/Nik/Downloads/sketch_sep19a.ino",
-		"/C/Users/Nik/Desktop/sketch_sep19a (1).ino",
-		"/C/Windows/Temp/scp29234/home/crm/projects/masCopy/mas.c",
-		"/C/Windows/Temp/scp18488/home/crm/crm/front/src/components/Sidebar.vue",
-		"/C/Windows/Temp/scp18573/home/crm/crm/front/src/router/index.js",
-		"/C/Windows/Temp/scp43181/home/crm/crm/front/src/components/menu/AddSemi.vue",
-		"/C/Windows/Temp/scp27008/home/crm/crm/front/src/services/menu/ProductsService.js",
-		"/C/Windows/Temp/scp58637/home/crm/crm/front/src/router/index.js",
-		"/C/Windows/Temp/scp20909/home/crm/crm/front/src/components/menu/AddCategory.vue",
-		"/C/Windows/Temp/scp35360/home/crm/crm/front/src/components/menu/AddProducts.vue",
-		"/C/Windows/Temp/scp12130/home/crm/crm/front/src/assets/less/menu.less",
-		"/C/Windows/Temp/scp43597/home/crm/crm/front/src/components/menu/AddTechMaps.vue"
+		"/E/plugin/var/keys/priority.list"
 	],
 	"find":
 	{
-		"height": 27.0
+		"height": 60.0
 	},
 	"find_in_files":
 	{
@@ -814,6 +828,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"TechMaps",
+			"Category",
+			"round",
+			"Shop",
+			"debug",
+			"log"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -821,6 +841,12 @@
 		"regex": false,
 		"replace_history":
 		[
+			"Modificator",
+			"Semi",
+			"Ing",
+			"CatIng",
+			"log",
+			"debug"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -838,7 +864,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 27.0
+		"height": 60.0
 	},
 	"input":
 	{
@@ -895,7 +921,7 @@
 	"project": "crm.sublime-project",
 	"replace":
 	{
-		"height": 50.0
+		"height": 72.0
 	},
 	"save_all_on_build": true,
 	"select_file":
