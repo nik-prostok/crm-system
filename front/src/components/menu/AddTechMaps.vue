@@ -224,7 +224,7 @@
 						</div>
 					</div>
 
-					
+
 					<div class="row background-green">
 						<div class="col-lg-12">
 							<h3 class="head-text">Ингридиенты</h3>
@@ -233,7 +233,7 @@
 							<div class="table-responsive">
 								<table class="table table-ing">
 									<thead>
-										<tr class="tr-ing"> 
+										<tr class="tr-ing">
 											<!-- @click="sortEvent('ingridient')" -->
 											<th class="th-ing align-content-start">
 												<p class="main-text">Ингридиент</p>
@@ -273,7 +273,7 @@
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div> -->
 											</th>
-										</tr> 
+										</tr>
 									</thead>
 									<tbody>
 										<tr class="tr-td-custom" v-for="ing in map.ingridients">
@@ -296,7 +296,7 @@
 														<div class="col-lg-1">
 															<p class="main-text ml-1 mt-2">{{ing.unit}}</p>
 														</div>
-													</div>	
+													</div>
 												</div>
 											</td>
 											<td class="td-custom">
@@ -338,7 +338,6 @@
 								</table>
 							</div>
 
-							
 
 						</div>
 					</div>
@@ -355,7 +354,7 @@
 								<span v-if="mod.type == 'some'" class="main-text">(Несколько из набора)</span>
 								<table class="table table-ing">
 									<thead>
-										<tr class="tr-ing"> 
+										<tr class="tr-ing">
 											<!-- @click="sortEvent('ingridient')" -->
 											<th class="th-ing align-content-start">
 												<p class="main-text">Ингридиент</p>
@@ -395,7 +394,7 @@
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div> -->
 											</th>
-										</tr> 
+										</tr>
 									</thead>
 									<tbody>
 										<tr class="tr-td-custom" v-for="ing in mod.ingridients">
@@ -418,7 +417,7 @@
 														<div class="col-lg-1">
 															<p class="main-text ml-1 mt-2">{{ing.unit}}</p>
 														</div>
-													</div>	
+													</div>
 												</div>
 											</td>
 											<td class="td-custom">
@@ -476,11 +475,11 @@
 									</button>
 								</div>
 								<div class="modal-body">
-									
+
 									<div class="form-group">
 										<multiselect class="my-multiselect" v-model="nowModif" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления"  :multiple="false" :close-on-select="true" label="title" track-by="id" :options="listModificators"></multiselect>
 									</div>
-									
+
 									<div v-if="nowModif.id == 0">
 										<div class="form-group">
 											<input type="text" ref="search" class="form-control input-param" v-model="nowNewModif.title" placeholder="Название набора">
@@ -501,9 +500,9 @@
 											<div class="col-lg-6">
 												<img width="80%" height="auto" src="/static/image/modification-group-type-1.png">
 											</div>
-											
+
 										</div>
-										
+
 
 										<hr class="hr-page mt-2 mb-2">
 										<p-radio style="font-size: 20px;" v-model="nowNewModif.type" value="some" class="p-icon p-smooth m-2" color="success" >
@@ -518,7 +517,7 @@
 											<div class="col-lg-6">
 												<img width="80%" height="auto" src="/static/image/modification-group-type-2.png">
 											</div>
-											
+
 										</div>
 										<div class="row ml-5">
 											<transition name="fade">
@@ -580,215 +579,212 @@
 <script>
 import Vue from 'vue';
 
-import ProductsService from '@/services/menu/ProductsService'
-import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
 export default {
-	name: 'add_products',
-	components: {
-		'sidebar': Sidebar,
-	},
-	data() {
-		return {
-			stateSaving: false,
-			mod: 'without_mod',
-			with_mod: false,
-			without_mod: true,
-			countMod: 1,
-			idMod: -1,
+  name: 'add_products',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      stateSaving: false,
+      mod: 'without_mod',
+      with_mod: false,
+      without_mod: true,
+      countMod: 1,
+      idMod: -1,
 
 
-			key: null,
+      key: null,
 
-			ingridientsList: [],
-			categories: [],
-			shops: [],
-			listModificators: [
-			{
-				title: 'Создать новый набор',
-				id: 0,
-			}
-			],
-			setIngridient: [],
+      ingridientsList: [],
+      categories: [],
+      shops: [],
+      listModificators: [
+        {
+          title: 'Создать новый набор',
+          id: 0,
+        },
+      ],
+      setIngridient: [],
 
-			listMethodsCooking: [
-			{
-				title: 'Очистка',
-				id: 1,
-			},
-			{
-				title: 'Варка',
-				id: 2,
-			},
-			{
-				title: 'Жарка',
-				id: 3,
-			},
-			{
-				title: 'Тушение',
-				id: 4,
-			},
-			{
-				title: 'Запекание',
-				id: 5,
-			}
-			],
+      listMethodsCooking: [
+        {
+          title: 'Очистка',
+          id: 1,
+        },
+        {
+          title: 'Варка',
+          id: 2,
+        },
+        {
+          title: 'Жарка',
+          id: 3,
+        },
+        {
+          title: 'Тушение',
+          id: 4,
+        },
+        {
+          title: 'Запекание',
+          id: 5,
+        },
+      ],
 
-			nowModif: {
-				title: 'Создать новый набор',
-				id: 0,
-			},
-			nowNewModif: {
-				title: null,
-				id: null,
-				type: 'one',
-				min: null,
-				max: null,
-				setMax: false,
-				setMin: false,
-				ingridients:[],
-			},
+      nowModif: {
+        title: 'Создать новый набор',
+        id: 0,
+      },
+      nowNewModif: {
+        title: null,
+        id: null,
+        type: 'one',
+        min: null,
+        max: null,
+        setMax: false,
+        setMin: false,
+        ingridients: [],
+      },
 
 
+      map: {
+        title: '',
+        avatar: null,
+        category: null,
+        shop: null,
+        color: null,
+        min: null,
+        bar_code: null,
+        sec: null,
+        weight: false,
+        no_dicsount: false,
+        process_cooking: '',
+        sum_mass: 0,
+        price: 0,
+        ingridients: [],
+        modificators: [],
+      },
 
-			map: {
-				title: '',
-				avatar: null,
-				category: null,
-				shop: null,
-				color: null,
-				min: null,
-				bar_code: null,
-				sec: null,
-				weight: false,
-				no_dicsount: false,
-				process_cooking: '',
-				sum_mass: 0,
-				price: 0,
-				ingridients: [],
-				modificators: [],
-			},
+    };
+  },
+  mounted() {
+    this.fetchIngridients();
+    this.fetchCategories();
+    this.fetchShops();
+    this.fetchModificators();
+  },
+  methods: {
+    async fetchModificators() {
+      const response = await ProductsService.fetchModificators();
+      response.data.forEach((item) => {
+        this.listModificators.push(item);
+      });
+      this.listModificators.forEach((mod) => {
+        if (mod.ingridients != null) {
+          mod.ingridients.forEach((ing) => {
+            ing.object_ing = {
+              title: ing.title,
+              id: ing.id,
+            };
+          });
+        }
+      });
+      console.log(response.data);
+    },
+    async sendMap() {
+      this.map.ingridients.forEach((item) => {
+        item.id = item.object_ing.id;
+      });
+      this.map.modificators.forEach((itemMod) => {
+        console.log(itemMod);
+        itemMod.ingridients.forEach((itemIng) => {
+          itemIng.id = itemIng.object_ing.id;
+        });
+      });
+      // console.log(this.map);
+      ProductsService.addMap(this.map);
+      // this.$router.push('/menu/tech_maps')
+    },
+    async fetchIngridients() {
+      const response = await ProductsService.fetchIngridients();
+      console.log(response.data);
+      this.ingridientsList = response.data;
+    },
+    async fetchCategories() {
+      const response = await ProductsService.fetchCategories();
+      console.log(response.data);
+      this.categories = response.data;
+    },
+    async fetchShops() {
+      const response = await ProductsService.fetchShops();
+      console.log(response.data);
+      this.shops = response.data;
+    },
+    resetNowNewModif() {
+      this.nowNewModif = {
+        title: null,
+        id: null,
+        type: 'one',
+        min: null,
+        max: null,
+        setMax: false,
+        setMin: false,
+        ingridients: [],
+      };
+    },
+    addRow() {
+      this.map.ingridients.push({
+        unit: '',
+        title: null,
+        id_ingridient: null,
+        method_cooking: null,
+        brutto: 0,
+        netto: 0,
+        price: 0,
+        bind: false,
+      });
+    },
+    addRowToMod(id) {
+      console.log(id);
+      this.map.modificators[id].ingridients.push({
+        unit: '',
+        title: null,
+        id_ingridient: null,
+        method_cooking: null,
+        brutto: 0,
+        netto: 0,
+        price: 0,
+        bind: false,
+      });
+    },
+    addNewModificators() {
+      this.idMod++;
+      this.nowNewModif.id = this.idMod;
 
-		}
-	},
-	mounted() {
-		this.fetchIngridients();
-		this.fetchCategories();
-		this.fetchShops();
-		this.fetchModificators();
-	},
-	methods: {
-		async fetchModificators(){
-			const response = await ProductsService.fetchModificators();
-			response.data.forEach(item => {
-				this.listModificators.push(item)
-			})
-			this.listModificators.forEach(mod => {
-				if (mod.ingridients != null){
-					mod.ingridients.forEach(ing =>{
-						ing.object_ing = {
-							title: ing.title,
-							id: ing.id
-						}
-					})
-				}
-				
-			})
-			console.log(response.data);
-		},
-		async sendMap(){
+      // this.nowNewModif = this.nowModif;
+      if (this.nowModif.id == 0) {
+        this.map.modificators.push(this.nowNewModif);
+      } else {
+        this.map.modificators.push(this.nowModif);
+      }
 
-			this.map.ingridients.forEach(item => {
-				item.id = item.object_ing.id;
-			})
-			this.map.modificators.forEach(itemMod => {
-				console.log(itemMod);
-				itemMod.ingridients.forEach(itemIng => {
-					itemIng.id = itemIng.object_ing.id;
-				})
-			})
-				//console.log(this.map);
-				ProductsService.addMap(this.map);
-				//this.$router.push('/menu/tech_maps')
-			},
-			async fetchIngridients(){
-				const response = await ProductsService.fetchIngridients();
-				console.log(response.data)
-				this.ingridientsList = response.data
-			},
-			async fetchCategories(){
-				const response = await ProductsService.fetchCategories();
-				console.log(response.data);
-				this.categories = response.data;
-			},
-			async fetchShops(){
-				const response = await ProductsService.fetchShops();
-				console.log(response.data);
-				this.shops = response.data;
-			},
-			resetNowNewModif(){
-				this.nowNewModif = {
-					title: null,
-					id: null,
-					type: 'one',
-					min: null,
-					max: null,
-					setMax: false,
-					setMin: false,
-					ingridients:[],
-				};
-			},
-			addRow(){
-				this.map.ingridients.push({
-					unit: '',
-					title: null,
-					id_ingridient: null,
-					method_cooking: null,
-					brutto: 0,
-					netto: 0,
-					price: 0,	
-					bind: false,					
-				})
-			},
-			addRowToMod(id){
-				console.log(id);
-				this.map.modificators[id].ingridients.push({
-					unit: '',
-					title: null,
-					id_ingridient: null,
-					method_cooking: null,
-					brutto: 0,
-					netto: 0,
-					price: 0,	
-					bind: false,						
-				})
-			},
-			addNewModificators(){
-				this.idMod++;
-				this.nowNewModif.id = this.idMod;
-				
-				//this.nowNewModif = this.nowModif;
-				if (this.nowModif.id == 0){
-					this.map.modificators.push(this.nowNewModif);
-				} else {
-					this.map.modificators.push(this.nowModif);
-				}
-				
-				this.resetNowNewModif();
-			},
-			changeBind(ing){
-				ing.bind = !ing.bind;
-			},
-			selectFile(){
-				$("#upload:hidden").trigger('click');
-			},
-			resetFile(){
-				this.avatar = null;
-			},
-		},
-	}
+      this.resetNowNewModif();
+    },
+    changeBind(ing) {
+      ing.bind = !ing.bind;
+    },
+    selectFile() {
+      $('#upload:hidden').trigger('click');
+    },
+    resetFile() {
+      this.avatar = null;
+    },
+  },
+};
 
-	</script>
+</script>
 
 	<style lang="scss">
 	@import '../../assets/less/menu.less'

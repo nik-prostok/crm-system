@@ -59,7 +59,7 @@
 									<img v-b-modal.modal1 style="height: 50px; width: auto; cursor: pointer;" :src="photo_src" alt="" :href="photo_src" class="img-thumbnail">
 									<i @click="resetFile" style="cursor: pointer;" class="fas fa-times"></i>
 								</div>
-								
+
 								<b-modal id="modal1" size="lg" :title="category.avatar" style="text-align: center;">
 									<img :src="photo_src" alt=""  style="width: 600px; height: auto;">
 								</b-modal>
@@ -184,120 +184,113 @@
 </template>
 
 <script>
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
-	
-
-	export default {
-		name: 'edit_category',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data() {
-			return {
-				stateSaving: false,
-				mod: 'without_mod',
-				with_mod: false,
-				without_mod: true,
-				countMod: 1,
-
-				editId: null,
-
-				avatar: null,
-				photo_src: null,
-				file: null,
-
-				key: null,
-
-				parent: {
-					id: null,
-					title: null,
-				},
-
-				categories: [],
-
-				category: {
-					title: '',
-					parent_id: null,
-					color: '',
-
-				},
-			}
-		},
-		mounted() {
-			this.getCategories()
-			this.setEditId(this.$route.params.id)
-		},
-		methods: {
-			setEditId(id){
-				this.editId = id;
-			},
-			resetFile(){
-				this.file = null;
-			},
-			selectFile(){
-				$("#upload:hidden").trigger('click');
-			},
-			async sendProducts(){
-
-				console.log(this.category);
-
-				this.category.parent_id = this.parent.id;
-
-				var formData = new FormData();
-				formData.append('category', JSON.stringify(this.category))
-				if (this.file != null){
-					formData.append('avatar', this.file);
-				}
-
-				ProductsService.addCategory(formData)
-
-				this.$router.push('/menu/category_prod_cards')
-
-			},
-			async getCategories (){
-				var res = await ProductsService.fetchCategories()
-				console.log(res);
-				this.categories = res.data.map((item) => {
-					return {id: item.id, title: item.title}
-				})
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
 
-				res.data.forEach(item => {
+export default {
+  name: 'edit_category',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      stateSaving: false,
+      mod: 'without_mod',
+      with_mod: false,
+      without_mod: true,
+      countMod: 1,
 
-					if (item.id == this.editId){
-						this.category = item;
-						this.categories.forEach(item2 => {
-							if (item2.id == item.parent_id){
-								this.parent.id = item2.id;
-								this.parent.title = item2.title;
-							}
-						})
-					}
-				})
+      editId: null,
 
-				if (this.category.photo != null){
-					this.category.avatar = this.category.photo
-					this.photo_src = 'http://89.223.27.152:8080/' + this.category.avatar
-					console.log(this.photo_src);
-				}
+      avatar: null,
+      photo_src: null,
+      file: null,
 
-				this.categories = res.data.map((item) => {
-					return {id: item.id, title: item.title}
-				})
-			},
-			resetFile(){
-				this.category.avatar = null;
-				this.photo_src = null;
-				this.file = null;
-			},
-		},
-		computed: {
+      key: null,
 
-		},
-	}
+      parent: {
+        id: null,
+        title: null,
+      },
+
+      categories: [],
+
+      category: {
+        title: '',
+        parent_id: null,
+        color: '',
+
+      },
+    };
+  },
+  mounted() {
+    this.getCategories();
+    this.setEditId(this.$route.params.id);
+  },
+  methods: {
+    setEditId(id) {
+      this.editId = id;
+    },
+    resetFile() {
+      this.file = null;
+    },
+    selectFile() {
+      $('#upload:hidden').trigger('click');
+    },
+    async sendProducts() {
+      console.log(this.category);
+
+      this.category.parent_id = this.parent.id;
+
+      const formData = new FormData();
+      formData.append('category', JSON.stringify(this.category));
+      if (this.file != null) {
+        formData.append('avatar', this.file);
+      }
+
+      ProductsService.addCategory(formData);
+
+      this.$router.push('/menu/category_prod_cards');
+    },
+    async getCategories() {
+      const res = await ProductsService.fetchCategories();
+      console.log(res);
+      this.categories = res.data.map(item => ({ id: item.id, title: item.title }));
+
+
+      res.data.forEach((item) => {
+        if (item.id == this.editId) {
+          this.category = item;
+          this.categories.forEach((item2) => {
+            if (item2.id == item.parent_id) {
+              this.parent.id = item2.id;
+              this.parent.title = item2.title;
+            }
+          });
+        }
+      });
+
+      if (this.category.photo != null) {
+        this.category.avatar = this.category.photo;
+        this.photo_src = `http://89.223.27.152:8080/${this.category.avatar}`;
+        console.log(this.photo_src);
+      }
+
+      this.categories = res.data.map(item => ({ id: item.id, title: item.title }));
+    },
+    resetFile() {
+      this.category.avatar = null;
+      this.photo_src = null;
+      this.file = null;
+    },
+  },
+  computed: {
+
+  },
+};
 </script>
 
 <style lang="scss">

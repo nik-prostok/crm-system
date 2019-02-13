@@ -52,7 +52,7 @@
 						</div>
 					</div>
 
-					
+
 					<div class="row background-green">
 						<div class="col-lg-12">
 							<h3 class="head-text">Ингридиенты</h3>
@@ -61,7 +61,7 @@
 							<div class="table-responsive">
 								<table class="table table-ing">
 									<thead>
-										<tr class="tr-ing"> 
+										<tr class="tr-ing">
 											<!-- @click="sortEvent('ingridient')" -->
 											<th class="th-ing align-content-start">
 												<p class="main-text">Ингридиент</p>
@@ -101,7 +101,7 @@
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div> -->
 											</th>
-										</tr> 
+										</tr>
 									</thead>
 									<tbody>
 										<tr class="tr-td-custom" v-for="ing in semi.ingridients">
@@ -124,7 +124,7 @@
 														<div class="col-lg-1">
 															<p class="main-text ml-1 mt-2">{{ing.object_ing.unit}}</p>
 														</div>
-													</div>	
+													</div>
 												</div>
 											</td>
 											<td class="td-custom">
@@ -181,99 +181,99 @@
 </template>
 
 <script>
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
-	export default {
-		name: 'add_products',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data() {
-			return {
-				stateSaving: false,
-				mod: 'without_mod',
-				with_mod: false,
-				without_mod: true,
-				countMod: 1,
-
-
-				key: null,
-
-				ingridientsList: [],
-				setIngridient: [],
-
-				listMethodsCooking: [
-				{
-					title: 'Очистка',
-					id: 1,
-				},
-				{
-					title: 'Варка',
-					id: 2,
-				},
-				{
-					title: 'Жарка',
-					id: 3,
-				},
-				{
-					title: 'Тушение',
-					id: 4,
-				},
-				{
-					title: 'Запекание',
-					id: 5,
-				}
-				],
+export default {
+  name: 'add_products',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      stateSaving: false,
+      mod: 'without_mod',
+      with_mod: false,
+      without_mod: true,
+      countMod: 1,
 
 
-				semi: {
-					title: '',
-					process_cooking: '',
-					sum_mass: 0,
-					price: 0,
-					ingridients: [],
-				},
+      key: null,
 
-			}
-		},
-		mounted() {
-			this.fetchIngridients();
-		},
-		methods: {
-			async sendSemi(){
-				//this.semi.cat_id = this.ingridient.category.cat_id;
-				/*if (this.ingridient.round != null) 
-				this.ingridient.round = this.ingridient.round.value;*/
-				ProductsService.addSemi(this.semi)
-				//this.$router.push('/menu/semi')
-			},
-			async fetchIngridients(){
-				const response = await ProductsService.fetchIngridients();
-				console.log(response.data)
-				this.ingridientsList = response.data
-			},
-			addRow(){
-				this.semi.ingridients.push({
-					object_ing: {
-						unit: '',
-					},
-					title: null,
-					id_ingridient: null,
-					method_cooking: null,
-					brutto: 0,
-					netto: 0,
-					price: 0,	
-					bind: false,						
-				})
-			},
-			changeBind(ing){
-				ing.bind = !ing.bind;
-			}
-		},
-	}
+      ingridientsList: [],
+      setIngridient: [],
+
+      listMethodsCooking: [
+        {
+          title: 'Очистка',
+          id: 1,
+        },
+        {
+          title: 'Варка',
+          id: 2,
+        },
+        {
+          title: 'Жарка',
+          id: 3,
+        },
+        {
+          title: 'Тушение',
+          id: 4,
+        },
+        {
+          title: 'Запекание',
+          id: 5,
+        },
+      ],
+
+
+      semi: {
+        title: '',
+        process_cooking: '',
+        sum_mass: 0,
+        price: 0,
+        ingridients: [],
+      },
+
+    };
+  },
+  mounted() {
+    this.fetchIngridients();
+  },
+  methods: {
+    async sendSemi() {
+      // this.semi.cat_id = this.ingridient.category.cat_id;
+      /* if (this.ingridient.round != null)
+				this.ingridient.round = this.ingridient.round.value; */
+      ProductsService.addSemi(this.semi);
+      // this.$router.push('/menu/semi')
+    },
+    async fetchIngridients() {
+      const response = await ProductsService.fetchIngridients();
+      console.log(response.data);
+      this.ingridientsList = response.data;
+    },
+    addRow() {
+      this.semi.ingridients.push({
+        object_ing: {
+          unit: '',
+        },
+        title: null,
+        id_ingridient: null,
+        method_cooking: null,
+        brutto: 0,
+        netto: 0,
+        price: 0,
+        bind: false,
+      });
+    },
+    changeBind(ing) {
+      ing.bind = !ing.bind;
+    },
+  },
+};
 
 </script>
 

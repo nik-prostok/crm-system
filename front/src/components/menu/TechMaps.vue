@@ -1,14 +1,12 @@
 <template>
 	<div class="tech_maps">
-		
+
 		<!-- Bootstrap row -->
 		<div class="row no-gutters" id="body-row">
 			<!-- MAIN -->
 			<div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
 				<sidebar></sidebar>
 			</div>
-			
-
 
 
 			<div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
@@ -87,21 +85,21 @@
 						</div>
 					</div>
 
-					<hr class="line mt-4"> 
+					<hr class="line mt-4">
 
 					<div class="row">
 
 						<div class="col-md-7 col-lg-2 col-xl-4">
-							<div class="form-group inner-addon "> 
-								<div class="left-addon"> 
-									<img class="fas fa-search" src="/static/image/search.png"> 
-								</div> 
-								<div v-if="search != ''" class="right-addon"> 
+							<div class="form-group inner-addon ">
+								<div class="left-addon">
+									<img class="fas fa-search" src="/static/image/search.png">
+								</div>
+								<div v-if="search != ''" class="right-addon">
 									<button class="fas btn-container" v-on:click="search = ''">
 										<img src="/static/image/close.png">
-									</button> 
-								</div> 
-								<input type="text" ref="search" class="form-control search pl-5" id="search" placeholder="Быстрый поиск" v-model="search"> 
+									</button>
+								</div>
+								<input type="text" ref="search" class="form-control search pl-5" id="search" placeholder="Быстрый поиск" v-model="search">
 							</div>
 
 
@@ -163,28 +161,28 @@
 
 								<!-- <table class="table table-custom table-bordered">
 									<thead>
-										<tr class="tr-th-custom"> 
+										<tr class="tr-th-custom">
 											<th @click="sortEvent('title')" class="td-th-custom">
 												Блюдо
 												<div v-if="sortColumn == 'title'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
-											</th> 
+											</th>
 											<th @click="sortEvent('cat')" class="td-th-custom">
 												Категория
 												<div v-if="sortColumn == 'cat'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
-											</th> 
+											</th>
 											<th @click="sortEvent('bar')" class="td-th-custom">
 												Штрихкод
 												<div v-if="sortColumn == 'bar'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
-											</th> 
+											</th>
 											<th @click="sortEvent('losses')" class="td-th-custom">
 												Цех
 												<div v-if="sortColumn == 'weight'">
@@ -198,14 +196,14 @@
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
-											</th> 
+											</th>
 											<th @click="sortEvent('remains')" class="td-th-custom">
 												Выход
 												<div v-if="sortColumn == 'remains'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
-											</th> 
+											</th>
 											<th @click="sortEvent('cost')" class="td-th-custom">
 												Себестоимость
 												<div v-if="sortColumn == 'cost'">
@@ -214,21 +212,21 @@
 												</div>
 											</th>
 											<th @click="sortEvent('amount_balances')" class="td-th-custom">
-												Цена	
-												<div v-if="sortColumn == 'amount_balances'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th> 
-											<th @click="sortEvent('amount_balances')" class="td-th-custom">
-												Прибыль	
+												Цена
 												<div v-if="sortColumn == 'amount_balances'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th>
 											<th @click="sortEvent('amount_balances')" class="td-th-custom">
-												Наценка	
+												Прибыль
+												<div v-if="sortColumn == 'amount_balances'">
+													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+												</div>
+											</th>
+											<th @click="sortEvent('amount_balances')" class="td-th-custom">
+												Наценка
 												<div v-if="sortColumn == 'amount_balances'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
@@ -237,21 +235,21 @@
 											<th class="td-th-custom" style="width: 50px;">
 
 											</th>
-										</tr> 
+										</tr>
 									</thead>
 									<tbody >
 										<tr class="tr-td-custom" v-for="map in maps">
-											
+
 											<td class="td-custom align-middle" style="">{{map.title}}</td>
 											<td class="td-custom align-middle" style="">{{map.cat_title}}</td>
 											<td class="td-custom align-middle" style="">{{map.bar_code}}</td>
 											<td class="td-custom align-middle" style="">{{map.shop_title}}</td>
-											
+
 											<td v-if="map.weight" class="td-custom align-middle" style="">Да</td>
 											<td v-else class="td-custom align-middle" style="width: 100%;">
 												Нет
 											</td>
-											
+
 											<td class="td-custom align-middle" style="">{{map.netto}}</td>
 											<td class="td-custom align-middle" style="">—</td>
 											<td class="td-custom align-middle" style="">—</td>
@@ -294,7 +292,7 @@
 												</div>
 											</div>
 											</td>
-											
+
 										</tr>
 									</tbody>
 								</table> -->
@@ -313,261 +311,259 @@
 
 import Vue from 'vue';
 
-import ProductsService from '@/services/menu/ProductsService'
-import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
 export default {
-	name: 'TechMaps',
-	components: {
-		'sidebar': Sidebar,
-	},
-	data () {
-		return {
-			fieldsSet: [{
-				key: 'title',
-				label: 'Блюдо',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'cat_title',
-				label: 'Категория',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'bar_code',
-				label: 'Штрихкод',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'shop_title',
-				label: 'Цех',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'weight',
-				label: 'Весовая тех. карта',
-				sortable: false,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'netto',
-				label: 'Выход',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'actions',
-				label: 'Действия',
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			}],
-			fields: [
-			{
-				key: 'title',
-				label: 'Блюдо',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'cat_title',
-				label: 'Категория',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'bar_code',
-				label: 'Штрихкод',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'shop_title',
-				label: 'Цех',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'weight',
-				label: 'Весовая тех. карта',
-				sortable: false,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'netto',
-				label: 'Выход',
-				sortable: true,
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			},
-			{
-				key: 'actions',
-				label: 'Действия',
-				thClass: 'tr-th-custom tr-td-custom',
-				tdClass: 'tr-td-custom',
-			}
-			],
+  name: 'TechMaps',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      fieldsSet: [{
+        key: 'title',
+        label: 'Блюдо',
+        sortable: true,
+        thClass: 'tr-th-custom tr-td-custom',
+        tdClass: 'tr-td-custom',
+      },
+      {
+        key: 'cat_title',
+        label: 'Категория',
+        sortable: true,
+        thClass: 'tr-th-custom tr-td-custom',
+        tdClass: 'tr-td-custom',
+      },
+      {
+        key: 'bar_code',
+        label: 'Штрихкод',
+        sortable: true,
+        thClass: 'tr-th-custom tr-td-custom',
+        tdClass: 'tr-td-custom',
+      },
+      {
+        key: 'shop_title',
+        label: 'Цех',
+        sortable: true,
+        thClass: 'tr-th-custom tr-td-custom',
+        tdClass: 'tr-td-custom',
+      },
+      {
+        key: 'weight',
+        label: 'Весовая тех. карта',
+        sortable: false,
+        thClass: 'tr-th-custom tr-td-custom',
+        tdClass: 'tr-td-custom',
+      },
+      {
+        key: 'netto',
+        label: 'Выход',
+        sortable: true,
+        thClass: 'tr-th-custom tr-td-custom',
+        tdClass: 'tr-td-custom',
+      },
+      {
+        key: 'actions',
+        label: 'Действия',
+        thClass: 'tr-th-custom tr-td-custom',
+        tdClass: 'tr-td-custom',
+      }],
+      fields: [
+        {
+          key: 'title',
+          label: 'Блюдо',
+          sortable: true,
+          thClass: 'tr-th-custom tr-td-custom',
+          tdClass: 'tr-td-custom',
+        },
+        {
+          key: 'cat_title',
+          label: 'Категория',
+          sortable: true,
+          thClass: 'tr-th-custom tr-td-custom',
+          tdClass: 'tr-td-custom',
+        },
+        {
+          key: 'bar_code',
+          label: 'Штрихкод',
+          sortable: true,
+          thClass: 'tr-th-custom tr-td-custom',
+          tdClass: 'tr-td-custom',
+        },
+        {
+          key: 'shop_title',
+          label: 'Цех',
+          sortable: true,
+          thClass: 'tr-th-custom tr-td-custom',
+          tdClass: 'tr-td-custom',
+        },
+        {
+          key: 'weight',
+          label: 'Весовая тех. карта',
+          sortable: false,
+          thClass: 'tr-th-custom tr-td-custom',
+          tdClass: 'tr-td-custom',
+        },
+        {
+          key: 'netto',
+          label: 'Выход',
+          sortable: true,
+          thClass: 'tr-th-custom tr-td-custom',
+          tdClass: 'tr-td-custom',
+        },
+        {
+          key: 'actions',
+          label: 'Действия',
+          thClass: 'tr-th-custom tr-td-custom',
+          tdClass: 'tr-td-custom',
+        },
+      ],
 
-			fieldsDetails:[
-			{
-				key: 'title_ing',
-				label: 'Ингридиент',
-				sortable: true,
-			},
-			{
-				key: 'netto',
-				label: 'Нетто',
-				sortable: true,
-			},
-			{
-				key: 'brutto',
-				label: 'Брутто',
-				sortable: true,
-			},
-			{
-				key: 'price',
-				label: 'Цена',
-				sortable: true,
-			}
-			],
+      fieldsDetails: [
+        {
+          key: 'title_ing',
+          label: 'Ингридиент',
+          sortable: true,
+        },
+        {
+          key: 'netto',
+          label: 'Нетто',
+          sortable: true,
+        },
+        {
+          key: 'brutto',
+          label: 'Брутто',
+          sortable: true,
+        },
+        {
+          key: 'price',
+          label: 'Цена',
+          sortable: true,
+        },
+      ],
 
-			search: '',
-			ingridients: [],
-			maps: [],
-			sortColumn: 'count',
-			dismissSecs: 15,
-			dismissCountDown: 0
+      search: '',
+      ingridients: [],
+      maps: [],
+      sortColumn: 'count',
+      dismissSecs: 15,
+      dismissCountDown: 0,
 
-		}
-	},
-	mounted () {
-		this.getIngridients()
-		this.getMaps()
-	},
-	methods: {
-		async deleteMaps(id){
-			console.log(id);
+    };
+  },
+  mounted() {
+    this.getIngridients();
+    this.getMaps();
+  },
+  methods: {
+    async deleteMaps(id) {
+      console.log(id);
 
-			const response = await ProductsService.delMap({
-				'id': id
-			})
-			.then(response => { 
-				console.log(response)
-				this.maps = [];
-				this.getMaps();
-				console.log('Ok del');
-			})
-			.catch(error => {
-				console.log(error.response)
-				console.log("error del");
-				this.showAlert();
-			});
+      const response = await ProductsService.delMap({
+        id,
+      })
+        .then((response) => {
+          console.log(response);
+          this.maps = [];
+          this.getMaps();
+          console.log('Ok del');
+        })
+        .catch((error) => {
+          console.log(error.response);
+          console.log('error del');
+          this.showAlert();
+        });
 
-				/*if (response.status == 200){
-					
+      /* if (response.status == 200){
+
 				} else {
-					
-				}*/
 
-				
-			},
-			async getIngridients () {
-				const response = await ProductsService.fetchIngridients()
-				this.ingridients = response.data
-				this.ingridients.forEach(item => {
-					if (item.weight == null){
-						item.weight = "—";
-					}
-				})
-				console.log(this.ingridients);
-			},
-			async getMaps() {
-				const response = await ProductsService.fetchMaps()
-				this.maps = response.data
-				this.maps.forEach(map => {
-					map.netto = 0;
-					if (map.modificators != null){
-						map.modificators.forEach(mod => {
-							mod.ingridients.forEach(ing => {
-								map.netto += Number(ing.netto);
-							})
-						})
-					}
-					if (map.ingridients != null){
-						map.ingridients.forEach(ing => {
-							this.ingridients.forEach(ingItem => {
-								if (ing.id_ingridients == ingItem.id){
-									ing.title_ing = ingItem.title;
-								}
-							})
-							map.netto += Number(ing.netto);
-						})
-					}
-					map.netto = String(map.netto) + ' кг';
-					if (map.weight){
-						map.weight = 'Да';
-					} else {
-						map.weight = 'Нет';
-					}
-				})
-				console.log(this.maps);
-			},
-			filterBySearch(ingridients){
-				if (this.search.length === 0) {
-					return true;
-				}
-				return ingridients.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
-			},
-			getPopoverId(id){
-				return "popover" + id;
-			},
-			getHrefEdit(id){
-				return '/menu/category_prod_cards/edit/' + id;
-			},
-			sortEvent(message){
-				console.log(message);
-				if (this.sortColumn == message){
-					this.sort = !this.sort;
-				} else {
-					this.sortColumn = message;
-				}
-			},
-			countDownChanged (dismissCountDown) {
-				this.dismissCountDown = dismissCountDown
-			},
-			showAlert () {
-				this.dismissCountDown = this.dismissSecs
-			}
-		},
-		computed: {
-			length(){
-				let length = 0;
-				this.maps.forEach(item => {
-					length++
-				})
-				return length;
-			}
-		}
-	}
-	</script>
+				} */
+    },
+    async getIngridients() {
+      const response = await ProductsService.fetchIngridients();
+      this.ingridients = response.data;
+      this.ingridients.forEach((item) => {
+        if (item.weight == null) {
+          item.weight = '—';
+        }
+      });
+      console.log(this.ingridients);
+    },
+    async getMaps() {
+      const response = await ProductsService.fetchMaps();
+      this.maps = response.data;
+      this.maps.forEach((map) => {
+        map.netto = 0;
+        if (map.modificators != null) {
+          map.modificators.forEach((mod) => {
+            mod.ingridients.forEach((ing) => {
+              map.netto += Number(ing.netto);
+            });
+          });
+        }
+        if (map.ingridients != null) {
+          map.ingridients.forEach((ing) => {
+            this.ingridients.forEach((ingItem) => {
+              if (ing.id_ingridients == ingItem.id) {
+                ing.title_ing = ingItem.title;
+              }
+            });
+            map.netto += Number(ing.netto);
+          });
+        }
+        map.netto = `${String(map.netto)} кг`;
+        if (map.weight) {
+          map.weight = 'Да';
+        } else {
+          map.weight = 'Нет';
+        }
+      });
+      console.log(this.maps);
+    },
+    filterBySearch(ingridients) {
+      if (this.search.length === 0) {
+        return true;
+      }
+      return ingridients.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+    },
+    getPopoverId(id) {
+      return `popover${id}`;
+    },
+    getHrefEdit(id) {
+      return `/menu/category_prod_cards/edit/${id}`;
+    },
+    sortEvent(message) {
+      console.log(message);
+      if (this.sortColumn == message) {
+        this.sort = !this.sort;
+      } else {
+        this.sortColumn = message;
+      }
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
+    },
+    showAlert() {
+      this.dismissCountDown = this.dismissSecs;
+    },
+  },
+  computed: {
+    length() {
+      let length = 0;
+      this.maps.forEach((item) => {
+        length++;
+      });
+      return length;
+    },
+  },
+};
+</script>
 
 	<style scoped>
 	.tr-table {
-		border: 10px solid #F2F3F4; 
+		border: 10px solid #F2F3F4;
 		text-align: center;
 	}
 	</style>
@@ -579,4 +575,3 @@ export default {
 	<style lang="scss">
 	@import '../../assets/less/menu.less'
 	</style>
-

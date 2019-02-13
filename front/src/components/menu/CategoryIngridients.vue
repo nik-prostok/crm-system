@@ -1,14 +1,12 @@
 <template>
 	<div class="products">
-		
+
 		<!-- Bootstrap row -->
 		<div class="row no-gutters" id="body-row">
 			<!-- MAIN -->
 			<div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
 				<sidebar></sidebar>
 			</div>
-			
-
 
 
 			<div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
@@ -36,21 +34,21 @@
 							</div>
 						</div>
 
-						<hr class="line mt-4"> 
+						<hr class="line mt-4">
 
 						<div class="row">
 
 							<div class="col-md-7 col-lg-2 col-xl-4">
-								<div class="form-group inner-addon "> 
-									<div class="left-addon"> 
-										<img class="fas fa-search" src="/static/image/search.png"> 
-									</div> 
-									<div v-if="search != ''" class="right-addon"> 
+								<div class="form-group inner-addon ">
+									<div class="left-addon">
+										<img class="fas fa-search" src="/static/image/search.png">
+									</div>
+									<div v-if="search != ''" class="right-addon">
 										<button class="fas btn-container" v-on:click="search = ''">
 											<img src="/static/image/close.png">
-										</button> 
-									</div> 
-									<input type="text" ref="search" class="form-control search pl-5" id="search" placeholder="Быстрый поиск" v-model="search"> 
+										</button>
+									</div>
+									<input type="text" ref="search" class="form-control search pl-5" id="search" placeholder="Быстрый поиск" v-model="search">
 								</div>
 
 
@@ -61,22 +59,22 @@
 							<div class="table-responsive">
 								<table class="table table-custom table-bordered">
 									<thead>
-										<tr class="tr-th-custom-left"> 
+										<tr class="tr-th-custom-left">
 											<th @click="sortEvent('count')" class="td-th-custom align-content-start">
 												Категория
 												<div v-if="sortColumn == 'category'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
 												</div>
-											</th> 
+											</th>
 											<th class="td-th-custom" style="width: 50px;">
 
 											</th>
-										</tr> 
+										</tr>
 									</thead>
 									<tbody >
 										<tr class="tr-td-custom" v-for="category in categories">
-											
+
 											<td class="td-custom align-middle" style="text-align: left;">{{category.cat_title}}</td>
 											<td class="td-custom align-middle">
 												<div class="d-flex flex-row">
@@ -115,75 +113,75 @@
 
 <script>
 
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
-	export default {
-		name: 'category',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data () {
-			return {
-				search: '',
-				categories: [],
-				sortColumn: 'count',
+export default {
+  name: 'category',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      search: '',
+      categories: [],
+      sortColumn: 'count',
 
-			}
-		},
-		mounted () {
-			this.getCategories()
-		},
-		methods: {
-			async deleteCategory(id){
-				console.log(id);
-				const response = await ProductsService.deleteCatIng({
-					'id': id
-				});
+    };
+  },
+  mounted() {
+    this.getCategories();
+  },
+  methods: {
+    async deleteCategory(id) {
+      console.log(id);
+      const response = await ProductsService.deleteCatIng({
+        id,
+      });
 
-				if (response.status == 200){
-					this.categories = [];
-					this.getCategories();
-				}
-			},
-			async getCategories () {
-				const response = await ProductsService.fetchCategoryIng()
-				this.categories = response.data
-				console.log(this.categories);
-			},
-			filterBySearch(category){
-				if (this.search.length === 0) {
-					return true;
-				}
-				return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1 
-			},
-			getPopoverId(id){
-				return "popover" + id;
-			},
-			getHrefEdit(id){
-				return '/menu/catIng/edit/' + id;
-			},
-			sortEvent(message){
-				console.log(message);
-				if (this.sortColumn == message){
-					this.sort = !this.sort;
-				} else {
-					this.sortColumn = message;
-				}
-			},
-		},
-		computed: {
-			length(){
-				let length = 0;
-				this.categories.forEach(item => {
-					length++
-				})
-				return length;
-			}
-		}
-	}
+      if (response.status == 200) {
+        this.categories = [];
+        this.getCategories();
+      }
+    },
+    async getCategories() {
+      const response = await ProductsService.fetchCategoryIng();
+      this.categories = response.data;
+      console.log(this.categories);
+    },
+    filterBySearch(category) {
+      if (this.search.length === 0) {
+        return true;
+      }
+      return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+    },
+    getPopoverId(id) {
+      return `popover${id}`;
+    },
+    getHrefEdit(id) {
+      return `/menu/catIng/edit/${id}`;
+    },
+    sortEvent(message) {
+      console.log(message);
+      if (this.sortColumn == message) {
+        this.sort = !this.sort;
+      } else {
+        this.sortColumn = message;
+      }
+    },
+  },
+  computed: {
+    length() {
+      let length = 0;
+      this.categories.forEach((item) => {
+        length++;
+      });
+      return length;
+    },
+  },
+};
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

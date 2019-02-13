@@ -29,5 +29,28 @@ module.exports = {
 		User.find({}, function(err, users) {
 			res.json(users);
 		});
+	},
+	delete: (req, res) => {
+		console.log(req.params.id);
+		User.findByIdAndRemove(req.params.id, (err)=>{
+			if (err){
+				console.log(err);
+				res.sendStatus(400);
+			} else {
+				res.sendStatus(200);
+			}
+		})
+	},
+	update: (req, res) => {
+		var UserRequest = req.body;
+		User.findByIdAndUpdate(req.params.id, {'$set': UserRequest}, 
+			(err)=>{
+				if (err){
+					console.log(err);
+					res.sendStatus(400);
+				} else {
+					res.sendStatus(200);
+				}
+			})
 	}
 }

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import Login from '@/components/Login'
+
 import Products from '@/components/menu/Products'
 import AddProducts from '@/components/menu/AddProducts'
 import EditProduct from '@/components/menu/EditProduct'
@@ -26,12 +28,18 @@ import TechMaps from '@/components/menu/TechMaps'
 import AddTechMaps from '@/components/menu/AddTechMaps'
 import EditTechMaps from '@/components/menu/EditTechMaps'
 
-import SaleProducts from '@/components/statistic/SaleProducts'
-import Sale from '@/components/statistic/Category'
+/* import SaleProducts from '@/components/statistic/SaleProducts'
+import Sale from '@/components/statistic/Category' */
 
 Vue.use(Router)
 
 const routes = [
+
+//Login
+{
+	path: '/login',
+	component: Login,
+},
 
 //*****MENU*****//
 //menu//products

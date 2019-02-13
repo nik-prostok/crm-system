@@ -3,7 +3,7 @@ import api from '@/services/api'
 export default {
 	//Products
 	fetchProducts () {
-		return api().get('productsMod')
+		return api().get('/api/products')
 	},
 	addProduct (params) {
 		return api().post('productsMod',params,{
@@ -38,7 +38,7 @@ export default {
 	addShop(shop){
 		return api().post('shops', shop)
 	},
-	
+
 	//CategoryIngridients
 	addCategoryIng(category){
 		return api().post('catIngrid', category)
@@ -57,7 +57,7 @@ export default {
 	addIngridients(ingridient){
 		return api().post('ingridients', ingridient)
 	},
-	
+
 	//Semi
 	addSemi(semi){
 		return api().post('semi', semi)
@@ -65,7 +65,7 @@ export default {
 	fetchSemi(){
 		return api().get('semi')
 	},
-	
+
 
 	//Map
 	addMap(map){

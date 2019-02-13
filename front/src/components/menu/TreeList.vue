@@ -50,47 +50,47 @@
 </template>
 
 <script type="text/javascript">
-	import Vue from 'vue';
-	import ProductsService from '@/services/menu/ProductsService'
+import Vue from 'vue';
+import ProductsService from '@/services/menu/ProductsService';
 
-	export default {
-		name: 'item',
-		template: '#item-template',
-		props: ['model', 'field'],
-		data () {
-			return {
-				nextField: this.field + 20,
-				styleOb: {
-					marginLeft: this.field + 'px',
-				},
-				open: false
-			}
-		},
-		computed: {
-			isFolder: function () {
-				return this.model.children &&
-				this.model.children.length
-			}
-		},
-		mounted() {
-			this.openStartMenu()
-		},
-		methods: {
-			deleteCateg(){
-				this.$root.$emit('deleteCat', this.model.id);
-			},
-			openStartMenu(){
-				if (this.model.id == 60){
-					this.open = true;
-				}
-			},
-			getPopoverId(id){
-				return "popover" + id;
-			},
-			getHrefEdit(id){
-				return '/menu/category_prod_cards/edit/' + id;
-			},
-			/*async deleteCategory(id){
+export default {
+  name: 'item',
+  template: '#item-template',
+  props: ['model', 'field'],
+  data() {
+    return {
+      nextField: this.field + 20,
+      styleOb: {
+        marginLeft: `${this.field}px`,
+      },
+      open: false,
+    };
+  },
+  computed: {
+    isFolder() {
+      return this.model.children
+				&& this.model.children.length;
+    },
+  },
+  mounted() {
+    this.openStartMenu();
+  },
+  methods: {
+    deleteCateg() {
+      this.$root.$emit('deleteCat', this.model.id);
+    },
+    openStartMenu() {
+      if (this.model.id == 60) {
+        this.open = true;
+      }
+    },
+    getPopoverId(id) {
+      return `popover${id}`;
+    },
+    getHrefEdit(id) {
+      return `/menu/category_prod_cards/edit/${id}`;
+    },
+    /* async deleteCategory(id){
 				console.log(id);
 				const response = await ProductsService.deleteCategory(id);
 
@@ -98,14 +98,14 @@
 					this.category = [];
 					this.getCategories();
 				}
-			},*/
-			toggle: function () {
-				if (this.isFolder) {
-					this.open = !this.open
-				}
-			},
-		}
-	}
+			}, */
+    toggle() {
+      if (this.isFolder) {
+        this.open = !this.open;
+      }
+    },
+  },
+};
 </script>
 
 <style src="../../../static/style/main.css"></style>

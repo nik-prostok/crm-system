@@ -133,7 +133,6 @@
 						</div>
 					</div>
 
-					
 
 					<hr class="hr-page">
 					<button type="button" @click="sendIng" class="btn btn-success btn-lg btn-save">
@@ -147,75 +146,74 @@
 </template>
 
 <script>
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
-	export default {
-		name: 'add_products',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data() {
-			return {
-				stateSaving: false,
-				mod: 'without_mod',
-				with_mod: false,
-				without_mod: true,
-				countMod: 1,
+export default {
+  name: 'add_products',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      stateSaving: false,
+      mod: 'without_mod',
+      with_mod: false,
+      without_mod: true,
+      countMod: 1,
 
-				key: null,
-				roundParamList: [
-				{
-					title: 'Округлять',
-					value: '1',
-				},
-				{
-					title: 'Не округлять',
-					value: '0',
-				}
-				],
+      key: null,
+      roundParamList: [
+        {
+          title: 'Округлять',
+          value: '1',
+        },
+        {
+          title: 'Не округлять',
+          value: '0',
+        },
+      ],
 
-				unitIng: ["кг", "шт", "л"],
-				categoriesIng:[],
-				/*{id: 1,title:"Первая категория"},{id: 2, title:"Вторая категория"}*/
+      unitIng: ['кг', 'шт', 'л'],
+      categoriesIng: [],
+      /* {id: 1,title:"Первая категория"},{id: 2, title:"Вторая категория"} */
 
-				ingridient: {
-					title: '',
-					cat_id: '',
-					unit: 'кг',
-					losses_clean: 0,
-					losses_cooking: 0,
-					losses_frying: 0,
-					losses_stew: 0,
-					losses_bak: 0,
-					round: null,
-					weight: null,
-				},
-			}
-		},
-		mounted() {
-			this.fetchCategoryIng();
-		},
-		methods: {
-			async sendIng(){
-				this.ingridient.cat_id = this.ingridient.category.cat_id;
-				if (this.ingridient.round != null) 
-					this.ingridient.round = this.ingridient.round.value;
-				ProductsService.addIngridients(this.ingridient)
-				this.$router.push('/menu/ingridients')
-			},
-			async fetchCategoryIng(){
-				const response = await ProductsService.fetchCategoryIng();
-				console.log(response.data)
-				this.categoriesIng = response.data
-			}
-		},
-		computed: {
+      ingridient: {
+        title: '',
+        cat_id: '',
+        unit: 'кг',
+        losses_clean: 0,
+        losses_cooking: 0,
+        losses_frying: 0,
+        losses_stew: 0,
+        losses_bak: 0,
+        round: null,
+        weight: null,
+      },
+    };
+  },
+  mounted() {
+    this.fetchCategoryIng();
+  },
+  methods: {
+    async sendIng() {
+      this.ingridient.cat_id = this.ingridient.category.cat_id;
+      if (this.ingridient.round != null) { this.ingridient.round = this.ingridient.round.value; }
+      ProductsService.addIngridients(this.ingridient);
+      this.$router.push('/menu/ingridients');
+    },
+    async fetchCategoryIng() {
+      const response = await ProductsService.fetchCategoryIng();
+      console.log(response.data);
+      this.categoriesIng = response.data;
+    },
+  },
+  computed: {
 
-		},
-	}
+  },
+};
 </script>
 
 <style lang="scss">

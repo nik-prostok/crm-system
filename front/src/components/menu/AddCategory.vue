@@ -173,76 +173,72 @@
 <script>
 import Vue from 'vue';
 
-import ProductsService from '@/services/menu/ProductsService'
-import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
 export default {
-	name: 'add_products',
-	components: {
-		'sidebar': Sidebar,
-	},
-	data() {
-		return {
-			stateSaving: false,
-			mod: 'without_mod',
-			with_mod: false,
-			without_mod: true,
-			countMod: 1,
+  name: 'add_products',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      stateSaving: false,
+      mod: 'without_mod',
+      with_mod: false,
+      without_mod: true,
+      countMod: 1,
 
-			avatar: null,
+      avatar: null,
 
-			key: null,
+      key: null,
 
-			parent: null,
+      parent: null,
 
-			categories: [],
+      categories: [],
 
-			category: {
-				title: '',
-				parent_id: null,
-				color: '',
+      category: {
+        title: '',
+        parent_id: null,
+        color: '',
 
-			},
-		}
-	},
-	mounted() {
-		this.getCategories()
-	},
-	methods: {
-		resetFile(){
-			this.avatar = null;
-		},
-		selectFile(){
-			$("#upload:hidden").trigger('click');
-		},
-		async sendProducts(){
+      },
+    };
+  },
+  mounted() {
+    this.getCategories();
+  },
+  methods: {
+    resetFile() {
+      this.avatar = null;
+    },
+    selectFile() {
+      $('#upload:hidden').trigger('click');
+    },
+    async sendProducts() {
+      console.log(this.category);
 
-			console.log(this.category);
+      this.category.parent_id = this.parent.id;
 
-			this.category.parent_id = this.parent.id;
+      const formData = new FormData();
+      formData.append('category', JSON.stringify(this.category));
+      formData.append('avatar', this.avatar);
 
-			var formData = new FormData();
-			formData.append('category', JSON.stringify(this.category))
-			formData.append('avatar', this.avatar);
+      ProductsService.addCategory(formData);
 
-			ProductsService.addCategory(formData)
+      this.$router.push('/menu/category_prod_cards');
+    },
+    async getCategories() {
+      const res = await ProductsService.fetchCategories();
+      console.log(res);
+      this.categories = res.data.map(item => ({ id: item.id, title: item.title }));
+    },
 
-			this.$router.push('/menu/category_prod_cards')
+  },
+  computed: {
 
-		},
-		async getCategories (){
-			var res = await ProductsService.fetchCategories()
-			console.log(res);
-			this.categories = res.data.map((item) => {
-				return {id: item.id, title: item.title}
-			})
-		},
-
-	},
-	computed: {
-
-	},
-}
+  },
+};
 </script>
 
 <style lang="scss">

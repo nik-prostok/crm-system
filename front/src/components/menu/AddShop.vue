@@ -55,47 +55,47 @@
 </template>
 
 <script>
-	import Vue from 'vue';
+import Vue from 'vue';
 
-	import ProductsService from '@/services/menu/ProductsService'
-	import Sidebar from '@/components/Sidebar'
+import ProductsService from '@/services/menu/ProductsService';
+import Sidebar from '@/components/Sidebar';
 
-	export default {
-		name: 'add_products',
-		components: {
-			'sidebar': Sidebar,
-		},
-		data() {
-			return {
-				stateSaving: false,
-				mod: 'without_mod',
-				with_mod: false,
-				without_mod: true,
-				countMod: 1,
+export default {
+  name: 'add_products',
+  components: {
+    sidebar: Sidebar,
+  },
+  data() {
+    return {
+      stateSaving: false,
+      mod: 'without_mod',
+      with_mod: false,
+      without_mod: true,
+      countMod: 1,
 
-				key: null,
+      key: null,
 
-				categories: [],
+      categories: [],
 
-				shop: {
-					title: '',
-					print_runners: false,
-				},
-			}
-		},
-		mounted() {
-			
-		},
-		methods: {
-			async sendShop(){
-				ProductsService.addShop(this.shop)
-				this.$router.push('/menu/shops')
-			},
-		},
-		computed: {
-			
-		},
-	}
+      shop: {
+        title: '',
+        print_runners: false,
+      },
+    };
+  },
+  mounted() {
+
+  },
+  methods: {
+    async sendShop() {
+      ProductsService.addShop(this.shop);
+      this.$router.push('/menu/shops');
+    },
+  },
+  computed: {
+
+  },
+};
 </script>
 
 <style lang="scss">
