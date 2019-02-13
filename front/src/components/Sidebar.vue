@@ -14,7 +14,7 @@
 
 				<a :href=getHref(item.id) data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
 					<div class="d-flex w-100 justify-content-start align-items-center">
-						<span class="mr-3" v-on:click="navAction"><img :src=item.icon style="width: 23px; height: 16;"></span>
+						<span class="mr-3" v-on:click="navAction"><img :src="item.icon" style="width: 23px; height: 16;"></span>
 						<span class="menu-collapsed">{{item.title}}</span>
 						<span class="ml-3"><font-awesome-icon icon="caret-down"/></span>
 					</div>
@@ -248,28 +248,18 @@ export default {
     };
   },
   mounted() {
-    this.SidebarCollapse();
+
   },
   methods: {
     navAction() {
+      console.log('click')
       if (this.stateNav == true) {
         document.getElementById('mySidenav').style.width = '60px';
-        $('.menu-collapsed').toggleClass('d-none');
-        $('.sidebar-submenu').toggleClass('d-none');
-        // $('#mySidenav').toggleClass('sidebar-expanded sidebar-collapsed')
         this.stateNav = false;
       } else {
         document.getElementById('mySidenav').style.width = '230px';
-        $('.menu-collapsed').toggleClass('d-none');
-        $('.sidebar-submenu').toggleClass('d-none');
-        $('#mySidenav').toggleClass('sidebar-expanded sidebar-collapsed');
         this.stateNav = true;
       }
-    },
-    SidebarCollapse() {
-      $('.menu-collapsed').toggleClass('d-none');
-      $('.sidebar-submenu').toggleClass('d-none');
-      $('#mySidenav').toggleClass('sidebar-expanded sidebar-collapsed');
     },
     getHref(id) {
       return (`#${id}`);

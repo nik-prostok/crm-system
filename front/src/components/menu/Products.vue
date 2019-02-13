@@ -1,465 +1,659 @@
 <template>
-	<div class="products">
+  <div class="products">
+    <!-- Bootstrap row -->
+    <div class="row no-gutters" id="body-row">
+      <!-- MAIN -->
+      <div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
+        <sidebar></sidebar>
+      </div>
 
-		<!-- Bootstrap row -->
-		<div class="row no-gutters" id="body-row">
-			<!-- MAIN -->
-			<div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
-				<sidebar></sidebar>
-			</div>
+      <div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
+        <!-- <button @click="getProducts" class="btn">Обновить...</button> -->
+        <div id="printMe">
+          <div class="container-fluid mt-2 pl-0">
+            <div class="row">
+              <div class="col-md-4 col-lg-5">
+                <h1 class="head-text mt-3">Товары
+                  <small class="text-muted">{{length}}</small>
+                </h1>
+              </div>
+              <div class="col-md-8 col-lg-7">
+                <div class="float-right">
+                  <div class="btn-shadow btn-group btn-group-custom mt-3" role="group">
+                    <button
+                      type="button"
+                      class="btn btn-custom-border"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <img
+                        class="img-button"
+                        id="img-button-export"
+                        src="/static/image/icon1.png"
+                        alt="icon"
+                      >
+                    </button>
+                    <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
+                      <a mb-2>Отображать столбцы</a>
+                      >
+                      <div v-for="(item, key) in NameColumn ">
+                        <div class="form-check dropdown-item">
+                          <input
+                            class="form-check-input"
+                            v-model="selectColumn"
+                            v-bind:value="item"
+                            type="checkbox"
+                            v-bind:id="item"
+                          >
+                          <label class="form-check-label" v-bind:for="item">{{item}}</label>
+                        </div>
+                      </div>
+                    </div>
+                    <button type="button" class="btn btn-custom-border">
+                      <a class="main-text">Экcпорт</a>
+                    </button>
+                    <button @click="print" type="button" class="btn btn-custom-border">
+                      <img class="img-button" src="/static/image/print.png" alt="icon">
+                      <a class="main-text">Печать</a>
+                    </button>
+                  </div>
 
+                  <router-link
+                    class="btn-group btn-group-custom mt-3"
+                    style="text-decoration: none;"
+                    to="/menu/products/add"
+                  >
+                    <div class="btn btn-shadow btn-custom-border main-text" tag="button">
+                      <a class="main-text" style="text-decoration: none;">Добавить товар</a>
+                    </div>
+                  </router-link>
+                </div>
+              </div>
+            </div>
 
-			<div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
-				<!-- <button @click="getProducts" class="btn">Обновить...</button> -->
-				<div id="printMe">
-					<div class="container-fluid mt-2 pl-0">
-						<div class="row">
-							<div class="col-md-4 col-lg-5">
-								<h1 class="head-text mt-3">Товары <small class="text-muted">{{length}}</small></h1>
-							</div>
-							<div class="col-md-8 col-lg-7">
-								<div class="float-right">
-									<div class="btn-shadow btn-group btn-group-custom mt-3 " role="group">
+            <hr class="line mt-4">
 
+            <div class="row">
+              <div class="col-md-7 col-lg-2 col-xl-4">
+                <div class="form-group inner-addon">
+                  <div class="left-addon">
+                    <img class="fas fa-search" src="/static/image/search.png">
+                  </div>
+                  <div v-if="search != ''" class="right-addon">
+                    <button class="fas btn-container" v-on:click="search = ''">
+                      <img src="/static/image/close.png">
+                    </button>
+                  </div>
+                  <input
+                    type="text"
+                    ref="search"
+                    class="form-control search pl-5"
+                    id="search"
+                    placeholder="Быстрый поиск"
+                    v-model="search"
+                  >
+                </div>
+              </div>
+              <div class="col-md-5 col-lg-10 col-xl-8">
+                <div class="text-center btn-shadow btn-group btn-group-custom mb-3" role="group">
+                  <div class="btn-group btn-group-toggle" role="group">
+                    <button
+                      type="button"
+                      class="btn btn-custom-border"
+                      style=" border-radius: 16px 0 0px 16px;"
+                      data-toggle="dropdown"
+                      aria-haspopup="false"
+                      aria-expanded="false"
+                    >
+                      <a class="main-text">Категории</a>
+                      <img class="m-1" src="/static/image/down.png" alt="down">
+                    </button>
+                    <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
+                      <div class="group mr-3 ml-3 mb-2">
+                        <input
+                          type="text"
+                          ref="search"
+                          class="form-control search-cat"
+                          placeholder="Поиск..."
+                          v-model="selectCategoriesSearch"
+                        >
+                      </div>
+                      <div v-for="(item, key) in FilterCategories ">
+                        <div class="form-check dropdown-item">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            v-bind:id="item.title"
+                            v-model="selectCategories"
+                            v-bind:value="item.title"
+                          >
+                          <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-custom-border ml-2 mb-1"
+                        v-on:click="selectCategories = [] "
+                      >Очистить</button>
+                    </div>
+                  </div>
 
-										<button type="button" class="btn btn-custom-border" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="img-button" id="img-button-export" src="/static/image/icon1.png" alt="icon">
-										</button>
-										<div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1"  >
-											<a mb-2>Отображать столбцы</a>
-											>
-											<div v-for="(item, key) in NameColumn " >
-												<div class="form-check dropdown-item">
-													<input class="form-check-input"   v-model="selectColumn" v-bind:value="item" type="checkbox" v-bind:id="item">
-													<label class="form-check-label" v-bind:for="item">
-														{{item}}
-													</label>
-												</div>
-											</div>
-										</div>
-										<button type="button" class="btn btn-custom-border"><a class="main-text">Экcпорт</a></button>
-										<button @click="print" type="button" class="btn btn-custom-border">
-											<img class="img-button" src="/static/image/print.png" alt="icon">
-											<a class="main-text">Печать</a>
-										</button>
-									</div>
+                  <div class="btn-group btn-group-toggle" role="group">
+                    <button
+                      type="button"
+                      style="border-radius: 0px 16px 16px 0px;"
+                      class="btn btn-custom-border"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <a class="main-text">Цех</a>
+                      <img class="m-1" src="/static/image/down.png" alt="down">
+                    </button>
+                    <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
+                      <div class="group mr-3 ml-3 mb-2">
+                        <input
+                          type="text"
+                          ref="search"
+                          class="form-control search-cat"
+                          placeholder="Поиск..."
+                          v-model="selectShopsSearch"
+                        >
+                      </div>
+                      <div v-for="(item, key) in FilterShops ">
+                        <div class="form-check dropdown-item">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            v-bind:id="item.title"
+                            v-model="selectShops"
+                            v-bind:value="item.title"
+                          >
+                          <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        class="btn btn-custom-border ml-2 mb-1"
+                        v-on:click="selectShops = [] "
+                      >Очистить</button>
+                    </div>
+                  </div>
+                </div>
 
-									<router-link class=" btn-group btn-group-custom mt-3" style="text-decoration: none;" to="/menu/products/add">
-										<div class="btn btn-shadow btn-custom-border main-text "  tag="button">
-											<a class="main-text" style="text-decoration: none;">Добавить товар</a>
-										</div>
-									</router-link>
-								</div>
+                <div
+                  v-for="(item, index) in selectFiltersNames"
+                  class="btn-shadow btn-group btn-group-custom mr-2 mb-3"
+                >
+                  <a class="main-text btn mt-1">{{item}}</a>
+                  <button class="btn-transparent" v-on:click="deleteFilter(index)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
 
+                <button id="popoverButton-event" class="btn btn-filter mb-3">
+                  <img src="/static/image/+.png" alt="+">
+                  Фильтр
+                </button>
+                <b-popover
+                  ref="popover"
+                  placement="bottom"
+                  target="popoverButton-event"
+                  triggers="focus"
+                  title="Показать только те, в которых:"
+                >
+                  <div class="mr-1 ml-1">
+                    <div class="text-center" v-if="FilterFilter.length === 0">Нет параметров</div>
+                    <div class="mb-2">
+                      <multiselect
+                        v-model="selectFilterSearch"
+                        :multiple="false"
+                        :close-on-select="true"
+                        :options="FilterFilter"
+                      ></multiselect>
+                    </div>
+                    <div v-if="getNameFilterList.indexOf(selectFilterSearch) > -1">
+                      <div class="mb-2">
+                        <multiselect
+                          v-model="selectConditionSearch"
+                          :multiple="false"
+                          :close-on-select="true"
+                          :options="getOptionsFilter"
+                        ></multiselect>
+                      </div>
+                      <div v-if="selectFilterSearch != 'Цех'" class="mb-2">
+                        <input
+                          @keyup.enter="addFilter"
+                          type="text"
+                          ref="search"
+                          class="form-control search-cat"
+                          placeholder="Введите..."
+                          v-model="countFilterValue"
+                        >
+                      </div>
+                    </div>
+                    <div class="container-fluid mt-1">
+                      <b-btn @click="addFilter">Добавить</b-btn>
+                      <b-btn @click="clearFilter">Очистить</b-btn>
+                    </div>
+                  </div>
+                </b-popover>
+              </div>
+            </div>
 
-							</div>
-						</div>
+            <div class="mt-4">
+              <div class="table-responsive">
+                <table class="table table-custom table-bordered">
+                  <thead>
+                    <tr class="tr-th-custom">
+                      <th
+                        @click="sortEvent('title')"
+                        class="td-th-custom"
+                        v-if="((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))"
+                      >Название
+                        <div v-if="sortColumn == 'title'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('count')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))"
+                      >Категория
+                        <div v-if="sortColumn == 'category'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('barcode')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))"
+                      >Штрихкод
+                        <div v-if="sortColumn == 'barcode'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('SKU')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))"
+                      >SKU
+                        <div v-if="sortColumn == 'SKU'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('shop')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
+                      >Цех
+                        <div v-if="sortColumn == 'shop'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('types')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"
+                      >Тип
+                        <div v-if="sortColumn == 'types'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('weight_goods')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))"
+                      >Весовой товар
+                        <div v-if="sortColumn == 'weight_goods'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('unit')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))"
+                      >Единица измерения
+                        <div v-if="sortColumn == 'unit'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('self_cost')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))"
+                      >Себестоимость
+                        <div v-if="sortColumn == 'self_cost'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('price')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))"
+                      >Цена
+                        <div v-if="sortColumn == 'price'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('profit')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))"
+                      >Прибыль
+                        <div v-if="sortColumn == 'profit'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th
+                        @click="sortEvent('markup')"
+                        class="td-th-custom"
+                        v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))"
+                      >Наценка
+                        <div v-if="sortColumn == 'markup'">
+                          <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
+                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                        </div>
+                      </th>
+                      <th class="td-th-custom" style="width: 50px;"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="tr-td-custom" v-for="product in FilterProducts">
+                      <td
+                        class="td-custom"
+                        v-if=" ((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))"
+                      >
+                        <div class="row no-gutters">
+                          <div v-if="product.photo != 'null'" class="col-6">
+                            <!-- style="height: 40px; width: auto;"  -->
+                            <img class="img-fluid" :src="product.photo" alt>
+                          </div>
+                          <div v-else class="rectangle col-6">
+                            <div :class="product.color" class="h-100">
+                              <p
+                                style="color: white; text-align: center;"
+                                class="pt-2"
+                              >{{ product.title.slice(0,1) }}</p>
+                            </div>
+                          </div>
+                          <div class="col-6 align-self-center">{{ product.title }}</div>
+                          <div
+                            class="col-6 align-self-center"
+                            v-if="product.title==null"
+                          >{{ product.title_product }}</div>
+                        </div>
+                      </td>
 
-						<hr class="line mt-4">
-
-						<div class="row">
-
-							<div class="col-md-7 col-lg-2 col-xl-4">
-								<div class="form-group inner-addon ">
-									<div class="left-addon">
-										<img class="fas fa-search" src="/static/image/search.png">
-									</div>
-									<div v-if="search != ''" class="right-addon">
-										<button class="fas btn-container" v-on:click="search = ''">
-											<img src="/static/image/close.png">
-										</button>
-									</div>
-									<input type="text" ref="search" class="form-control search pl-5" id="search" placeholder="Быстрый поиск" v-model="search">
-								</div>
-
-
-							</div>
-							<div class="col-md-5 col-lg-10 col-xl-8">
-								<div class="text-center btn-shadow btn-group btn-group-custom mb-3" role="group">
-									<div class="btn-group btn-group-toggle" role="group">
-										<button type="button" class="btn btn-custom-border" style=" border-radius: 16px 0 0px 16px;" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-											<a class="main-text">Категории </a>
-											<img class="m-1" src="/static/image/down.png" alt="down">
-										</button>
-										<div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1"  >
-											<div class="group mr-3 ml-3 mb-2">
-												<input type="text" ref="search" class="form-control search-cat" placeholder="Поиск..." v-model="selectCategoriesSearch">
-											</div>
-											<div v-for="(item, key) in FilterCategories " >
-												<div class="form-check dropdown-item" >
-													<input class="form-check-input"  type="checkbox"  v-bind:id="item.title" v-model="selectCategories" v-bind:value="item.title">
-													<label class="form-check-label" v-bind:for="item.title">
-														{{item.title}}
-													</label>
-												</div>
-											</div>
-											<button type="button" class="btn btn-custom-border ml-2 mb-1"v-on:click="selectCategories = [] ">Очистить</button>
-										</div>
-									</div>
-
-									<div class="btn-group btn-group-toggle" role="group">
-										<button type="button" style="border-radius: 0px 16px 16px 0px;" class="btn btn-custom-border" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<a class="main-text">Цех</a><img class="m-1" src="/static/image/down.png" alt="down">
-										</button>
-										<div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1"  >
-											<div class="group mr-3 ml-3 mb-2">
-												<input type="text" ref="search" class="form-control search-cat" placeholder="Поиск..." v-model="selectShopsSearch">
-											</div>
-											<div v-for="(item, key) in FilterShops " >
-												<div class="form-check dropdown-item" >
-													<input class="form-check-input"  type="checkbox"  v-bind:id="item.title" v-model="selectShops" v-bind:value="item.title">
-													<label class="form-check-label" v-bind:for="item.title">
-														{{item.title}}
-													</label>
-												</div>
-											</div>
-											<button type="button" class="btn btn-custom-border ml-2 mb-1"v-on:click="selectShops = [] ">Очистить</button>
-										</div>
-									</div>
-								</div>
-
-								<div v-for="(item, index) in selectFiltersNames" class="btn-shadow btn-group btn-group-custom mr-2 mb-3">
-									<a class="main-text btn mt-1">{{item}}</a>
-									<button class="btn-transparent" v-on:click="deleteFilter(index)"><i class="fas fa-times"></i></button>
-								</div>
-
-
-								<button id="popoverButton-event" class="btn btn-filter mb-3">
-									<img src="/static/image/+.png" alt="+">
-									Фильтр
-								</button>
-								<b-popover ref="popover" placement="bottom" target="popoverButton-event" triggers="focus" title="Показать только те, в которых:">
-									<div class="mr-1 ml-1">
-										<div class="text-center" v-if="FilterFilter.length === 0">Нет параметров</div>
-										<div class="mb-2">
-											<multiselect v-model="selectFilterSearch" :multiple="false" :close-on-select="true" :options="FilterFilter"></multiselect>
-										</div>
-										<div v-if="getNameFilterList.indexOf(selectFilterSearch) > -1">
-											<div class="mb-2">
-												<multiselect v-model="selectConditionSearch" :multiple="false" :close-on-select="true" :options="getOptionsFilter"></multiselect>
-											</div>
-											<div v-if="selectFilterSearch != 'Цех'" class="mb-2">
-												<input @keyup.enter="addFilter" type="text" ref="search" class="form-control search-cat" placeholder="Введите..." v-model="countFilterValue">
-											</div>
-										</div>
-										<div class="container-fluid mt-1">
-											<b-btn @click="addFilter">Добавить</b-btn>
-											<b-btn @click="clearFilter">Очистить</b-btn>
-										</div>
-									</div>
-								</b-popover>
-							</div>
-						</div>
-
-						<div class="mt-4">
-							<div class="table-responsive">
-								<table class="table table-custom table-bordered">
-									<thead>
-										<tr class="tr-th-custom">
-											<th @click="sortEvent('title')" class="td-th-custom" v-if="((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))">Название
-												<div v-if="sortColumn == 'title'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('count')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))">
-												Категория
-												<div v-if="sortColumn == 'category'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('barcode')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))">
-												Штрихкод
-												<div v-if="sortColumn == 'barcode'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('SKU')" class="td-th-custom" v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))">
-												SKU
-												<div v-if="sortColumn == 'SKU'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('shop')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))">
-												Цех
-												<div v-if="sortColumn == 'shop'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('types')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))">
-												Тип
-												<div v-if="sortColumn == 'types'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('weight_goods')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))">
-												Весовой товар
-												<div v-if="sortColumn == 'weight_goods'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('unit')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))">
-												Единица измерения
-												<div v-if="sortColumn == 'unit'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('self_cost')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))">
-												Себестоимость
-												<div v-if="sortColumn == 'self_cost'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('price')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))">
-												Цена
-												<div v-if="sortColumn == 'price'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('profit')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))">
-												Прибыль
-												<div v-if="sortColumn == 'profit'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th @click="sortEvent('markup')" class="td-th-custom" v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))">
-												Наценка
-												<div v-if="sortColumn == 'markup'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-												</div>
-											</th>
-											<th class="td-th-custom" style="width: 50px;">
-
-											</th>
-										</tr>
-									</thead>
-									<tbody >
-										<tr class="tr-td-custom" v-for="product in FilterProducts">
-
-											<td class="td-custom" v-if=" ((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))" >
-												<div class="row no-gutters">
-													<div v-if="product.photo != 'null'" class="col-6">
-														<!-- style="height: 40px; width: auto;"  -->
-														<img class="img-fluid" :src=product.photo alt="">
-													</div>
-													<div v-else class="rectangle col-6">
-														<div :class=product.color class="h-100">
-															<p style="color: white; text-align: center;" class="pt-2">{{ product.title.slice(0,1) }}</p>
-														</div>
-													</div>
-													<div class="col-6 align-self-center">{{ product.title }}</div>
-													<div class="col-6 align-self-center" v-if="product.title==null">{{ product.title_product }}</div>
-												</div>
-											</td>
-
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))">{{product.category}}</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))">
-												{{product.bar_code}}
-											</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))">{{product.SKU}}</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))">{{product.shop}}</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))">
-												<p  v-if="product.title_product!=undefined">Модификация</p>
-												<p  v-else>Товар</p>
-
-											</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))">
-												<div v-if="product.weight_goods == 1">
-													Да
-												</div>
-												<div v-if="product.weight_goods == 0">
-													Нет
-												</div>
-												<div v-if="product.weight_goods == undefined">
-													-
-												</div>
-											</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))">{{product.unit}}</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))">
-												<div v-if="product.self_cost != undefined">
-													{{product.self_cost}} <i class="fas fa-ruble-sign ml-1"></i>
-												</div>
-												<div v-else>-</div>
-											</td>
-											<td class="td-custom align-middle" v-if="((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))">
-												<div v-if="product.price != undefined">
-													{{product.price}} <i class="fas fa-ruble-sign ml-1"></i>
-												</div>
-												<div v-else>-</div>
-											</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))">
-												<div v-if="product.profit != undefined">
-													{{product.profit}}<i class="fas fa-ruble-sign ml-1"></i>
-												</div>
-												<div v-else>-</div>
-											</td>
-											<td class="td-custom align-middle" v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))">
-												<div v-if="product.markup != undefined">
-													{{product.markup}} <i class="fas fa-percent ml-1"></i>
-												</div>
-												<div v-else>-</div>
-											</td>
-											<td class="td-custom align-middle">
-												<div  v-if="product.title_product==undefined" class="d-flex flex-row">
-													<div class="mr-2">
-														<b-link :to=getHrefEdit(product.id) class="main-text">
-															<div class="link-blue link-hover">Ред.</div>
-														</b-link>
-													</div>
-													<div class="ml-2">
-														<button class="btn-icon popoverButton" :id=getPopoverId(product.id)>
-															<i class="fa fa-ellipsis-h"></i>
-														</button>
-														<b-popover :target=getPopoverId(product.id) triggers="focus">
-															<ul class="actions-popover">
-																<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Копировать</a></li>
-																<li class="action-item"><a style="text-decoration: none;" href="" class="main-text">Скрыть во всех заведениях</a></li>
-																<li @click=deleteProduct(product.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
-															</ul>
-														</b-popover>
-													</div>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<p class="text-center" v-if=" FilterProducts.length == 0 "> Нет товаров, подходящим по выбранным фильтрам.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div><!-- body-row END -->
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))"
+                      >{{product.category}}</td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))"
+                      >{{product.bar_code}}</td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))"
+                      >{{product.SKU}}</td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
+                      >{{product.shop}}</td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"
+                      >
+                        <p v-if="product.title_product!=undefined">Модификация</p>
+                        <p v-else>Товар</p>
+                      </td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))"
+                      >
+                        <div v-if="product.weight_goods == 1">Да</div>
+                        <div v-if="product.weight_goods == 0">Нет</div>
+                        <div v-if="product.weight_goods == undefined">-</div>
+                      </td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))"
+                      >{{product.unit}}</td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))"
+                      >
+                        <div v-if="product.self_cost != undefined">
+                          {{product.self_cost}}
+                          <i class="fas fa-ruble-sign ml-1"></i>
+                        </div>
+                        <div v-else>-</div>
+                      </td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if="((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))"
+                      >
+                        <div v-if="product.price != undefined">
+                          {{product.price}}
+                          <i class="fas fa-ruble-sign ml-1"></i>
+                        </div>
+                        <div v-else>-</div>
+                      </td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))"
+                      >
+                        <div v-if="product.profit != undefined">
+                          {{product.profit}}
+                          <i class="fas fa-ruble-sign ml-1"></i>
+                        </div>
+                        <div v-else>-</div>
+                      </td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))"
+                      >
+                        <div v-if="product.markup != undefined">
+                          {{product.markup}}
+                          <i class="fas fa-percent ml-1"></i>
+                        </div>
+                        <div v-else>-</div>
+                      </td>
+                      <td class="td-custom align-middle">
+                        <div v-if="product.title_product==undefined" class="d-flex flex-row">
+                          <div class="mr-2">
+                            <b-link :to="getHrefEdit(product.id)" class="main-text">
+                              <div class="link-blue link-hover">Ред.</div>
+                            </b-link>
+                          </div>
+                          <div class="ml-2">
+                            <button class="btn-icon popoverButton" :id="getPopoverId(product.id)">
+                              <i class="fa fa-ellipsis-h"></i>
+                            </button>
+                            <b-popover :target="getPopoverId(product.id)" triggers="focus">
+                              <ul class="actions-popover">
+                                <li class="action-item">
+                                  <a
+                                    style="text-decoration: none;"
+                                    href
+                                    class="main-text"
+                                  >Копировать</a>
+                                </li>
+                                <li class="action-item">
+                                  <a
+                                    style="text-decoration: none;"
+                                    href
+                                    class="main-text"
+                                  >Скрыть во всех заведениях</a>
+                                </li>
+                                <li @click="deleteProduct(product.id)" class="action-item">
+                                  <a style="text-decoration: none;" class="main-text">Удалить</a>
+                                </li>
+                              </ul>
+                            </b-popover>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p
+                class="text-center"
+                v-if=" FilterProducts.length == 0 "
+              >Нет товаров, подходящим по выбранным фильтрам.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+import Vue from "vue";
 
-import Vue from 'vue';
-
-import ProductsService from '@/services/menu/ProductsService';
-import Sidebar from '@/components/Sidebar';
+import ProductsService from "@/services/menu/ProductsService";
+import Sidebar from "@/components/Sidebar";
 
 const menuListWord = [
   {
-    title: 'Равно',
-    sign: '==',
+    title: "Равно",
+    sign: "=="
   },
   {
-    title: 'Не равно',
-    sign: '!=',
+    title: "Не равно",
+    sign: "!="
   },
   {
-    title: 'Содержит',
-    sign: '.indexOf',
-  }];
+    title: "Содержит",
+    sign: ".indexOf"
+  }
+];
 
 const menuListNum = [
   {
-    title: 'Больше',
-    sign: '>',
+    title: "Больше",
+    sign: ">"
   },
   {
-    title: 'Меньше',
-    sign: '<',
+    title: "Меньше",
+    sign: "<"
   },
   {
-    title: 'Равно',
-    sign: '==',
+    title: "Равно",
+    sign: "=="
   },
   {
-    title: 'Не равно',
-    sign: '!=',
-  }];
+    title: "Не равно",
+    sign: "!="
+  }
+];
 const menuListType = [
   {
-    title: 'Товар',
-    sign: 'tovar',
+    title: "Товар",
+    sign: "tovar"
   },
   {
-    title: 'Модификация товара',
-    sign: 'modif',
-  },
+    title: "Модификация товара",
+    sign: "modif"
+  }
 ];
 const menuListWeightGoods = [
   {
-    title: 'Да',
-    sign: '==1',
+    title: "Да",
+    sign: "==1"
   },
   {
-    title: 'Нет',
-    sign: '==0',
-  },
+    title: "Нет",
+    sign: "==0"
+  }
 ];
 
 export default {
-  name: 'products',
+  name: "products",
   components: {
-    sidebar: Sidebar,
+    sidebar: Sidebar
   },
   data() {
     return {
-      NameColumn: ['Название', 'Категория', 'Штрихкод', 'SKU', 'Цех', 'Тип', 'Весовой товар', 'Ед.измерения', 'Себестоимость', 'Цена', 'Прибыль', 'Наценка'],
+      NameColumn: [
+        "Название",
+        "Категория",
+        "Штрихкод",
+        "SKU",
+        "Цех",
+        "Тип",
+        "Весовой товар",
+        "Ед.измерения",
+        "Себестоимость",
+        "Цена",
+        "Прибыль",
+        "Наценка"
+      ],
 
       filterList: [
         {
-          NameFilter: 'Название',
-          NameVar: 'title',
-          MenuList: this.getMenuListName(menuListWord),
+          NameFilter: "Название",
+          NameVar: "title",
+          MenuList: this.getMenuListName(menuListWord)
         },
         {
-          NameFilter: 'Штрихкод',
-          NameVar: 'bar_code',
-          MenuList: this.getMenuListName(menuListWord),
+          NameFilter: "Штрихкод",
+          NameVar: "bar_code",
+          MenuList: this.getMenuListName(menuListWord)
         },
         {
-          NameFilter: 'SKU',
-          NameVar: 'SKU',
-          MenuList: this.getMenuListName(menuListWord),
+          NameFilter: "SKU",
+          NameVar: "SKU",
+          MenuList: this.getMenuListName(menuListWord)
         },
         {
-          NameFilter: 'Тип',
-          NameVar: '',
-          MenuList: this.getMenuListName(menuListType),
+          NameFilter: "Тип",
+          NameVar: "",
+          MenuList: this.getMenuListName(menuListType)
         },
         {
-          NameFilter: 'Весовой товар',
-          NameVar: 'weight_goods',
-          MenuList: this.getMenuListName(menuListWeightGoods),
+          NameFilter: "Весовой товар",
+          NameVar: "weight_goods",
+          MenuList: this.getMenuListName(menuListWeightGoods)
         },
         {
-          NameFilter: 'Себестоимость',
-          NameVar: 'self_cost',
-          MenuList: this.getMenuListName(menuListWord),
+          NameFilter: "Себестоимость",
+          NameVar: "self_cost",
+          MenuList: this.getMenuListName(menuListWord)
         },
         {
-          NameFilter: 'Цена',
-          NameVar: 'price',
-          MenuList: this.getMenuListName(menuListNum),
+          NameFilter: "Цена",
+          NameVar: "price",
+          MenuList: this.getMenuListName(menuListNum)
         },
 
         {
-          NameFilter: 'Прибыль',
-          NameVar: 'profit',
-          MenuList: this.getMenuListName(menuListNum),
-        }, {
-          NameFilter: 'Наценка',
-          NameVar: 'markup',
-          MenuList: this.getMenuListName(menuListNum),
+          NameFilter: "Прибыль",
+          NameVar: "profit",
+          MenuList: this.getMenuListName(menuListNum)
         },
+        {
+          NameFilter: "Наценка",
+          NameVar: "markup",
+          MenuList: this.getMenuListName(menuListNum)
+        }
       ],
-      flagType: '',
+      flagType: "",
       products: [],
       filtered: [],
       categories: [],
@@ -467,48 +661,61 @@ export default {
       shops: [],
       length: 0,
       restaurants: [],
-      selectCategoriesSearch: '',
-      selectShopsSearch: '',
-      selectOficientsSearch: '',
-      search: '',
+      selectCategoriesSearch: "",
+      selectShopsSearch: "",
+      selectOficientsSearch: "",
+      search: "",
       sort: false,
       printFlag: false,
       selectCategories: [],
       selectShops: [],
       selectOficiants: [],
-      selectColumn: ['Название', 'Категория', 'Штрихкод', 'SKU', 'Цех', 'Тип', 'Весовой товар', 'Ед.измерения', 'Себестоимость', 'Цена', 'Прибыль', 'Наценка'],
+      selectColumn: [
+        "Название",
+        "Категория",
+        "Штрихкод",
+        "SKU",
+        "Цех",
+        "Тип",
+        "Весовой товар",
+        "Ед.измерения",
+        "Себестоимость",
+        "Цена",
+        "Прибыль",
+        "Наценка"
+      ],
 
-      selectFilterSearch: '',
-      selectConditionSearch: '',
-      countFilterValue: '',
-      selectFilter: '',
+      selectFilterSearch: "",
+      selectConditionSearch: "",
+      countFilterValue: "",
+      selectFilter: "",
       selectFilters: [],
       selectFiltersNames: [],
 
       startDate: 1539032429,
       endDate: 1546117229,
-      nameDate: '9 октября 2018 - 30 декабря 2018',
+      nameDate: "9 октября 2018 - 30 декабря 2018",
 
-      sortColumn: 'count',
+      sortColumn: "count"
     };
   },
   mounted() {
     this.getProducts();
-    this.getCategories();
-    this.getShops();
+    /* this.getCategories();
+    this.getShops(); */
   },
   watch: {
     $route() {
       this.getProducts();
-      this.getCategories();
-      this.getShops();
-    },
+     /*  this.getCategories();
+      this.getShops(); */
+    }
   },
   methods: {
     async deleteProduct(id) {
       console.log(id);
       const response = await ProductsService.deleteProduct({
-        id,
+        id
       });
 
       if (response.status == 200) {
@@ -517,15 +724,15 @@ export default {
       }
     },
     async getProducts() {
-      const response = await ProductsService.fetchProducts();
-      console.log(response);
+      const response = await ProductsService.fetchProducts().catch((err) => { console.log(err); });
+      console.log(response.data);
       this.products = response.data;
-      this.products.forEach((item) => {
-        if (item.photo != 'null') {
+      /* this.products.forEach(item => {
+        if (item.photo != "null") {
           item.photo = `http://89.223.27.152:8080/${item.photo}`;
           item.modalId = `modal${item.id}`;
         }
-      });
+      }); */
     },
     async getShops() {
       const response = await ProductsService.fetchShops();
@@ -539,61 +746,82 @@ export default {
       return `/menu/products/edit/${id}`;
     },
     print() {
-      this.$htmlToPaper('printMe');
+      this.$htmlToPaper("printMe");
     },
     clearFilter() {
-      this.selectFilterSearch = '';
-      this.selectConditionSearch = '';
-      this.countFilterValue = '';
+      this.selectFilterSearch = "";
+      this.selectConditionSearch = "";
+      this.countFilterValue = "";
     },
     filterBySearch(product) {
       if (this.search.length === 0) {
         return true;
       }
-      return product.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+      return (
+        product.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+      );
     },
     filterByCategory(product) {
       if (this.selectCategories.length === 0) {
         return true;
       }
-      return this.selectCategories.some(item => product.category.toLowerCase().indexOf(item.toLowerCase()) > -1);
+      return this.selectCategories.some(
+        item => product.category.toLowerCase().indexOf(item.toLowerCase()) > -1
+      );
     },
     filterByShop(product) {
       if (this.selectShops.length === 0) {
         return true;
       }
-      return this.selectShops.some(item => product.shop.toLowerCase().indexOf(item.toLowerCase()) > -1);
+      return this.selectShops.some(
+        item => product.shop.toLowerCase().indexOf(item.toLowerCase()) > -1
+      );
     },
 
     filterByONews(product) {
       if (this.selectFilters.length === 0) {
         return true;
       }
-      return this.selectFilters.every(item => this.filterByONews2(product, item));
+      return this.selectFilters.every(item =>
+        this.filterByONews2(product, item)
+      );
     },
     filterByDate(product) {
-      if ((this.startDate != 0) || (this.endDate != 0)) {
-        if ((product.date > this.startDate) && (product.date < this.endDate)) {
+      if (this.startDate != 0 || this.endDate != 0) {
+        if (product.date > this.startDate && product.date < this.endDate) {
           return true;
-        } return false;
-      } return true;
+        }
+        return false;
+      }
+      return true;
     },
     filterByONews2(product, val) {
-      try { // statements to try
+      try {
+        // statements to try
         if (val.length === 0) {
           return true;
         }
-        return (eval(val));
-      } catch (e) {
-      }
+        return eval(val);
+      } catch (e) {}
     },
     sortByColumn(productA, productB) {
-      if ((this.sortColumn == 'title') || (this.sortColumn == 'category') || (this.sortColumn == 'oficient') || (this.sortColumn == 'restaurant') || (this.sortColumn == 'shop')) {
+      if (
+        this.sortColumn == "title" ||
+        this.sortColumn == "category" ||
+        this.sortColumn == "oficient" ||
+        this.sortColumn == "restaurant" ||
+        this.sortColumn == "shop"
+      ) {
         if (this.sort) {
-          return productA[this.sortColumn].localeCompare(productB[this.sortColumn]);
+          return productA[this.sortColumn].localeCompare(
+            productB[this.sortColumn]
+          );
         }
-        return !productA[this.sortColumn].localeCompare(productB[this.sortColumn]);
-      } if (this.sort) {
+        return !productA[this.sortColumn].localeCompare(
+          productB[this.sortColumn]
+        );
+      }
+      if (this.sort) {
         return productA.count - productB.count;
       }
       return productB.count - productA.count;
@@ -610,28 +838,38 @@ export default {
       if (this.selectCategoriesSearch.length === 0) {
         return true;
       }
-      return categories.title.toLowerCase().indexOf(this.selectCategoriesSearch.toLowerCase()) > -1;
+      return (
+        categories.title
+          .toLowerCase()
+          .indexOf(this.selectCategoriesSearch.toLowerCase()) > -1
+      );
     },
     filterBySearchShops(shops) {
       if (this.selectShopsSearch.length === 0) {
         return true;
       }
-      return shops.title.toLowerCase().indexOf(this.selectShopsSearch.toLowerCase()) > -1;
+      return (
+        shops.title
+          .toLowerCase()
+          .indexOf(this.selectShopsSearch.toLowerCase()) > -1
+      );
     },
 
     filterBySearchfilter(NameFilter) {
       if (this.selectFilter.length === 0) {
         return true;
       }
-      return NameFilter.toLowerCase().indexOf(this.selectFilter.toLowerCase()) > -1;
+      return (
+        NameFilter.toLowerCase().indexOf(this.selectFilter.toLowerCase()) > -1
+      );
     },
 
     addFilter() {
       self = this;
 
       this.filterList.forEach((item, i) => {
-        let NameFilter = '';
-        if ((self.selectFilterSearch == item.NameFilter)) {
+        let NameFilter = "";
+        if (self.selectFilterSearch == item.NameFilter) {
           self.selectFilter = `product.${item.NameVar}`;
           NameFilter += item.NameFilter;
           console.log(self.selectFilter);
@@ -639,49 +877,70 @@ export default {
             if (self.selectConditionSearch == menuItem) {
               NameFilter += ` ${menuItem} ${self.countFilterValue}`;
 
-              if ((item.NameFilter == 'Название') || (item.NameFilter == 'Штрихкод') || (item.NameFilter == 'SKU')) {
-                if (menuItem == 'Содержит') {
-                  self.selectFilter += `${menuItem}("${self.countFilterValue}") > -1`;
-                  menuListWord.forEach((item) => {
-                    self.selectFilter = self.selectFilter.replace(item.title, item.sign);
+              if (
+                item.NameFilter == "Название" ||
+                item.NameFilter == "Штрихкод" ||
+                item.NameFilter == "SKU"
+              ) {
+                if (menuItem == "Содержит") {
+                  self.selectFilter += `${menuItem}("${
+                    self.countFilterValue
+                  }") > -1`;
+                  menuListWord.forEach(item => {
+                    self.selectFilter = self.selectFilter.replace(
+                      item.title,
+                      item.sign
+                    );
                   });
                 } else {
-                  self.selectFilter += `${menuItem}("${self.countFilterValue}")`;
-                  menuListWord.forEach((item) => {
-                    self.selectFilter = self.selectFilter.replace(item.title, item.sign);
+                  self.selectFilter += `${menuItem}("${
+                    self.countFilterValue
+                  }")`;
+                  menuListWord.forEach(item => {
+                    self.selectFilter = self.selectFilter.replace(
+                      item.title,
+                      item.sign
+                    );
                   });
                 }
-              } else if (item.NameFilter == 'Цех') {
-                self.selectFilter += `${'==' + "('"}${self.selectConditionSearch}')`;
+              } else if (item.NameFilter == "Цех") {
+                self.selectFilter += `${"==" + "('"}${
+                  self.selectConditionSearch
+                }')`;
                 console.log(self.selectFilter);
-              } else if (item.NameFilter == 'Весовой товар') {
+              } else if (item.NameFilter == "Весовой товар") {
                 self.selectFilter += menuItem + self.countFilterValue;
-                menuListWeightGoods.forEach((item) => {
-                  self.selectFilter = self.selectFilter.replace(item.title, item.sign);
+                menuListWeightGoods.forEach(item => {
+                  self.selectFilter = self.selectFilter.replace(
+                    item.title,
+                    item.sign
+                  );
                 });
-              } else if (item.NameFilter == 'Тип') {
+              } else if (item.NameFilter == "Тип") {
                 self.flagType = menuItem;
-                menuListType.forEach((item) => {
+                menuListType.forEach(item => {
                   self.flagType = self.flagType.replace(item.title, item.sign);
                 });
               } else {
                 self.selectFilter += menuItem + self.countFilterValue;
-                menuListNum.forEach((item) => {
-                  self.selectFilter = self.selectFilter.replace(item.title, item.sign);
+                menuListNum.forEach(item => {
+                  self.selectFilter = self.selectFilter.replace(
+                    item.title,
+                    item.sign
+                  );
                 });
               }
 
-
               console.log(self.selectFilter);
-              if (item.NameFilter != 'Тип') {
+              if (item.NameFilter != "Тип") {
                 self.selectFilters.push(self.selectFilter);
               }
               self.selectFiltersNames.push(NameFilter);
               console.log(self.selectFiltersNames);
               console.log(self.selectFilters);
-              self.selectFilterSearch = '';
-              self.selectFilter = '';
-              self.countFilterValue = '';
+              self.selectFilterSearch = "";
+              self.selectFilter = "";
+              self.countFilterValue = "";
             }
           });
         }
@@ -698,7 +957,9 @@ export default {
     },
     deleteFilter(index) {
       console.log(index);
-      if (this.selectFiltersNames[index].indexOf('Тип') > -1) { this.flagType = ''; }
+      if (this.selectFiltersNames[index].indexOf("Тип") > -1) {
+        this.flagType = "";
+      }
       this.selectFiltersNames.splice(index, 1);
       this.selectFilters.splice(index, 1);
     },
@@ -707,11 +968,14 @@ export default {
       console.log(filtered);
       const filtered2 = [];
       for (let i = 0; i < filtered.length; i++) {
-        if ((this.flagType != 'modif') || ((this.flagType == 'modif') && (filtered[i].types == 1))) {
+        if (
+          this.flagType != "modif" ||
+          (this.flagType == "modif" && filtered[i].types == 1)
+        ) {
           this.length++;
           filtered2[filtered2.length] = filtered[i];
         }
-        if (this.flagType != 'tovar') {
+        if (this.flagType != "tovar") {
           filtered[i].modification.forEach((item, index, arr) => {
             filtered2[filtered2.length] = item;
           });
@@ -722,24 +986,38 @@ export default {
     },
     getPopoverId(id) {
       return `popover${id}`;
-    },
+    }
   },
   computed: {
-
     sCount() {
-      return this.FilterProducts.reduce((sum, current) => sum + Number(current.count), 0);
+      return this.FilterProducts.reduce(
+        (sum, current) => sum + Number(current.count),
+        0
+      );
     },
     sGross_turnover() {
-      return this.FilterProducts.reduce((sum, current) => sum + Number(current.gross_turnover), 0).toFixed(2);
+      return this.FilterProducts.reduce(
+        (sum, current) => sum + Number(current.gross_turnover),
+        0
+      ).toFixed(2);
     },
     sDiscount() {
-      return this.FilterProducts.reduce((sum, current) => sum + Number(current.discount), 0).toFixed(2);
+      return this.FilterProducts.reduce(
+        (sum, current) => sum + Number(current.discount),
+        0
+      ).toFixed(2);
     },
     sReceipts() {
-      return this.FilterProducts.reduce((sum, current) => sum + Number(current.receipts), 0).toFixed(2);
+      return this.FilterProducts.reduce(
+        (sum, current) => sum + Number(current.receipts),
+        0
+      ).toFixed(2);
     },
     sProfit() {
-      return this.FilterProducts.reduce((sum, current) => sum + Number(current.profit), 0).toFixed(2);
+      return this.FilterProducts.reduce(
+        (sum, current) => sum + Number(current.profit),
+        0
+      ).toFixed(2);
     },
     FilterProducts() {
       return this.addModif(
@@ -748,20 +1026,17 @@ export default {
           .filter(this.filterByCategory)
           .filter(this.filterByShop)
           .filter(this.filterByONews)
-          .sort(this.sortByColumn),
+          .sort(this.sortByColumn)
       );
     },
     FilterCategories() {
-      return this.categories
-        .filter(this.filterBySearchCategories);
+      return this.categories.filter(this.filterBySearchCategories);
     },
     FilterShops() {
-      return this.shops
-        .filter(this.filterBySearchShops);
+      return this.shops.filter(this.filterBySearchShops);
     },
     FilterFilter() {
-      return this.getNameFilterList
-        .filter(this.filterBySearchfilter);
+      return this.getNameFilterList.filter(this.filterBySearchfilter);
     },
     getNameFilterList() {
       return this.filterList.map((item, i) => item.NameFilter);
@@ -773,15 +1048,495 @@ export default {
       return this.shops.map((item, i) => item.title);
     },
     getOptionsFilter() {
-      console.log(this.filterList[this.getNameFilterList.indexOf(this.selectFilterSearch)].MenuList);
-      return this.filterList[this.getNameFilterList.indexOf(this.selectFilterSearch)].MenuList;
-    },
-  },
+      console.log(
+        this.filterList[this.getNameFilterList.indexOf(this.selectFilterSearch)]
+          .MenuList
+      );
+      return this.filterList[
+        this.getNameFilterList.indexOf(this.selectFilterSearch)
+      ].MenuList;
+    }
+  }
 };
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style src="../../../static/style/main.css"></style>
-<style lang="scss">
-@import '../../assets/less/menu.less'
+
+<style lang="less" scoped>
+@font-face {
+  font-family: "Myriad Pro Regular";
+  src: url("../../assets/fonts/MyriadPro-Regular.eot");
+  src: url("../../assets/fonts/MyriadPro-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    url("../../assets/fonts/MyriadPro-Regular.woff") format("woff"),
+    url("../../assets/fonts/MyriadPro-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+body::-webkit-scrollbar {
+	width: 1em;
+}
+
+body::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+body::-webkit-scrollbar-thumb {
+	background-color: darkgrey;
+	outline: 1px solid slategrey;
+}
+
+.background-green{
+	background-color: #EEFFFA;
+	margin-right: 50px;
+}
+
+h1.head-text {
+	font-family: 'Myriad Pro Regular';
+	font-size: 36px;
+}
+
+.back-arrow {
+	width: 31px;
+	height: 22px;
+}
+
+li.action-item{
+	list-style-type: none;
+}
+
+li.action-item:hover{
+	background-color: #E0E0E0;
+}
+
+ul.actions-popover {
+	margin-left: 0; /* Отступ слева в браузере IE и Opera */
+	padding-left: 0; /* Отступ слева в браузере Firefox, Safari, Chrome */
+}
+
+button.btn-icon {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+
+.back-arrow:hover {
+	border-radius: 4px;
+	border-width: 1px;
+	border-color: rgb(236, 235, 235);
+	border-style: solid;
+}
+
+.clipse-active {
+	background-color: rgb(230, 230, 230);
+	padding: 10px;
+	border-radius: 10px;
+	font-size: 1.7em;
+	cursor: pointer;
+}
+
+.clipse-active:hover{
+	background-color: rgb(235, 235, 235);
+}
+
+.clipse-disactive {
+	background-color: rgb(180, 180, 180);
+	padding: 10px;
+	border-radius: 10px;
+	font-size: 1.7em;
+	cursor: pointer;
+}
+
+.clipse-disactive:hover{
+	background-color: rgb(175, 175, 175);
+}
+
+
+hr.line {
+	background-color: rgb(232, 232, 232);
+	height: 1px;
+}
+
+.sign-mute-text{
+	font-size: 45.333px;
+	font-family: "OpenSans";
+	color: rgb(195, 195, 195);
+}
+.main-text {
+	font-family: 'Open Sans', sans-serif;
+	size: 18px;
+	color: black;
+	text-decoration: none;
+	margin: 0px;
+	.link-green {
+		cursor: pointer;
+		color: rgb(54, 187, 76);
+	}
+	.link-blue {
+		color: #2a6496;
+	}
+	.link-red {
+		color: #bb3c3c;
+	}
+	.link-hover:hover {
+		text-decoration: underline;
+		color: #99cc00;
+	}
+}
+h1.head-text {
+	font-family: 'Myriad Pro Regular';
+	font-size: 36px;
+	color: rgb(0, 0, 0);
+}
+.title-form {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 20px;
+	color: black;
+	text-decoration: none;
+}
+.btn-save{
+	border-width: 1px;
+	border-color: rgb(236, 235, 235);
+	border-style: solid;
+	border-radius: 7px;
+	background-color: rgb(54, 187, 76);
+	box-shadow: 0.837px 11.971px 29px 0px rgba(25, 21, 21, 0.13);
+	width: 327px;
+	height: 57px;
+}
+
+.btn-add {
+	border-width: 1px;
+	border-color: rgb(236, 235, 235);
+	border-style: solid;
+	border-radius: 7px;
+	background-color: rgb(54, 187, 76);
+	box-shadow: 0.837px 11.971px 29px 0px rgba(25, 21, 21, 0.13);
+	width: 327px;
+	height: 40px;
+}
+
+.hr-card-body {
+	background-color: rgb(255, 255, 255);
+	height: 6px;
+}
+
+.hr-page {
+	height: 1px;
+	background-color: rgb(232, 232, 232);
+}
+
+.card-custom{
+	.card {
+		border-radius: 11px;
+		border: none;
+		.card-body{
+			border-radius: 11px;
+			background-color: rgb(231, 230, 230);
+		}
+	}
+}
+
+.elipse {
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+}
+
+.check-custom {
+	box-shadow: 0px 10px 15px 0px rgba(232, 231, 231, 0.004);
+}
+
+
+.blue {
+	background-color: rgb(100, 140, 223);
+}
+
+.red {
+	background-color: rgb(225, 9, 9);
+}
+
+.yellow {
+	background-color: rgb(255, 234, 0);
+}
+
+.pink {
+	background-color: rgb(255, 0, 234);
+}
+
+.green {
+	background-color: rgb(44, 174, 50);
+}
+
+.grey {
+	background-color: rgb(192, 192, 192);
+}
+
+.black {
+	background-color: rgb(0, 0, 0);
+}
+
+.rectangle {
+	width: 50px;
+	height: 40px;
+}
+
+.table-ing {
+
+}
+
+.tr-ing {
+	.th-ing {
+		border: 0px;
+		background-color: rgb(249, 249, 249);
+	}
+	border: 0px;
+}
+
+.form-group {
+	.checkbox-custom{
+		border-style: solid;
+		border-width: 22px;
+		border-color: rgb(237, 237, 237);
+		border-radius: 4px;
+		background-color: rgb(255, 255, 255);
+		box-shadow: 0px 10px 15px 0px rgba(232, 231, 231, 0.004);
+		width: 20px;
+		height: 20px;
+	}
+	.my-multiselect {
+		box-shadow: 0.837px 11.971px 29px 0px rgba(25, 21, 21, 0.13);
+		background-color: rgb(255, 255, 255);
+		border-width: 1px;
+		border-color: rgb(236, 235, 235);
+		border-style: solid;
+		border-radius: 7px;
+		height: 40px;
+
+		.multiselect__tags {
+			height: 40px;
+			.multiselect__placeholder{
+				font-size: 1rem;
+				line-height: 1.5;
+				color: #495057;
+			}
+		}
+		.multiselect__content-wrapper {
+			.multiselect__content{
+				.multiselect__element{
+					.multiselect__option--highlight{
+						background-color: #586272;
+					}
+					.multiselect__option--highlight::after{
+						background-color: #586272;
+					}
+
+				}
+			}
+		}
+	}
+	.input-param {
+		box-shadow: 0.837px 11.971px 29px 0px rgba(25, 21, 21, 0.13);
+		background-color: rgb(255, 255, 255);
+		border-width: 1px;
+		border-color: rgb(236, 235, 235);
+		border-style: solid;
+		border-radius: 7px;
+		height: 50px;
+	}
+	.form-control:focus {
+		border-color: #637084;
+		outline: 0;
+		-webkit-box-shadow: 5px 17px 36px 4px rgba(25, 21, 21, 0.13);
+		box-shadow: 5px 17px 36px 4px rgba(25, 21, 21, 0.13);
+	}
+}
+
+i.arrow-more {
+	font-size: 1.5em;
+	cursor: pointer;
+	background-color: transparent;
+}
+
+i.arrow-more:hover {
+	font-size: 2em;
+}
+
+.btn:focus {
+	border-color: #637084;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+}
+
+.btn-group .btn:focus {
+	border-color: #637084;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+}
+
+.form-group .form-control:focus{
+	border-color: #637084;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+}
+
+.form-group .search {
+	box-shadow: 0.837px 11.971px 29px 0px rgba(25, 21, 21, 0.13);
+	background-color: rgb(255, 255, 255);
+	border-width: 1px;
+	border-color: rgb(236, 235, 235);
+	border-style: solid;
+	border-radius: 7px;
+	height: 57px;
+}
+
+.dropdown-menu .search-cat {
+	border: none;
+	border-bottom: 1px solid #ccc;
+}
+
+.group .search-cat:focus {
+	border-color: #637084;
+	outline: 0;
+	box-shadow: none;
+}
+
+.fa-input { font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+
+/* enable absolute positioning */
+.inner-addon {
+	position: relative;
+}
+
+/* style glyph */
+.inner-addon .fas {
+	position: absolute;
+	padding: 15px;
+}
+
+/* align glyph */
+.left-addon .fas  { left:  0px;}
+.right-addon .fas { right: 0px;}
+
+/* add padding  */
+.left-addon input  { padding-left:  30px; }
+.right-addon input { padding-right: 30px; }
+
+.btn-shadow {
+	border: 0px;
+	box-shadow: 0px 15px 25px 0px rgba(0, 0, 0, 0.15);
+}
+
+.btn-shadow .btn-transparent {
+	background-color: transparent;
+	outline: none;
+	border: none;
+}
+
+button.btn-filter:focus {
+	border-color: #637084;
+	outline: 0;
+	box-shadow: none;
+}
+
+.right-addon .btn-container {
+	background-color: transparent;
+	font-size: 1.5em;
+	color: gray;
+	outline: none;
+	border: none;
+}
+
+.btn-custom {
+	background-color: white;
+}
+
+.btn-group .btn-custom-border {
+	background-color: white;
+	border-radius: 16px 16px 16px 16px;
+	border: 1px solid #dfdfdf;
+}
+
+.btn-group-custom {
+	border-radius: 16px 16px 16px 16px;
+	height: 53px;
+	border: 1px solid #dfdfdf;
+}
+
+.btn:focus {
+	outline: none;
+}
+
+#img-button-export {
+	margin-left: 15px;
+	margin-right: 5px;
+	text-align: center;
+}
+
+.img-toggle {
+	margin: 5px;
+}
+
+.btn-filter {
+	background-color: transparent;
+	height: 53px;
+}
+
+.btn-group .filter-button:focus {
+	border: 1px solid #dfdfdf;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(143, 153, 170,.6);
+}
+
+hr.line {
+	background-color: rgb(232, 232, 232);
+	height: 1px;
+}
+
+.container-fluid .table-custom{
+	background: white; /* Цвет фона таблицы */
+	border: 10px solid #F2F3F4;
+}
+
+
+.tr-th-custom {
+	border: 10px solid #F2F3F4;
+	text-align: center;
+}
+
+.tr-th-custom-left {
+	border: 10px solid #F2F3F4;
+	text-align: left;
+}
+
+.tr-th-custom .td-th-custom:hover {
+	background-color: #dfdfdf;
+}
+
+.tr-th-custom .td-th-custom {
+	border: 5px solid #F2F3F4;
+	font-family: 'Open Sans', sans-serif;
+}
+
+.tr-td-custom {
+	background: #FFFFFF; /* Цвет фона */
+	border: 5px solid #F2F3F4; /* Граница вокруг ячеек */
+	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */
+	font-size: 0.95em; /* Размер текста */
+	text-align: center;
+}
+
+.tr-td-custom .td-custom-left {
+	background: #FFFFFF; /* Цвет фона */
+	border: 5px solid #F2F3F4; /* Граница вокруг ячеек */
+	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */
+	font-size: 0.95em; /* Размер текста */
+	text-align: left;
+}
+
 </style>
+

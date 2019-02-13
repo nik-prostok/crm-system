@@ -26,8 +26,9 @@ module.exports = {
 			if (err){
 				console.log(err)
 				res.sendStatus(400)
+			} else {
+				res.send(arr)
 			}
-			res.send(arr)
 		})
 	},
 	delete: (req, res) => {
