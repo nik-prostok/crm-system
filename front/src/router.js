@@ -30,5 +30,35 @@ export default new Router({
       // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
+    {
+      path: '/menu/category_prod_cards',
+      component: require('./components/menu/Category').default,
+    },
+    {
+      path: '/menu/category_prod_cards/add',
+      component: require('./components/menu/AddCategory').default,
+    },
+    {
+      path: '/menu/category_prod_cards/edit/:id',
+      component: require('./components/menu/EditCategory').default,
+    },
+    {
+      path: '/menu/cat_ingridients',
+      component: require('./components/menu/CategoryIngridients').default,
+    },
+
+    {
+      path: '/menu/cat_ingridients/add',
+      component: require('./components/menu/AddCategoryIngridients').default,
+    },
+    
+    {
+      path: '/menu/ingridients',
+      component: require('./components/menu/Ingridients').default,
+    },
+    {
+      path: '/menu/ingridients/add',
+      component: require('./components/menu/AddIngridients').default,
+    },
   ],
 });

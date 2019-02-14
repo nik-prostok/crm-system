@@ -108,7 +108,3 @@ export default {
 };
 </script>
 
-<style src="../../../static/style/main.css"></style>
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>

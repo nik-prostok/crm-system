@@ -19,18 +19,18 @@ export default {
   deleteOnlyPhoto(id) {
     return api().post('deleteOnlyPhoto', {id: id})
   },
-
+*/
   // Categories
   fetchCategories() {
-    return api().get('categories')
+    return api().get('/category')
   },
   addCategory(category) {
-    return api().post('categories', category)
+    return api().post('/category', category, { headers: {'Content-Type': 'multipart/form-data' }})
   },
   deleteCategory(id) {
-    return api().post('deleteCategory', {id: id})
+    return api().delete('/category/'+id, {id: id})
   },
-
+/*
   // Shops
   fetchShops () {
     return api().get('shops')
