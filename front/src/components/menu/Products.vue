@@ -13,7 +13,8 @@
           <div class="container-fluid mt-2 pl-0">
             <div class="row">
               <div class="col-md-4 col-lg-5">
-                <h1 class="head-text mt-3">Товары
+                <h1 class="head-text mt-3">
+                  Товары
                   <small class="text-muted">{{length}}</small>
                 </h1>
               </div>
@@ -390,17 +391,13 @@
                             </div>
                           </div>
                           <div class="col-6 align-self-center">{{ product.title }}</div>
-                          <div
-                            class="col-6 align-self-center"
-                            v-if="product.title==null"
-                          >{{ product.title_product }}</div>
                         </div>
                       </td>
 
                       <td
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))"
-                      >{{product.category}}</td>
+                      >{{product.title_category}}</td>
                       <td
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))"
@@ -409,23 +406,27 @@
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))"
                       >{{product.SKU}}</td>
-                      <td
-                        class="td-custom align-middle"
-                        v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
-                      >{{product.shop}}</td>
+                      <div>
+                        <td
+                          class="td-custom align-middle"
+                          v-if="((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
+                        >{{product.title_shop}}</td>
+                        <td v-else>-</td>
+                      </div>
+
                       <td
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"
                       >
-                        <p v-if="product.title_product!=undefined">Модификация</p>
+                        <p v-if="product.types==false">Модификация</p>
                         <p v-else>Товар</p>
                       </td>
                       <td
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))"
                       >
-                        <div v-if="product.weight_goods == 1">Да</div>
-                        <div v-if="product.weight_goods == 0">Нет</div>
+                        <div v-if="product.weight_goods == true">Да</div>
+                        <div v-if="product.weight_goods == false">Нет</div>
                         <div v-if="product.weight_goods == undefined">-</div>
                       </td>
                       <td
@@ -468,7 +469,7 @@
                       >
                         <div v-if="product.markup != undefined">
                           {{product.markup}}
-                          <i class="fas fa-percent ml-1"></i>
+                          <font-awesome-icon icon="percent" class="ml-1"></font-awesome-icon>
                         </div>
                         <div v-else>-</div>
                       </td>
@@ -481,7 +482,7 @@
                           </div>
                           <div class="ml-2">
                             <button class="btn-icon popoverButton" :id="getPopoverId(product.id)">
-                              <i class="fa fa-ellipsis-h"></i>
+                              <font-awesome-icon icon="ellipsis-h"/>
                             </button>
                             <b-popover :target="getPopoverId(product.id)" triggers="focus">
                               <ul class="actions-popover">
@@ -707,7 +708,7 @@ export default {
   watch: {
     $route() {
       this.getProducts();
-     /*  this.getCategories();
+      /*  this.getCategories();
       this.getShops(); */
     }
   },
@@ -724,9 +725,15 @@ export default {
       }
     },
     async getProducts() {
-      const response = await ProductsService.fetchProducts().catch((err) => { console.log(err); });
+      const response = await ProductsService.fetchProducts().catch(err => {
+        console.log(err);
+      });
       console.log(response.data);
       this.products = response.data;
+      this.products.forEach(product => {
+        product.title_shop = product.shop.title;
+        product.title_category = product.category.title;
+      });
       /* this.products.forEach(item => {
         if (item.photo != "null") {
           item.photo = `http://89.223.27.152:8080/${item.photo}`;
@@ -970,7 +977,7 @@ export default {
       for (let i = 0; i < filtered.length; i++) {
         if (
           this.flagType != "modif" ||
-          (this.flagType == "modif" && filtered[i].types == 1)
+          (this.flagType == "modif" && filtered[i].types == true)
         ) {
           this.length++;
           filtered2[filtered2.length] = filtered[i];

@@ -41,6 +41,7 @@ var ProductSchema = new Schema({
     types: {
         type: Boolean,
         required: true,
+        default: true
     },
     isHidden: {
         type: Boolean,
@@ -65,11 +66,15 @@ var ProductSchema = new Schema({
     modification: [
     {
         bar_code: String,
-        title_mode: String,
+        title: String,
         self_cost: Number,
         markup: Number,
         price: Number,
         profit: Number,
+        types: {
+            type: Boolean,
+            default: false
+        },
     }
     ]
 });
