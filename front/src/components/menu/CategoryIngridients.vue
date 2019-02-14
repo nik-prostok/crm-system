@@ -185,7 +185,3 @@ export default {
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style src="../../../static/style/main.css"></style>
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>

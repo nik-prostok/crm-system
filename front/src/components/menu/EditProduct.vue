@@ -577,9 +577,6 @@ export default {
 };
 </script>
 
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 

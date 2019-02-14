@@ -8,6 +8,7 @@
 			<div class="col-lg-11">
 				<div class="container-fluid mt-2 mb-5">
 
+
 					<div class="row">
 						<div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
 							<router-link to="/menu/category_prod_cards">
@@ -173,6 +174,8 @@
 <script>
 import Vue from 'vue';
 
+import $ from 'jquery'
+
 import ProductsService from '@/services/menu/ProductsService';
 import Sidebar from '@/components/Sidebar';
 
@@ -216,22 +219,20 @@ export default {
       $('#upload:hidden').trigger('click');
     },
     async sendProducts() {
-      console.log(this.category);
-
-      this.category.parent_id = this.parent.id;
-
+		let vm = this
+	  vm.$data.category.parent_id = vm.$parent.id;
+	  //console.log(vm.$data.category)
       const formData = new FormData();
-      formData.append('category', JSON.stringify(this.category));
-      formData.append('avatar', this.avatar);
-
+	  formData.set('category', JSON.stringify(vm.$data.category));
+	  formData.append('avatar', vm.$data.avatar);
       ProductsService.addCategory(formData);
 
-      this.$router.push('/menu/category_prod_cards');
+      vm.$router.push('/menu/category_prod_cards');
     },
     async getCategories() {
-      const res = await ProductsService.fetchCategories();
-      console.log(res);
-      this.categories = res.data.map(item => ({ id: item.id, title: item.title }));
+      ProductsService.fetchCategories().then(res => {
+		  vm.$data.categories = res.data.map(item => ({ id: item.id, title: item.title }));
+	  }).catch(err => console.log)
     },
 
   },
@@ -240,10 +241,6 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
