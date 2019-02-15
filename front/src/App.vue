@@ -6,7 +6,7 @@
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
-<style lang="less" scoped>
+<style lang="less">
 @font-face {
   font-family: "Myriad Pro Regular";
   src: url("./assets/fonts/MyriadPro-Regular.eot");
