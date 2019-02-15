@@ -223,13 +223,14 @@ export default {
 	  vm.$data.category.parent_id = vm.$parent.id;
 	  //console.log(vm.$data.category)
       const formData = new FormData();
-	  formData.set('category', JSON.stringify(vm.$data.category));
+	  formData.append('category', JSON.stringify(vm.$data.category));
 	  formData.append('avatar', vm.$data.avatar);
       ProductsService.addCategory(formData);
 
       vm.$router.push('/menu/category_prod_cards');
     },
     async getCategories() {
+		const vm = this
       ProductsService.fetchCategories().then(res => {
 		  vm.$data.categories = res.data.map(item => ({ id: item.id, title: item.title }));
 	  }).catch(err => console.log)

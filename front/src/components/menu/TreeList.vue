@@ -21,15 +21,15 @@
 			<td class="td-custom align-middle">
 				<div class="d-flex flex-row" >
 					<div class="mr-2">
-						<b-link :to=getHrefEdit(model.id) class="main-text">
+						<b-link :to=getHrefEdit(model._id) class="main-text">
 							<div class="link-blue link-hover">Ред.</div>
 						</b-link>
 					</div>
 					<div class="ml-2">
-						<button class="btn-icon popoverButton" :id="getPopoverId(model.id)"s>
+						<button class="btn-icon popoverButton" :id="getPopoverId(model._id)">
 							<i class="fa fa-ellipsis-h"></i>
 						</button>
-						<b-popover :target=getPopoverId(model.id) triggers="focus">
+						<b-popover :target=getPopoverId(model._id) triggers="focus">
 							<ul class="actions-popover">
 								<li class="action-item"><button v-on:click="deleteCateg" style="text-decoration: none; background-color: transparent; border: 0px; cursor: pointer;" class="main-text">Удалить</button></li>
 								<li class="action-item"><button style="text-decoration: none; background-color: transparent; border: 0px; cursor: pointer;" class="main-text">Скрыть</button></li>
@@ -40,9 +40,9 @@
 			</td>
 		</tr>
 		<!-- v-show="open"  -->
-		<b-collapse :id='"collapse" + model.id' v-model=open class="tr-td-custom" v-if="isFolder" style="width: 100%">
+		<!-- <b-collapse :id='"collapse" + model.id' v-model=open class="tr-td-custom" v-if="isFolder" style="width: 100%">
 			<item style="width: 100%" class="tr-td-custom" v-for="(model, index) in model.children" :key="index" :model="model" :field="nextField"></item>
-		</b-collapse>
+		</b-collapse> -->
   <!-- <tr class="tr-td-custom" v-show="open" v-if="isFolder" style="width: 100%">
     <item style="width: 100%" class="tr-td-custom" v-for="(model, index) in model.children" :key="index" :model="model"></item>
 </tr> -->
@@ -77,12 +77,12 @@ export default {
   },
   methods: {
     deleteCateg() {
-      this.$root.$emit('deleteCat', this.model.id);
+      this.$root.$emit('deleteCat', this.model._id);
     },
     openStartMenu() {
-      if (this.model.id == 60) {
-        this.open = true;
-      }
+      // if (this.model._id == 60) {
+      //   this.open = true;
+      // }
     },
     getPopoverId(id) {
       return `popover${id}`;

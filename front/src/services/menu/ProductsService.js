@@ -38,26 +38,26 @@ export default {
   addShop(shop) {
     return api().post('shops', shop)
   },
-
+*/
   // CategoryIngridients
   addCategoryIng(category) {
-    return api().post('catIngrid', category)
+    return api().post('/cat_ing', category)
   },
   fetchCategoryIng() {
-    return api().get('catIngrid')
+    return api().get('/cat_ing')
   },
   deleteCatIng(id) {
-    return api().post('deleteCatIng', id)
+    return api().post('/cat_ing'+id, id)
   },
 
   // Ingridients
   fetchIngridients() {
-    return api().get('ingridients')
+    return api().get('/ing')
   },
   addIngridients(ingridient) {
-    return api().post('ingridients', ingridient)
+    return api().post('/ing', ingridient)
   },
-
+/*
   // Semi
   addSemi(semi) {
     return api().post('semi', semi)

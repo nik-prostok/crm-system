@@ -5,8 +5,9 @@ const db = connectDB.db;
 
 module.exports = {
 	create: (req, res) => {
-		var RequestCategory = req.body;
-		console.log(RequestCategory);
+		let RequestCategory = JSON.parse(req.body.category);
+		RequestCategory.photo = "http://localhost:8081/static/"+req.files['avatar'][0].filename;
+		console.log(RequestCategory)
 		Category.CategoryModel.create(RequestCategory, function (err) {
 			if (err){
 				console.log(err);
