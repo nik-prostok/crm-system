@@ -7,7 +7,11 @@
             "type": "npm",
             "script": "serve",
             "path": "front/",
-            "problemMatcher": []
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "type": "npm",

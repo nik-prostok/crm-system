@@ -36,19 +36,22 @@
                       >
                     </button>
                     <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
-                      <a mb-2>Отображать столбцы</a>
-                      >
-                      <div v-for="(item, key) in NameColumn ">
-                        <div class="form-check dropdown-item">
+                      <a class="m-2">Отображать столбцы</a>
+                      <div v-bind:key="key" v-for="(item, key) in NameColumn ">
+                       <div class="form-check dropdown-item">
+                        <div class="pretty p-switch p-fill">
                           <input
-                            class="form-check-input"
                             v-model="selectColumn"
                             v-bind:value="item"
                             type="checkbox"
                             v-bind:id="item"
                           >
+                          <div class="state">
                           <label class="form-check-label" v-bind:for="item">{{item}}</label>
+                      </div>
                         </div>
+                        
+                      </div>
                       </div>
                     </div>
                     <button type="button" class="btn btn-custom-border">
@@ -104,8 +107,6 @@
                       class="btn btn-custom-border"
                       style=" border-radius: 16px 0 0px 16px;"
                       data-toggle="dropdown"
-                      aria-haspopup="false"
-                      aria-expanded="false"
                     >
                       <a class="main-text">Категории</a>
                       <img class="m-1" src="/static/image/down.png" alt="down">
@@ -120,16 +121,20 @@
                           v-model="selectCategoriesSearch"
                         >
                       </div>
-                      <div v-for="(item, key) in FilterCategories ">
+                      <div v-bind:key="key" v-for="(item, key) in FilterCategories ">
                         <div class="form-check dropdown-item">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            v-bind:id="item.title"
-                            v-model="selectCategories"
-                            v-bind:value="item.title"
-                          >
-                          <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                          <div class="pretty p-switch p-fill">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              v-bind:id="item.title"
+                              v-model="selectCategories"
+                              v-bind:value="item.title"
+                            >
+                            <div class="state">
+                              <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <button
@@ -162,16 +167,20 @@
                           v-model="selectShopsSearch"
                         >
                       </div>
-                      <div v-for="(item, key) in FilterShops ">
+                      <div v-bind:key="key" v-for="(item, key) in FilterShops ">
                         <div class="form-check dropdown-item">
-                          <input
-                            class="form-check-input"
-                            type="checkbox"
-                            v-bind:id="item.title"
-                            v-model="selectShops"
-                            v-bind:value="item.title"
-                          >
-                          <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                          <div class="pretty p-switch p-fill">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              v-bind:id="item.title"
+                              v-model="selectShops"
+                              v-bind:value="item.title"
+                            >
+                            <div class="state">
+                              <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <button
@@ -184,6 +193,7 @@
                 </div>
 
                 <div
+                  v-bind:key="index"
                   v-for="(item, index) in selectFiltersNames"
                   class="btn-shadow btn-group btn-group-custom mr-2 mb-3"
                 >
@@ -235,8 +245,8 @@
                       </div>
                     </div>
                     <div class="container-fluid mt-1">
-                      <b-btn @click="addFilter">Добавить</b-btn>
-                      <b-btn @click="clearFilter">Очистить</b-btn>
+                      <b-btn variant="outline-dark" class="m-1" @click="addFilter">Добавить</b-btn>
+                      <b-btn variant="outline-dark" class="m-1" @click="clearFilter">Очистить</b-btn>
                     </div>
                   </div>
                 </b-popover>
@@ -255,7 +265,7 @@
                       >Название
                         <div v-if="sortColumn == 'title'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -265,7 +275,7 @@
                       >Категория
                         <div v-if="sortColumn == 'category'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -275,7 +285,7 @@
                       >Штрихкод
                         <div v-if="sortColumn == 'barcode'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -285,7 +295,7 @@
                       >SKU
                         <div v-if="sortColumn == 'SKU'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -295,7 +305,7 @@
                       >Цех
                         <div v-if="sortColumn == 'shop'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -305,7 +315,7 @@
                       >Тип
                         <div v-if="sortColumn == 'types'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -315,7 +325,7 @@
                       >Весовой товар
                         <div v-if="sortColumn == 'weight_goods'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -325,7 +335,7 @@
                       >Единица измерения
                         <div v-if="sortColumn == 'unit'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -335,7 +345,7 @@
                       >Себестоимость
                         <div v-if="sortColumn == 'self_cost'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -345,7 +355,7 @@
                       >Цена
                         <div v-if="sortColumn == 'price'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -355,7 +365,7 @@
                       >Прибыль
                         <div v-if="sortColumn == 'profit'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th
@@ -365,14 +375,18 @@
                       >Наценка
                         <div v-if="sortColumn == 'markup'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-                          <img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+                          <img v-else class="m-1" src="/static/image/up.png" alt="up">
                         </div>
                       </th>
                       <th class="td-th-custom" style="width: 50px;"></th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr class="tr-td-custom" v-for="product in FilterProducts">
+                    <tr
+                      v-bind:key="key"
+                      class="tr-td-custom"
+                      v-for="(product, key) in FilterProducts"
+                    >
                       <td
                         class="td-custom"
                         v-if=" ((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))"
@@ -702,14 +716,14 @@ export default {
   },
   mounted() {
     this.getProducts();
-    /* this.getCategories();
-    this.getShops(); */
+    this.getCategories();
+    this.getShops();
   },
   watch: {
     $route() {
       this.getProducts();
-      /*  this.getCategories();
-      this.getShops(); */
+      this.getCategories();
+      this.getShops();
     }
   },
   methods: {
@@ -773,7 +787,10 @@ export default {
         return true;
       }
       return this.selectCategories.some(
-        item => product.category.toLowerCase().indexOf(item.toLowerCase()) > -1
+        item =>
+          product.category.title
+            .toLowerCase()
+            .localeCompare(item.toLowerCase()) == 0
       );
     },
     filterByShop(product) {
@@ -781,7 +798,7 @@ export default {
         return true;
       }
       return this.selectShops.some(
-        item => product.shop.toLowerCase().indexOf(item.toLowerCase()) > -1
+        item => product.shop.title.toLowerCase().localeCompare(item.toLowerCase()) == 0
       );
     },
 

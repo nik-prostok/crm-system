@@ -5,79 +5,87 @@ export default {
   fetchProducts() {
     return api().get('/api/products');
   },
-  addProduct(params) {
-    return api().post('productsMod', params, {
+  addProduct(product) {
+    return api().post('/api/products', product, {
       emulateJSON: true,
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
   deleteProduct(id) {
-    return api().post('deleteProduct', id);
+    return api().delete(`/api/product/${id}`);
   },
-  /* deleteOnlyProduct(id) {
-    return api().post('deleteOnlyProduct', {id: id})
+  updateProduct(id) {
+    return api().put(`/api/products/${id}`);
   },
-  deleteOnlyPhoto(id) {
-    return api().post('deleteOnlyPhoto', {id: id})
-  },
-*/
   // Categories
   fetchCategories() {
-    return api().get('/category')
+    return api().get('/api/category');
   },
   addCategory(category) {
-    return api().post('/category', category, { headers: {'Content-Type': 'multipart/form-data' }})
+    return api().post('/api/category', category, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
   deleteCategory(id) {
-    return api().delete('/category/'+id, {id: id})
+    return api().delete(`/api/category/${id}`);
   },
-/*
+  
   // Shops
   fetchShops () {
-    return api().get('shops')
+    return api().get('/api/shop');
   },
   addShop(shop) {
-    return api().post('shops', shop)
+    return api().post('/api/shop', shop);
   },
-
-  // CategoryIngridients
-  addCategoryIng(category) {
-    return api().post('catIngrid', category)
+  deleteShop(id){
+    return api().delete(`/api/shop/${id}`);
   },
-  fetchCategoryIng() {
-    return api().get('catIngrid')
-  },
-  deleteCatIng(id) {
-    return api().post('deleteCatIng', id)
-  },
-
-  // Ingridients
-  fetchIngridients() {
-    return api().get('ingridients')
-  },
-  addIngridients(ingridient) {
-    return api().post('ingridients', ingridient)
-  },
-
-  // Semi
-  addSemi(semi) {
-    return api().post('semi', semi)
-  },
-  fetchSemi() {
-    return api().get('semi')
+  updateShop(id){
+    return api().put(`/api/shop/${id}`);
   },
 
 
-  // Map
-  addMap(map) {
-    return api().post('addmap', map)
-  },
-  fetchMaps() {
-    return api().get('map')
-  },
-  delMap(id) {
-    return api().post('deleteCard', id)
-  },
-  fetchModificators() {
-    return api().get('modificators')
-  }, */
+/*     // CategoryIngridients
+    addCategoryIng(category) {
+      return api().post('catIngrid', category)
+    },
+    fetchCategoryIng() {
+      return api().get('catIngrid')
+    },
+    deleteCatIng(id) {
+      return api().post('deleteCatIng', id)
+    },
+
+    // Ingridients
+    fetchIngridients() {
+      return api().get('ingridients')
+    },
+    addIngridients(ingridient) {
+      return api().post('ingridients', ingridient)
+    },
+
+    // Semi
+    addSemi(semi) {
+      return api().post('semi', semi)
+    },
+    fetchSemi() {
+      return api().get('semi')
+    },
+
+
+    // Map
+    addMap(map) {
+      return api().post('addmap', map)
+    },
+    fetchMaps() {
+      return api().get('map')
+    },
+    delMap(id) {
+      return api().post('deleteCard', id)
+    },
+    fetchModificators() {
+      return api().get('modificators')
+    }, */
 };
