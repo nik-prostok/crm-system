@@ -1,5 +1,6 @@
 const connectDB = require('../../utils/connectDB')
 const Category = require('../../models/menu/CategoryModel')
+ObjectId = require('mongodb').ObjectID
 const db = connectDB.db;
 
 
@@ -42,8 +43,13 @@ module.exports = {
 		})
 	},
 	update: (req, res) => {
-		var CategoryRequest = req.body;
-		Category.CategoryModel.findByIdAndUpdate(req.params.id, {'$set': CategoryRequest}, 
+		//console.log(req.body)
+		let CategoryRequest = JSON.parse(req.body.category);
+		if(req.files)
+			if(req.files['avatar'])
+				CategoryRequest.photo = "http://localhost:8081/static/"+req.files['avatar'][0].filename;
+		console.log(CategoryRequest)
+		Category.CategoryModel.findByIdAndUpdate(ObjectId(CategoryRequest._id), {'$set': CategoryRequest}, 
 			(err)=>{
 				if (err){
 					console.log(err);

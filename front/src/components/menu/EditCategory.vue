@@ -212,7 +212,7 @@ export default {
       key: null,
 
       parent: {
-        id: null,
+        _id: null,
         title: null,
       },
 
@@ -225,7 +225,12 @@ export default {
 
       },
     };
-  },
+	},
+	watch: {
+		parent (newVal) {
+			console.log(newVal)
+		}
+	},
   mounted() {
     this.getCategories();
     this.setEditId(this.$route.params.id);
@@ -239,11 +244,14 @@ export default {
     },
     selectFile() {
       $('#upload:hidden').trigger('click');
-    },
+		},
+		
     async sendProducts() {
-      console.log(this.category);
+      //console.log(this.category);
 
-      this.category.parent_id = this.parent.id;
+			this.category.parent = this.parent._id;
+
+			console.log('category', this.category)
 
       const formData = new FormData();
       formData.append('category', JSON.stringify(this.category));
@@ -251,35 +259,35 @@ export default {
         formData.append('avatar', this.file);
       }
 
-      ProductsService.addCategory(formData);
+      ProductsService.editCategory(formData);
 
       this.$router.push('/menu/category_prod_cards');
-    },
+		},
+		
     async getCategories() {
-      const res = await ProductsService.fetchCategories();
-      console.log(res);
-      this.categories = res.data.map(item => ({ id: item.id, title: item.title }));
+      const res = await ProductsService.fetchCategories()
+			const id = location.pathname.replace('/menu/category_prod_cards/edit/', '')
+			
+			this.categories = res.data
+			this.category = res.data.filter(item => {return item._id == id});
+			
+			[this.category] = this.category
 
+			console.log('categories', this.categories)
+			console.log('category', this.category)
 
-      res.data.forEach((item) => {
-        if (item.id == this.editId) {
-          this.category = item;
-          this.categories.forEach((item2) => {
-            if (item2.id == item.parent_id) {
-              this.parent.id = item2.id;
-              this.parent.title = item2.title;
-            }
-          });
-        }
-      });
+			this.parent._id =  this.category.parent._id
+			this.parent.title =  this.category.parent.title
+
+			console.log('parent', this.parent)
 
       if (this.category.photo != null) {
         this.category.avatar = this.category.photo;
-        this.photo_src = `http://89.223.27.152:8080/${this.category.avatar}`;
+        this.photo_src = `${this.category.avatar}`;
         console.log(this.photo_src);
       }
 
-      this.categories = res.data.map(item => ({ id: item.id, title: item.title }));
+      //this.categories = res.data.map(item => ({ id: item.id, title: item.title }));
     },
     resetFile() {
       this.category.avatar = null;

@@ -31,6 +31,13 @@ export default {
   deleteCategory(id) {
     return api().delete(`/api/category/${id}`);
   },
+  editCategory(category){
+    return api().put(`/api/category/${category._id}`, category, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    });
+  },
   
   // Shops
   fetchShops () {
