@@ -73,9 +73,9 @@
 										</tr>
 									</thead>
 									<tbody >
-										<tr class="tr-td-custom" v-for="category in categories">
+										<tr class="tr-td-custom" v-for="category in getTransformCategories" :key='category._id'>
 
-											<td class="td-custom align-middle" style="text-align: left;">{{category.cat_title}}</td>
+											<td class="td-custom align-middle" style="text-align: left;">{{category.title}}</td>
 											<td class="td-custom align-middle">
 												<div class="d-flex flex-row">
 													<div class="mr-2">
@@ -145,7 +145,7 @@ export default {
         this.categories = [];
         this.getCategories();
       }
-    },
+		},
     async getCategories() {
       const response = await ProductsService.fetchCategoryIng();
       this.categories = response.data;
@@ -179,6 +179,15 @@ export default {
         length++;
       });
       return length;
+		},
+    getTransformCategories() { //Я сделал сортировку немного по своему, но работает нормально 
+      const vm = this
+      let filtered = vm.$data.categories.filter(el => {
+        if(el.title.toLowerCase().indexOf(vm.$data.search.toLowerCase()) > -1) return true
+        else return false
+      })
+      console.log('filtered', filtered)
+      return filtered
     },
   },
 };

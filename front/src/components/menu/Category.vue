@@ -193,9 +193,14 @@ export default {
 			}, */
   },
   computed: {
-    getTransformCategories() {
-      console.log("my data", this.$data.categories);
-      return this.$data.categories;
+    getTransformCategories() { //Я сделал сортировку немного по своему, но работает нормально 
+      const vm = this
+      let filtered = vm.$data.categories.filter(el => {
+        if(el.title.toLowerCase().indexOf(vm.$data.search.toLowerCase()) > -1) return true
+        else return false
+      })
+      console.log('filtered', filtered)
+      return filtered
     },
     length() {
       let length = 0;

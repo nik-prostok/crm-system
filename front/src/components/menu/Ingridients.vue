@@ -122,7 +122,7 @@
 										</tr>
 									</thead>
 									<tbody >
-										<tr class="tr-td-custom" v-for="ingridient in ingridients">
+										<tr class="tr-td-custom" v-for="ingridient in getTransformCategories">
 
 											<td class="td-custom align-middle" style="">{{ingridient.title}}</td>
 											<td class="td-custom align-middle" style="">{{ingridient.cat_title}}</td>
@@ -253,6 +253,15 @@ export default {
         length++;
       });
       return length;
+		},
+		getTransformCategories() { //Я сделал сортировку немного по своему, но работает нормально 
+      const vm = this
+      let filtered = vm.$data.ingridients.filter(el => {
+        if(el.title.toLowerCase().indexOf(vm.$data.search.toLowerCase()) > -1) return true
+        else return false
+      })
+      console.log('filtered', filtered)
+      return filtered
     },
   },
 };

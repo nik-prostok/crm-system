@@ -19,8 +19,8 @@ let cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }])
 
 //Маршруты для регистрации и управления Category
 module.exports = function(app) {
-	app.post('/category', verify, cpUpload, category.create);
-	app.get('/category', verify, category.fetch)
-	app.delete('/category/:id', verify, category.delete)
-	app.put('/category/:id', verify, category.update)
+	app.post('/api/category', verify, cpUpload, category.create);
+	app.get('/api/category', verify, category.fetch)
+	app.delete('/api/category/:id', verify, category.delete)
+	app.put('/api/category/:id', verify, category.update)
 };
