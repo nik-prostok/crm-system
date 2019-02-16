@@ -188,7 +188,8 @@ export default {
       })
       console.log('filtered', filtered)
       return filtered
-    },
+		},
+		
   },
 };
 </script>
