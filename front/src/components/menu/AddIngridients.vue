@@ -198,16 +198,18 @@ export default {
     this.fetchCategoryIng();
   },
   methods: {
-    async sendIng() {
+    sendIng() {
       this.ingridient.cat_id = this.ingridient.category.cat_id;
       if (this.ingridient.round != null) { this.ingridient.round = this.ingridient.round.value; }
       ProductsService.addIngridients(this.ingridient);
       this.$router.push('/menu/ingridients');
     },
-    async fetchCategoryIng() {
-      const response = await ProductsService.fetchCategoryIng();
-      console.log(response.data);
-      this.categoriesIng = response.data;
+    fetchCategoryIng() {
+			const vm = this
+      ProductsService.fetchCategoryIng().then(res => {
+				      console.log(res.data);
+      				vm.categoriesIng = res.data;
+			}).catch(err => console.log(err))
     },
   },
   computed: {

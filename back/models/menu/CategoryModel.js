@@ -13,6 +13,9 @@ var CategorySchema = new Schema({
     },
     color: {
         type: String,
+    },
+    photo: {
+        type: String
     }
 });
 

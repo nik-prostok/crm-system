@@ -4,12 +4,16 @@ const app            = express();
 const logger		 = require('morgan');
 const cors 			 = require('cors')
 
+app.use('/static', express.static('public'));
+
 app.use(cors())
 
 app.use(logger('dev'))
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+
 
 require('./routes/index')(app)
 

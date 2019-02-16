@@ -63,14 +63,14 @@
 												Категория
 												<div v-if="sortColumn == 'category'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
+													<img v-else class="m-1" src="/static/image/up.png" alt="up">
 												</div>
 											</th>
 										</tr>
 									</thead>
 									<tbody>
-										<item :field="1" style="width: 100%" :model="getTransformCategories" @deleteCat=deleteCategory></item>
-
+										<item :field="1" v-for="model in getTransformCategories" :key="model._id" style="width: 100%" :model="model" @deleteCat=deleteCategory></item>
+                    
 									</tbody>
 								</table>
 							</div>
@@ -134,15 +134,11 @@ export default {
       }
     },
     async getCategories() {
-      const response = await ProductsService.fetchCategories();
-      this.categories = response.data;
-      this.categories.forEach((item) => {
-        if (item.photo != 'null') {
-          item.photo = `http://89.223.27.152:8080/${item.photo}`;
-        }
-      });
-
-      console.log(this.categories);
+      const vm = this
+      ProductsService.fetchCategories().then((response) => {
+        vm.$data.categories = response.data;
+        console.log("categories", vm.$data.categories); //ЭТО ВАЖНО!!!!!!!!!!!! НИКОГДА НЕ ИСПОЛЬЗУЙ THIS ВНУТРИ ФУНКЦИЙ, КОТОРЫЕ ЭТОМУ THIS ДАЮТ СВОЁ ЗНАЧЕНИЕ. ИЗ-ЗА ЭТОГО КАТЕГОРИИ ВЫДАВАЛИ НЕ МАССИВ, А Observer
+      })
     },
     setCollapse(category) {
       //	this.getTransformCategories()
@@ -198,22 +194,8 @@ export default {
   },
   computed: {
     getTransformCategories() {
-      const withoutStart = this.categories.filter((item) => {
-        if (item.id != 60) return true;
-        return false;
-      });
-      withoutStart.forEach((item) => {
-        if ((item.children == null) && (item.collapse == null)) {
-          item.collapse = false;
-        }
-      });
-      this.transformListCategories = {
-        children: arrayToTree(withoutStart),
-        title: 'My tree',
-        id: 60,
-      };
-      console.log(this.transformListCategories);
-      return this.transformListCategories;
+      console.log("my data", this.$data.categories);
+      return this.$data.categories;
     },
     length() {
       let length = 0;

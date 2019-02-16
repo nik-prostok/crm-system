@@ -57,6 +57,35 @@ export default {
     deleteCatIng(id) {
       return api().post('deleteCatIng', id)
     },
+    return api().post('shops', shop)
+  },
+*/
+  // CategoryIngridients
+  addCategoryIng(category) {
+    return api().post('/cat_ing', category)
+  },
+  fetchCategoryIng() {
+    return api().get('/cat_ing')
+  },
+  deleteCatIng(id) {
+    return api().post('/cat_ing'+id, id)
+  },
+
+  // Ingridients
+  fetchIngridients() {
+    return api().get('/ing')
+  },
+  addIngridients(ingridient) {
+    return api().post('/ing', ingridient)
+  },
+/*
+  // Semi
+  addSemi(semi) {
+    return api().post('semi', semi)
+  },
+  fetchSemi() {
+    return api().get('semi')
+  },
 
     // Ingridients
     fetchIngridients() {
