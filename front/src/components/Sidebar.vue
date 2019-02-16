@@ -22,9 +22,9 @@
 
 
 				<div v-for="sub in item.submenu" :id=item.id class="collapse sidebar-submenu">
-					<a :href=sub.id class="list-group-item list-group-item-action bg-dark text-white">
+					<router-link :to=sub.id class="list-group-item list-group-item-action bg-dark text-white">
 						<span class="menu-collapsed">{{ sub.title }}</span>
-					</a>
+					</router-link>
 				</div>
 
 			</ul>
