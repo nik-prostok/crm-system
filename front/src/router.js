@@ -24,7 +24,11 @@ export default new Router({
     },
     {
       path: '/menu/products/add',
-      component: () => import('./components/menu/AddProducts.vue')
+      component: () => import('./components/menu/AddProducts.vue'),
+    },
+    {
+      path: '/menu/products/edit/:id',
+      component: () => import('./components/menu/EditProduct.vue'),
     },
     {
       path: '/about',

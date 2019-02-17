@@ -405,7 +405,7 @@
                         v-if=" ((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))"
                       >
                         <div class="row no-gutters">
-                          <div v-if="product.photo != 'null'" class="col-6">
+                          <div v-if="product.photo != null" class="col-6">
                             <!-- style="height: 40px; width: auto;"  -->
                             <img class="img-fluid" :src="product.photo" alt>
                           </div>
