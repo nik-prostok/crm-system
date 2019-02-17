@@ -20,7 +20,8 @@ let cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }])
 //Маршруты для регистрации и управления Product
 module.exports = function(app) {
 	app.post('/api/products', verify, cpUpload, product.create);
-	app.get('/api/products', verify, cpUpload, product.fetch) // app.get('/api/products', verify.verify, product.fetch) И сделать тогда так. А из /api можно убрать проверку
-	app.delete('/api/products/:id', verify, cpUpload, product.delete)
-	app.put('/api/products/:id', verify, cpUpload, product.update)
+	app.get('/api/products', verify, product.fetch);
+	app.get('/api/products/:id', verify, product.get);
+	app.delete('/api/products/:id', verify, product.delete);
+	app.put('/api/products/:id', verify, cpUpload, product.update);
 };
