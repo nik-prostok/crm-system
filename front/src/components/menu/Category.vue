@@ -70,7 +70,7 @@
 									</thead>
 									<tbody>
 										<item :field="1" v-for="model in getTransformCategories" :key="model._id" style="width: 100%" :model="model" @deleteCat=deleteCategory></item>
-                    
+
 									</tbody>
 								</table>
 							</div>
@@ -80,8 +80,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
-</div><!-- body-row END -->
+	</div><!-- body-row END -->
 </template>
 
 <script>
@@ -193,7 +192,7 @@ export default {
 			}, */
   },
   computed: {
-    getTransformCategories() { //Я сделал сортировку немного по своему, но работает нормально 
+    getTransformCategories() { //Я сделал сортировку немного по своему, но работает нормально
       const vm = this
       let filtered = vm.$data.categories.filter(el => {
         if(el.title.toLowerCase().indexOf(vm.$data.search.toLowerCase()) > -1) return true

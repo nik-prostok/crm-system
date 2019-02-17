@@ -38,20 +38,19 @@
                     <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
                       <a class="m-2">Отображать столбцы</a>
                       <div v-bind:key="key" v-for="(item, key) in NameColumn ">
-                       <div class="form-check dropdown-item">
-                        <div class="pretty p-switch p-fill">
-                          <input
-                            v-model="selectColumn"
-                            v-bind:value="item"
-                            type="checkbox"
-                            v-bind:id="item"
-                          >
-                          <div class="state">
-                          <label class="form-check-label" v-bind:for="item">{{item}}</label>
-                      </div>
+                        <div class="form-check dropdown-item">
+                          <div class="pretty p-switch p-fill">
+                            <input
+                              v-model="selectColumn"
+                              v-bind:value="item"
+                              type="checkbox"
+                              v-bind:id="item"
+                            >
+                            <div class="state">
+                              <label class="form-check-label" v-bind:for="item">{{item}}</label>
+                            </div>
+                          </div>
                         </div>
-                        
-                      </div>
                       </div>
                     </div>
                     <button type="button" class="btn btn-custom-border">
@@ -64,7 +63,7 @@
                   </div>
 
                   <router-link
-                    class="btn-group btn-group-custom mt-3"
+                    class="btn-group btn-group-custom mt-3 ml-2"
                     style="text-decoration: none;"
                     to="/menu/products/add"
                   >
@@ -254,6 +253,20 @@
             </div>
 
             <div class="mt-4">
+              <b-alert
+                :show="dismissCountDownDanger"
+                dismissible
+                variant="danger"
+                @dismissed="dismissCountDownDanger=0"
+                @dismiss-count-down="countDownChangedDanger"
+              ><p class="main-text">{{msgDanger}}</p></b-alert>
+              <b-alert
+                :show="dismissCountDownSuccess"
+                dismissible
+                variant="success"
+                @dismissed="dismissCountDownSuccess=0"
+                @dismiss-count-down="countDownChangedSuccess"
+              ><p class="main-text">{{msgSuccess}}</p></b-alert>
               <div class="table-responsive">
                 <table class="table table-custom table-bordered">
                   <thead>
@@ -420,14 +433,11 @@
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))"
                       >{{product.SKU}}</td>
-                      <div>
                         <td
                           class="td-custom align-middle"
                           v-if="((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
                         >{{product.title_shop}}</td>
                         <td v-else>-</td>
-                      </div>
-
                       <td
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"
@@ -490,15 +500,15 @@
                       <td class="td-custom align-middle">
                         <div v-if="product.title_product==undefined" class="d-flex flex-row">
                           <div class="mr-2">
-                            <b-link :to="getHrefEdit(product.id)" class="main-text">
+                            <b-link :to="getHrefEdit(product._id)" class="main-text">
                               <div class="link-blue link-hover">Ред.</div>
                             </b-link>
                           </div>
                           <div class="ml-2">
-                            <button class="btn-icon popoverButton" :id="getPopoverId(product.id)">
+                            <button class="btn-icon popoverButton" :id="getPopoverId(product._id)">
                               <font-awesome-icon icon="ellipsis-h"/>
                             </button>
-                            <b-popover :target="getPopoverId(product.id)" triggers="focus">
+                            <b-popover :target="getPopoverId(product._id)" triggers="focus">
                               <ul class="actions-popover">
                                 <li class="action-item">
                                   <a
@@ -514,7 +524,7 @@
                                     class="main-text"
                                   >Скрыть во всех заведениях</a>
                                 </li>
-                                <li @click="deleteProduct(product.id)" class="action-item">
+                                <li @click="deleteProduct(product._id)" class="action-item">
                                   <a style="text-decoration: none;" class="main-text">Удалить</a>
                                 </li>
                               </ul>
@@ -711,7 +721,18 @@ export default {
       endDate: 1546117229,
       nameDate: "9 октября 2018 - 30 декабря 2018",
 
-      sortColumn: "count"
+      sortColumn: "count",
+
+
+      //Alert
+      dismissSecsDanger: 10,
+      dismissCountDownDanger: 0,
+      msgDanger: "Error!",
+
+      dismissSecsSuccess: 10,
+      dismissCountDownSuccess: 0,
+      msgSuccess: "Success",
+
     };
   },
   mounted() {
@@ -729,14 +750,19 @@ export default {
   methods: {
     async deleteProduct(id) {
       console.log(id);
-      const response = await ProductsService.deleteProduct({
-        id
-      });
-
-      if (response.status == 200) {
-        this.products = [];
-        this.getProducts();
-      }
+      const response = await ProductsService.deleteProduct(id)
+        .then(response => {
+          console.log(response);
+          this.products = [];
+          this.getProducts();
+          console.log("Ok del");
+          this.showAlertSuccess("Товар успешно удален!");
+        })
+        .catch(error => {
+          console.log(error.response);
+          console.log("error del");
+          this.showAlertDanger("Ошибка удаления товара");
+        });
     },
     async getProducts() {
       const response = await ProductsService.fetchProducts().catch(err => {
@@ -748,12 +774,6 @@ export default {
         product.title_shop = product.shop.title;
         product.title_category = product.category.title;
       });
-      /* this.products.forEach(item => {
-        if (item.photo != "null") {
-          item.photo = `http://89.223.27.152:8080/${item.photo}`;
-          item.modalId = `modal${item.id}`;
-        }
-      }); */
     },
     async getShops() {
       const response = await ProductsService.fetchShops();
@@ -798,7 +818,9 @@ export default {
         return true;
       }
       return this.selectShops.some(
-        item => product.shop.title.toLowerCase().localeCompare(item.toLowerCase()) == 0
+        item =>
+          product.shop.title.toLowerCase().localeCompare(item.toLowerCase()) ==
+          0
       );
     },
 
@@ -1010,6 +1032,20 @@ export default {
     },
     getPopoverId(id) {
       return `popover${id}`;
+    },
+    countDownChangedDanger(dismissCountDown) {
+      this.dismissCountDownDanger = dismissCountDown;
+    },
+    countDownChangedSuccess(dismissCountDown) {
+      this.dismissCountDownSuccess = dismissCountDown;
+    },
+    showAlertDanger(msg) {
+      this.msgDanger = msg;
+      this.dismissCountDownDanger = this.dismissSecsDanger;
+    },
+    showAlertSuccess(msg){
+      this.msgSuccess = msg;
+      this.dismissCountDownSuccess = this.dismissSecsSuccess;
     }
   },
   computed: {

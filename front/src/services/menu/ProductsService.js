@@ -12,7 +12,7 @@ export default {
     });
   },
   deleteProduct(id) {
-    return api().delete(`/api/product/${id}`);
+    return api().delete(`/api/products/${id}`);
   },
   updateProduct(id) {
     return api().put(`/api/products/${id}`);
@@ -31,42 +31,43 @@ export default {
   deleteCategory(id) {
     return api().delete(`/api/category/${id}`);
   },
-  editCategory(category){
+  editCategory(category) {
+    // eslint-disable-next-line no-underscore-dangle
     return api().put(`/api/category/${category._id}`, category, {
       headers: {
         'Content-Type': 'multipart/form-data',
-      }
+      },
     });
   },
-  
+
   // Shops
-  fetchShops () {
+  fetchShops() {
     return api().get('/api/shop');
   },
   addShop(shop) {
     return api().post('/api/shop', shop);
   },
-  deleteShop(id){
+  deleteShop(id) {
     return api().delete(`/api/shop/${id}`);
   },
-  updateShop(id){
+  updateShop(id) {
     return api().put(`/api/shop/${id}`);
   },
 
 
-/*     // CategoryIngridients
-    addCategoryIng(category) {
-      return api().post('catIngrid', category)
+  /*     // CategoryIngridients
+      addCategoryIng(category) {
+        return api().post('catIngrid', category)
+      },
+      fetchCategoryIng() {
+        return api().get('catIngrid')
+      },
+      deleteCatIng(id) {
+        return api().post('deleteCatIng', id)
+      },
+      return api().post('shops', shop)
     },
-    fetchCategoryIng() {
-      return api().get('catIngrid')
-    },
-    deleteCatIng(id) {
-      return api().post('deleteCatIng', id)
-    },
-    return api().post('shops', shop)
-  },
-*/
+  */
   // CategoryIngridients
   addCategoryIng(category) {
     return api().post('/cat_ing', category)
@@ -75,7 +76,7 @@ export default {
     return api().get('/cat_ing')
   },
   deleteCatIng(id) {
-    return api().post('/cat_ing'+id, id)
+    return api().post('/cat_ing' + id, id)
   },
 
   // Ingridients
@@ -85,23 +86,7 @@ export default {
   addIngridients(ingridient) {
     return api().post('/ing', ingridient)
   },
-/*
-  // Semi
-  addSemi(semi) {
-    return api().post('semi', semi)
-  },
-  fetchSemi() {
-    return api().get('semi')
-  },
-
-    // Ingridients
-    fetchIngridients() {
-      return api().get('ingridients')
-    },
-    addIngridients(ingridient) {
-      return api().post('ingridients', ingridient)
-    },
-
+  /*
     // Semi
     addSemi(semi) {
       return api().post('semi', semi)
@@ -110,18 +95,34 @@ export default {
       return api().get('semi')
     },
 
+      // Ingridients
+      fetchIngridients() {
+        return api().get('ingridients')
+      },
+      addIngridients(ingridient) {
+        return api().post('ingridients', ingridient)
+      },
 
-    // Map
-    addMap(map) {
-      return api().post('addmap', map)
-    },
-    fetchMaps() {
-      return api().get('map')
-    },
-    delMap(id) {
-      return api().post('deleteCard', id)
-    },
-    fetchModificators() {
-      return api().get('modificators')
-    }, */
+      // Semi
+      addSemi(semi) {
+        return api().post('semi', semi)
+      },
+      fetchSemi() {
+        return api().get('semi')
+      },
+
+
+      // Map
+      addMap(map) {
+        return api().post('addmap', map)
+      },
+      fetchMaps() {
+        return api().get('map')
+      },
+      delMap(id) {
+        return api().post('deleteCard', id)
+      },
+      fetchModificators() {
+        return api().get('modificators')
+      }, */
 };

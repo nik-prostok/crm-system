@@ -9,7 +9,6 @@ var ProductSchema = new Schema({
     },
     bar_code: {
         type: String,
-        required: true
     },
     category: {
         type: Schema.Types.ObjectId, 
@@ -25,7 +24,7 @@ var ProductSchema = new Schema({
     color: {
         type: String
     },
-    avatar: {
+    photo: {
         type: String
     },
     

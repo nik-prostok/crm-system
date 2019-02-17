@@ -1,11 +1,26 @@
 const product = require('../../controllers/menu/product')
-
 const verify = require('../../controllers/verify')
+const uuidv1 = require('uuid/v1')
+
+let multer  		 = require('multer')
+
+let storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	  cb(null, './public')
+	},
+	filename: function (req, file, cb) {
+	  cb(null, uuidv1() + '.jpg')
+	}
+  })
+
+let upload = multer({ storage: storage })
+
+let cpUpload = upload.fields([{ name: 'avatar', maxCount: 1 }])
 
 //Маршруты для регистрации и управления Product
 module.exports = function(app) {
-	app.post('/api/products', verify, product.create);
-	app.get('/api/products', verify, product.fetch) // app.get('/api/products', verify.verify, product.fetch) И сделать тогда так. А из /api можно убрать проверку
-	app.delete('/api/products/:id', verify, product.delete)
-	app.put('/api/products/:id', verify, product.update)
+	app.post('/api/products', verify, cpUpload, product.create);
+	app.get('/api/products', verify, cpUpload, product.fetch) // app.get('/api/products', verify.verify, product.fetch) И сделать тогда так. А из /api можно убрать проверку
+	app.delete('/api/products/:id', verify, cpUpload, product.delete)
+	app.put('/api/products/:id', verify, cpUpload, product.update)
 };

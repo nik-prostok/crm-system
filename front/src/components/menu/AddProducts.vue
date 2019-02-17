@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<multiselect class="my-multiselect" placeholder="Выберите" v-model="product.category" :multiple="false" :close-on-select="true" :options="categories"></multiselect>
+								<multiselect class="my-multiselect" placeholder="Выберите" v-model="product.category" :multiple="false" track-by="_id" label="title" :close-on-select="true" :options="categories"></multiselect>
 							</div>
 						</div>
 					</div>
@@ -47,7 +47,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<multiselect class="my-multiselect" placeholder="Выберите" :multiple="false" :close-on-select="true" v-model="product.shop" :options="shops"></multiselect>
+								<multiselect class="my-multiselect" placeholder="Выберите" :multiple="false" :close-on-select="true" label="title" track-by="_id" v-model="product.shop" :options="shops"></multiselect>
 								<!-- <input type="text" ref="search" class="form-control input-param" placeholder="Введите"> -->
 							</div>
 						</div>
@@ -132,7 +132,7 @@
 											<div style="font-size: 18px;" class="main-text"><strong>С модификациями </strong></div>
 										</p-radio>
 										<b-collapse v-model="with_mod" class="mt-2" id="no-modif-collapse">
-											<div class="mod" v-for="(mod_item,key) in product.modification">
+											<div class="mod" :key="mod_item.title_mode" v-for="(mod_item,key) in product.modification">
 												<hr>
 												<div class="row mt-4 ml-2">
 													<div class="col-lg-8">
@@ -222,14 +222,14 @@
 						<div class="col-lg-2">
 							<p class="title-form mt-2">Фотография</p>
 						</div>
-						<b-form-file accept="image/*" v-model="product.avatar" id="upload" class="mt-3" plain></b-form-file>
+						<b-form-file accept="image/*" v-model="avatar" id="upload" class="mt-3" plain></b-form-file>
 						<div class="col-lg-4 align-self-center">
 							<b-link @click="selectFile" class="main-text">
 								<div class="link-green link-hover">
 									<u id="upload_link">Загрузить</u>
 								</div>
 							</b-link>
-							<div v-if="product.avatar" class="mt-3">{{product.avatar && product.avatar.name}} <i @click="resetFile" class="fas fa-times"></i></div>
+							<div v-if="avatar" class="mt-3">{{avatar && avatar.name}} <i @click="resetFile" class="fas fa-times"></i></div>
 
 						</div>
 					</div>
@@ -388,8 +388,7 @@ export default {
       categories: [],
       shops: [],
 
-      file: null,
-
+      avatar: null,
       product: {
         title: '',
         category: '',
@@ -402,7 +401,6 @@ export default {
         weight_goods: 0,
         types: 0,
         SKU: 0,
-        avatar: null,
         profit: null,
         no_dicsount: false,
 
@@ -432,7 +430,10 @@ export default {
     },
     async sendProducts() {
       this.stateSaving = true;
-      console.log(this.product);
+      this.product.category = this.product.category._id;
+      this.product.shop = this.product.shop._id;
+
+
 
       if (this.product.types == 0) {
         this.product.modification = [];
@@ -449,23 +450,39 @@ export default {
         item.title_product = this.product.title;
       });
 
+      console.log(this.product);
+
+      let vm = this;
       const formData = new FormData();
+      formData.append("product", JSON.stringify(vm.$data.product));
+      formData.append("avatar", vm.$data.avatar);
+      ProductsService.addProduct(formData)
+      .then(response => {
 
-      formData.append('product', JSON.stringify(this.product));
-      formData.append('avatar', this.product.avatar);
+        this.$router.push('/menu/products');
+      })
+      .catch(error => {
+          alert("Ошибка отправки");
+      })
 
-
-      console.log(formData.getAll('avatar'));
-      await ProductsService.addProduct(formData);
-      this.$router.push('/menu/products');
     },
     async getCategories() {
-      const res = await ProductsService.fetchCategories();
-      this.categories = res.data.map(item => item.title);
+      const response = await ProductsService.fetchCategories()
+      .then(response => {
+          this.categories = response.data;
+        })
+        .catch(error => {
+          console.error(error.response);
+        });
     },
     async getShops() {
-      const res = await ProductsService.fetchShops();
-      this.shops = res.data.map(item => item.title);
+      const res = await ProductsService.fetchShops()
+      .then(response => {
+        this.shops = response.data;
+      })
+      .catch(error => {
+        console.error(error.response);
+      })
     },
     open_collapse() {
       if (this.mod == 'without_mod') {
@@ -512,13 +529,6 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-
 <style>
 #upload {
 	display: none;

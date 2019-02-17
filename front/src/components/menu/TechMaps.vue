@@ -58,7 +58,7 @@
 										<div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
 										<b-form-group class="ml-2" label="Отображать столбцы">
 											<b-form-checkbox-group id="checkboxes1" name="flavour1" v-model="fieldsSet">
-												<div v-for="field in fields">
+												<div v-for="field in fields" :key="field.label">
 													<b-form-checkbox :value="field">{{field.label}}</b-form-checkbox>
 												</div>
 											</b-form-checkbox-group>
@@ -141,7 +141,7 @@
 											</button>
 											<b-popover :target=getPopoverId(row.item.id) triggers="focus">
 												<ul class="actions-popover">
-													<li @click=deleteMaps(row.item.id) class="action-item"><a style="text-decoration: none; cursor: pointer;"class="main-text">Удалить</a></li>
+													<li @click=deleteMaps(row.item.id) class="action-item"><a style="text-decoration: none; cursor: pointer;" class="main-text">Удалить</a></li>
 
 													<li class="action-item"><a style="text-decoration: none; cursor: pointer;" href="" class="main-text">Скрыть</a></li>
 												</ul>
@@ -304,6 +304,7 @@
 				</div>
 			</div>
 		</div>
+    </div>
 	</div><!-- body-row END -->
 </template>
 

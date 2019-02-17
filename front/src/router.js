@@ -23,6 +23,10 @@ export default new Router({
       component: Home,
     },
     {
+      path: '/menu/products/add',
+      component: () => import('./components/menu/AddProducts.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
@@ -51,7 +55,7 @@ export default new Router({
       path: '/menu/cat_ingridients/add',
       component: require('./components/menu/AddCategoryIngridients').default,
     },
-    
+
     {
       path: '/menu/ingridients',
       component: require('./components/menu/Ingridients').default,

@@ -10,7 +10,7 @@
 					<img src="/static/image/sandwich.png" style="width: 23px;">
 				</div>
 			</a>
-			<ul v-for="item in ul_list" class="list-group">
+			<ul v-for="item in ul_list" :key="item.id" class="list-group">
 
 				<a :href=getHref(item.id) data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
 					<div class="d-flex w-100 justify-content-start align-items-center">
@@ -20,13 +20,11 @@
 					</div>
 				</a>
 
-
-				<div v-for="sub in item.submenu" :id=item.id class="collapse sidebar-submenu">
+				<div v-for="sub in item.submenu" :id="item.id" :key=sub.id class="collapse sidebar-submenu">
 					<router-link :to=sub.id class="list-group-item list-group-item-action bg-dark text-white">
 						<span class="menu-collapsed">{{ sub.title }}</span>
 					</router-link>
 				</div>
-
 			</ul>
 
 		</div>
