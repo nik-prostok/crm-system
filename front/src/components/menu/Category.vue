@@ -9,6 +9,7 @@
 			</div>
 
 
+
 			<div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
 				<!-- <button class="btn" @click="getCategories">Обновить</button> -->
 				<div id="printMe">
@@ -69,8 +70,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<item :field="1" v-for="model in getTransformCategories" :key="model._id" style="width: 100%" :model="model" @deleteCat=deleteCategory></item>
-
+										<item :field="1" style="width: 100%" :model="getTransformCategories" @deleteCat=deleteCategory></item>
 									</tbody>
 								</table>
 							</div>
@@ -80,104 +80,112 @@
 				</div>
 			</div>
 		</div>
-	</div><!-- body-row END -->
+	</div>
+</div><!-- body-row END -->
 </template>
 
 <script>
 
-import Vue from 'vue';
+	import Vue from 'vue';
 
-import ProductsService from '@/services/menu/ProductsService';
-import Sidebar from '@/components/Sidebar';
-import item from '@/components/menu/TreeList';
+	import ProductsService from '@/services/menu/ProductsService'
+	import Sidebar from '@/components/Sidebar'
+	import item from '@/components/menu/TreeList'
 
-const arrayToTree = require('array-to-tree');
+	var arrayToTree = require('array-to-tree');
 
-export default {
-  name: 'category',
-  components: {
-    sidebar: Sidebar,
-    item,
-  },
-  data() {
-    return {
-      open: false,
+	export default {
+		name: 'category',
+		components: {
+			'sidebar': Sidebar,
+			'item': item,
+		},
+		data () {
+			return {
+				open: false,
 
-      search: '',
-      categories: [],
-      parentCategory: [],
-      sortColumn: 'count',
-      transformListCategories: null,
-    };
-  },
-  mounted() {
-    this.getCategories();
-  },
-  created() {
-    this.$root.$on('deleteCat', (id) => {
-      this.deleteCategory(id);
-    });
-  },
-  watch: {
-    $route() {
-      this.getCategories();
-    },
-  },
-  methods: {
-    async deleteCategory(id) {
-      const response = await ProductsService.deleteCategory(id);
+				search: '',
+				categories: [],
+				parentCategory:[],
+				sortColumn: 'count',
+				transformListCategories: null,
+			}
+		},
+		mounted () {
 
-      if (response.status == 200) {
-        this.category = [];
-        this.getCategories();
-      }
-    },
-    async getCategories() {
-      const vm = this
-      ProductsService.fetchCategories().then((response) => {
-        vm.$data.categories = response.data;
-        console.log("categories", vm.$data.categories); //ЭТО ВАЖНО!!!!!!!!!!!! НИКОГДА НЕ ИСПОЛЬЗУЙ THIS ВНУТРИ ФУНКЦИЙ, КОТОРЫЕ ЭТОМУ THIS ДАЮТ СВОЁ ЗНАЧЕНИЕ. ИЗ-ЗА ЭТОГО КАТЕГОРИИ ВЫДАВАЛИ НЕ МАССИВ, А Observer
-      })
-    },
-    setCollapse(category) {
-      //	this.getTransformCategories()
-      this.transformListCategories.forEach((item) => {
-        if (item.id == category.id) {
-          console.log(`title: ${category.title} id: ${category.collapse}`);
-          item.collapse = !category.collapse;
-        }
-      });
-    },
-    filterBySearch(category) {
-      if (this.search.length === 0) {
-        return true;
-      }
-      return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
-    },
-    getPopoverId(id) {
-      return `popover${id}`;
-    },
-    getHrefEdit(id) {
-      return `/menu/category_prod_cards/edit/${id}`;
-    },
-    sortEvent(message) {
-      console.log(message);
-      if (this.sortColumn == message) {
-        this.sort = !this.sort;
-      } else {
-        this.sortColumn = message;
-      }
-    },
-    filterByParentCategory(category) {
-      if (category.parent_id == 60) {
-        return true;
-      }
-      return false;
-    },
-    getParentCategory() {
-      this.parentCategory = this.categories.filter(this.filterByParentCategory);
-    },
-    /* getTransformCategories(){
+			this.getCategories()
+		},
+		created() {
+			this.$root.$on('deleteCat', (id) => {
+				this.deleteCategory(id);
+			});
+		},
+		watch: {
+			'$route'(){
+				this.getCategories()
+			}
+		},
+		methods: {
+			async deleteCategory(id){
+				const response = await ProductsService.deleteCategory(id);
+
+				if (response.status == 200){
+					this.category = [];
+					this.getCategories();
+				}
+			},
+			async getCategories () {
+				const response = await ProductsService.fetchCategories()
+        this.categories = response.data
+        console.log(this.categories);
+        this.categories.forEach(cat => {
+          if (cat.id != 60){
+          cat.id = cat._id
+          }
+        })
+
+			//	console.log(this.categories);
+			},
+			setCollapse(category){
+			//	this.getTransformCategories()
+			this.transformListCategories.forEach(item => {
+				if (item.id == category.id){
+					console.log("title: " + category.title + " id: " + category.collapse)
+					item.collapse = !category.collapse;
+				}
+			})
+		},
+		filterBySearch(category){
+			if (this.search.length === 0) {
+				return true;
+			}
+			return category.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+		},
+		getPopoverId(id){
+			return "popover" + id;
+		},
+		getHrefEdit(id){
+			return '/menu/category_prod_cards/edit/' + id;
+		},
+		sortEvent(message){
+		//	console.log(message);
+			if (this.sortColumn == message){
+				this.sort = !this.sort;
+			} else {
+				this.sortColumn = message;
+			}
+		},
+		filterByParentCategory(category){
+			if (category.parent_id == 60){
+				return true;
+			} else {
+				return false;
+			}
+		},
+		getParentCategory(){
+			this.parentCategory = this.categories.filter(this.filterByParentCategory)
+		},
+			/*getTransformCategories(){
 				var withoutStart = this.categories.filter(item => {
 					if (item.id != 60) return true;
 					else return false;
@@ -189,30 +197,37 @@ export default {
 				})
 				this.transformListCategories = arrayToTree(withoutStart);
 				console.log(this.transformListCategories)
-			}, */
-  },
-  computed: {
-    getTransformCategories() { //Я сделал сортировку немного по своему, но работает нормально
-      const vm = this
-      let filtered = vm.$data.categories.filter(el => {
-        if(el.title.toLowerCase().indexOf(vm.$data.search.toLowerCase()) > -1) return true
-        else return false
-      })
-      console.log('filtered', filtered)
-      return filtered
-    },
-    length() {
-      let length = 0;
-      this.categories.forEach((item) => {
-        length++;
-      });
-      return length - 1;
-    },
-    getParentCategories() {
-      return this.categories.filter(this.filterByParentCategory);
-    },
-  },
-};
+			},*/
+		},
+		computed: {
+			getTransformCategories(){
+				var withoutStart = this.categories.filter(item => {
+					if (item.id != 60) return true;
+					else return false;
+				})
+				withoutStart.forEach(item => {
+					if ((item.children == null) && (item.collapse == null)){
+						item.collapse = false;
+					}
+				})
+				this.transformListCategories = {
+					children: arrayToTree(withoutStart),
+					title: "My tree",
+					id: 60,
+				}
+				//console.log(this.transformListCategories)
+				return this.transformListCategories
+			},
+			length(){
+				let length = 0;
+				this.categories.forEach(item => {
+					length++
+				})
+				return length-1;
+			},
+			getParentCategories(){
+				return this.categories.filter(this.filterByParentCategory)
+			}
+		}
+	}
 </script>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>

@@ -50,7 +50,6 @@
                   :multiple="false"
                   :close-on-select="true"
                   label="title"
-                  track-by="title"
                   :options="categories"
                 ></multiselect>
               </div>
@@ -278,8 +277,8 @@ export default {
     },
     async sendProducts() {
       let vm = this;
-      vm.$data.category.parent_id = vm.$parent.id;
-      //console.log(vm.$data.category)
+      vm.$data.category.parent_id = this.parent.id;
+      console.log(vm.$data.category)
       const formData = new FormData();
       formData.append("category", JSON.stringify(vm.$data.category));
       formData.append("avatar", vm.$data.avatar);
@@ -291,9 +290,11 @@ export default {
       const vm = this;
       ProductsService.fetchCategories()
         .then(res => {
+          console.log(res.data)
           vm.$data.categories = res.data.map(item => ({
-            id: item.id,
-            title: item.title
+            id: item._id,
+            title: item.title,
+            parent_id: item.parent_id
           }));
         })
         .catch(err => console.log);

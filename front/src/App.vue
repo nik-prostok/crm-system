@@ -297,13 +297,13 @@ h1.head-text {
 }
 
 i.arrow-more {
-	font-size: 1.5em;
+	font-size: 18px;
 	cursor: pointer;
 	background-color: transparent;
 }
 
 i.arrow-more:hover {
-	font-size: 2em;
+	font-size: 22px;
 }
 
 .btn:focus {
@@ -388,7 +388,7 @@ button.btn-filter:focus {
 
 .right-addon .btn-container {
 	background-color: transparent;
-	font-size: 1.5em;
+	font-size: 22px;
 	color: gray;
 	outline: none;
 	border: none;
@@ -470,7 +470,7 @@ hr.line {
 	background: #FFFFFF; /* Цвет фона */
 	border: 5px solid #F2F3F4; /* Граница вокруг ячеек */
 	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */
-	font-size: 0.95em; /* Размер текста */
+	font-size: 15px; /* Размер текста */
 	text-align: center;
 }
 
@@ -478,7 +478,7 @@ hr.line {
 	background: #FFFFFF; /* Цвет фона */
 	border: 5px solid #F2F3F4; /* Граница вокруг ячеек */
 	font-family: 'Open Sans', sans-serif; /* Выбор гарнитуры */
-	font-size: 0.95em; /* Размер текста */
+	font-size: 15px; /* Размер текста */
 	text-align: left;
 }
 

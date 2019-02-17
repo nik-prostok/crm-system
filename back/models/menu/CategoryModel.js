@@ -7,9 +7,8 @@ var CategorySchema = new Schema({
     	type: String,
     	reqired: true
     },
-    parent: {
-        type: Schema.Types.ObjectId, 
-        ref: 'Category',
+    parent_id: {
+       type: String,
     },
     color: {
         type: String,
