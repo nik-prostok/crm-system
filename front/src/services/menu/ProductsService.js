@@ -14,8 +14,14 @@ export default {
   deleteProduct(id) {
     return api().delete(`/api/products/${id}`);
   },
-  updateProduct(id) {
-    return api().put(`/api/products/${id}`);
+  updateProduct(product, id) {
+    return api().put(`/api/products/${id}`, product, {
+      emulateJSON: true,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  getProduct(id) {
+    return api().get(`/api/products/${id}`);
   },
   // Categories
   fetchCategories() {

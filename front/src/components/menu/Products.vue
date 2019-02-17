@@ -259,14 +259,18 @@
                 variant="danger"
                 @dismissed="dismissCountDownDanger=0"
                 @dismiss-count-down="countDownChangedDanger"
-              ><p class="main-text">{{msgDanger}}</p></b-alert>
+              >
+                <p class="main-text">{{msgDanger}}</p>
+              </b-alert>
               <b-alert
                 :show="dismissCountDownSuccess"
                 dismissible
                 variant="success"
                 @dismissed="dismissCountDownSuccess=0"
                 @dismiss-count-down="countDownChangedSuccess"
-              ><p class="main-text">{{msgSuccess}}</p></b-alert>
+              >
+                <p class="main-text">{{msgSuccess}}</p>
+              </b-alert>
               <div class="table-responsive">
                 <table class="table table-custom table-bordered">
                   <thead>
@@ -396,9 +400,9 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-bind:key="key"
+                      v-bind:key="product._id"
                       class="tr-td-custom"
-                      v-for="(product, key) in FilterProducts"
+                      v-for="(product) in FilterProducts"
                     >
                       <td
                         class="td-custom"
@@ -411,10 +415,12 @@
                           </div>
                           <div v-else class="rectangle col-6">
                             <div :class="product.color" class="h-100">
-                              <p
-                                style="color: white; text-align: center;"
-                                class="pt-2"
-                              >{{ product.title.slice(0,1) }}</p>
+                              <div v-if="product.modification != null">
+                                <p
+                                  style="color: white; text-align: center;"
+                                  class="pt-2"
+                                >{{ product.title.slice(0,1) }}</p>
+                              </div>
                             </div>
                           </div>
                           <div class="col-6 align-self-center">{{ product.title }}</div>
@@ -433,11 +439,11 @@
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))"
                       >{{product.SKU}}</td>
-                        <td
-                          class="td-custom align-middle"
-                          v-if="((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
-                        >{{product.title_shop}}</td>
-                        <td v-else>-</td>
+                      <td
+                        class="td-custom align-middle"
+                        v-if="((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
+                      >{{product.title_shop}}</td>
+                      <td v-else>-</td>
                       <td
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"
@@ -723,7 +729,6 @@ export default {
 
       sortColumn: "count",
 
-
       //Alert
       dismissSecsDanger: 10,
       dismissCountDownDanger: 0,
@@ -731,8 +736,7 @@ export default {
 
       dismissSecsSuccess: 10,
       dismissCountDownSuccess: 0,
-      msgSuccess: "Success",
-
+      msgSuccess: "Success"
     };
   },
   mounted() {
@@ -1043,7 +1047,7 @@ export default {
       this.msgDanger = msg;
       this.dismissCountDownDanger = this.dismissSecsDanger;
     },
-    showAlertSuccess(msg){
+    showAlertSuccess(msg) {
       this.msgSuccess = msg;
       this.dismissCountDownSuccess = this.dismissSecsSuccess;
     }

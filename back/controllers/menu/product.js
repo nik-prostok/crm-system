@@ -22,7 +22,7 @@ module.exports = {
 			});
 	},
 	fetch: (req, res) => {
-		var products = Product.ProductModel
+		let products = Product.ProductModel
 			.find()
 			.populate('shop')
 			.populate('category')
@@ -33,7 +33,21 @@ module.exports = {
 				} else {
 					res.send(arr)
 				}
-			})
+			});
+	},
+	get: (req, res) => {
+		let product = Product.ProductModel
+			.findOne({ _id: req.params.id })
+			.populate('shop')
+			.populate('category')
+			.exec((err, product) => {
+				if (err) {
+					console.log(err)
+					res.sendStatus(400)
+				} else {
+					res.send(product)
+				}
+			});
 	},
 	delete: (req, res) => {
 		console.log(req.params.id);
@@ -47,14 +61,18 @@ module.exports = {
 		})
 	},
 	update: (req, res) => {
-		var ProductRequest = req.body;
-		Product.ProductModel.findByIdAndUpdate(req.params.id, { '$set': ProductRequest },
+		let RequestProduct = JSON.parse(req.body.product);
+		if (req.files['avatar']) {
+			RequestProduct.photo = "http://localhost:8081/static/" + req.files['avatar'][0].filename;
+		}
+		Product.ProductModel.findByIdAndUpdate(req.params.id, { '$set': RequestProduct },
 			(err) => {
 				if (err) {
 					console.log(err);
 					res.sendStatus(400);
+				} else {
+					res.sendStatus(200);
 				}
-				res.sendStatus(200);
 			})
 	}
 }

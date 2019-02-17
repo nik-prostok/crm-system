@@ -65,7 +65,7 @@ var ProductSchema = new Schema({
     modification: [
     {
         bar_code: String,
-        title: String,
+        title_mode: String,
         self_cost: Number,
         markup: Number,
         price: Number,
