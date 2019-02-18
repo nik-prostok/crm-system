@@ -29,8 +29,10 @@ module.exports = {
 		})
 	},
 	delete: (req, res) => {
-		console.log(req.params.id);
-		Shop.ShopModel.findByIdAndRemove(req.params.id, (err)=>{
+		console.log(req.params.id)
+		Shop.ShopModel.findByIdAndDelete(req.params.id, (err, data)=>{
+			console.log(err)
+			console.log(data)
 			if (err){
 				console.log(err);
 				res.sendStatus(400);

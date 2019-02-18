@@ -59,8 +59,8 @@ export default {
   deleteShop(id) {
     return api().delete(`/api/shop/${id}`);
   },
-  updateShop(id) {
-    return api().put(`/api/shop/${id}`);
+  updateShop(id, shop) {
+    return api().put(`/api/shop/${id}`, shop);
   },
 
 

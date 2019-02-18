@@ -74,24 +74,24 @@
 										</tr>
 									</thead>
 									<tbody >
-										<tr class="tr-td-custom" v-for="shop in shops">
+										<tr class="tr-td-custom" v-for="shop in getTransformCategories">
 
 											<td class="td-custom align-middle" style="text-align: left;">{{shop.title}}</td>
 											<td class="td-custom align-middle" style="text-align: left;">{{shop.print_runners}}</td>
 											<td class="td-custom align-middle">
 												<div class="d-flex flex-row">
 													<div class="mr-2">
-														<b-link :to=getHrefEdit(shop.id) class="main-text">
+														<b-link :to=getHrefEdit(shop._id) class="main-text">
 															<div class="link-blue link-hover">Ред.</div>
 														</b-link>
 													</div>
 													<div class="ml-2">
-														<button class="btn-icon popoverButton" :id=getPopoverId(shop.id)>
+														<button class="btn-icon popoverButton" :id=getPopoverId(shop._id)>
 															<i class="fa fa-ellipsis-h"></i>
 														</button>
-														<b-popover :target=getPopoverId(shop.id) triggers="focus">
+														<b-popover :target=getPopoverId(shop._id) triggers="focus">
 															<ul class="actions-popover">
-																<li @click=deleteShop(shop.id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
+																<li @click=deleteShop(shop._id) class="action-item"><a style="text-decoration: none;"class="main-text">Удалить</a></li>
 															</ul>
 														</b-popover>
 													</div>
@@ -140,15 +140,11 @@ export default {
   },
   methods: {
     async deleteShop(id) {
-      console.log(id);
-      const response = await ProductsService.deleteProduct({
-        id,
-      });
-
-      if (response.status == 200) {
-        this.shops = [];
-        this.getShops();
-      }
+			console.log(id);
+			const vm = this
+      ProductsService.deleteShop(id).then(res => {
+				vm.getShop();
+			})
     },
     async getShop() {
       const response = await ProductsService.fetchShops();
@@ -190,13 +186,19 @@ export default {
         length++;
       });
       return length;
-    },
+		},
+				getTransformCategories() { 
+      const vm = this
+      let filtered = vm.$data.shops.filter(el => {
+        if(el.title.toLowerCase().indexOf(vm.$data.search.toLowerCase()) > -1) return true
+        else return false
+      })
+      console.log('filtered', filtered)
+      return filtered
+    }
   },
 };
 </script>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
-<style src="../../../static/style/main.css"></style>
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>
+

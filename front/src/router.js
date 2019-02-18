@@ -78,5 +78,20 @@ export default new Router({
       component: require('./components/menu/AddIngridients').default,
       meta: { requiresAuth: true }
     },
+    {
+      path: '/menu/shops',
+      component: require('./components/menu/Shops').default,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/menu/shops/add',
+      component: require('./components/menu/AddShop').default,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/menu/shops/edit/:id',
+      component: require('./components/menu/EditShop').default,
+      meta: { requiresAuth: true }
+    },
   ],
 });

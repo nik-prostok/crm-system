@@ -72,7 +72,7 @@ export default {
 
       shop: {
         title: '',
-        printRunners: false,
+        print_runners: false,
       },
     };
   },
@@ -82,24 +82,22 @@ export default {
   },
   methods: {
     async sendShop() {
-      ProductsService.addShop(this.shop);
+      ProductsService.updateShop(this.editId, this.shop);
       this.$router.push('/menu/shops');
     },
     setEditId(id) {
       this.editId = id;
     },
     async getShop() {
-      const response = await ProductsService.fetchShops();
-      response.data.forEach((item) => {
-        if (item.id == this.editId) {
-          this.shop = item;
-          if (this.shop.print_runners) {
-            this.shop.print_runners = true;
-          } else {
-            this.shop.print_runners = false;
-          }
-        }
-      });
+			const vm = this
+			const response = await ProductsService.fetchShops().catch(err => console.log(err))
+			console.log(response.data)
+      let [item] = response.data.filter(item => {
+				return item._id === vm.$data.editId
+			})
+			console.log('item', item)
+			vm.$data.shop.title = item.title
+			vm.$data.shop.print_runners = item.print_runners
     },
   },
   computed: {
@@ -107,10 +105,6 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
