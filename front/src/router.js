@@ -15,7 +15,8 @@ export default new Router({
     },
     {
       path: '/menu/products',
-      component: () => import('./components/menu/Products.vue')
+      component: () => import('./components/menu/Products.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/',
@@ -25,10 +26,12 @@ export default new Router({
     {
       path: '/menu/products/add',
       component: () => import('./components/menu/AddProducts.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/menu/products/edit/:id',
       component: () => import('./components/menu/EditProduct.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/about',
@@ -41,32 +44,39 @@ export default new Router({
     {
       path: '/menu/category_prod_cards',
       component: require('./components/menu/Category').default,
+      meta: { requiresAuth: true }
     },
     {
       path: '/menu/category_prod_cards/add',
       component: require('./components/menu/AddCategory').default,
+      meta: { requiresAuth: true }
     },
     {
       path: '/menu/category_prod_cards/edit/:id',
       component: require('./components/menu/EditCategory').default,
+      meta: { requiresAuth: true }
     },
     {
       path: '/menu/cat_ingridients',
       component: require('./components/menu/CategoryIngridients').default,
+      meta: { requiresAuth: true }
     },
 
     {
       path: '/menu/cat_ingridients/add',
       component: require('./components/menu/AddCategoryIngridients').default,
+      meta: { requiresAuth: true }
     },
 
     {
       path: '/menu/ingridients',
       component: require('./components/menu/Ingridients').default,
+      meta: { requiresAuth: true }
     },
     {
       path: '/menu/ingridients/add',
       component: require('./components/menu/AddIngridients').default,
+      meta: { requiresAuth: true }
     },
   ],
 });

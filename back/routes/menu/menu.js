@@ -6,6 +6,7 @@ const ingRoutes			= require('./ing');
 const semiRoutes		= require('./semi');
 const techMapsRoutes	= require('./tech_maps');
 const modificatorRoutes = require('./modificator');
+const verifyToken 		= require('./verifyToken');
 
 module.exports = function(app){
 	productRoutes(app);
@@ -16,4 +17,5 @@ module.exports = function(app){
 	semiRoutes(app);
 	modificatorRoutes(app);
 	techMapsRoutes(app);
+	verifyToken(app);
 }

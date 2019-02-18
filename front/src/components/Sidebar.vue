@@ -20,8 +20,8 @@
 					</div>
 				</a>
 
-				<div v-for="sub in item.submenu" :id="item.id" :key=sub.id class="collapse sidebar-submenu">
-					<router-link :to=sub.id class="list-group-item list-group-item-action bg-dark text-white">
+				<div :id="item.id" class="collapse sidebar-submenu">
+					<router-link v-for="sub in item.submenu" :key=sub.id :to=sub.id class="list-group-item list-group-item-action bg-dark text-white">
 						<span class="menu-collapsed">{{ sub.title }}</span>
 					</router-link>
 				</div>

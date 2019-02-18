@@ -1,8 +1,39 @@
 <template>
-  <div id="app">
+  <div id="app" v-on:lo>
     <router-view/>
   </div>
 </template>
+
+<script>
+
+import ProductsService from '@/services/menu/ProductsService';
+
+export default {
+	name: 'main',
+	data () {
+		return {
+
+		}
+	},
+	methods: {
+		logout () {
+			localStorage.removeItem('token');
+		},
+		checkToken () {
+			ProductsService.verifyToken()
+			.then(res => {
+				if(!res.data) return this.logout()
+				if(!res.data.success) return this.logout()
+			})
+			.catch(err => this.logout())
+		}
+	},
+	mounted() {
+		this.checkToken()
+	}
+}
+</script>
+
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 

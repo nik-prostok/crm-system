@@ -2,6 +2,9 @@ import api from '../api';
 
 export default {
   // Products
+  verifyToken() {
+    return api().post('/api/verifyToken');
+  },
   fetchProducts() {
     return api().get('/api/products');
   },
