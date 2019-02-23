@@ -963,31 +963,21 @@ export default {
           ing._id = ing.object_ing._id;
         });
       });
-      let modificators = [];
-      this.map.modificators.forEach(mod => {
-        ProductsService.addModificator(mod)
-          .then(res => {
-            modificators.push(res.data);
-            console.log(mod);
-          })
-          .catch(err => {
-            console.error(err);
-          });
-      });
-      this.map.modificators = modificators;
       console.log(this.map);
 
       const formData = new FormData();
-      formData.append("map", JSON.stringify(this.map));
+      formData.append('map', JSON.stringify(this.map));
+      console.log(formData.getAll('map'));
       formData.append("avatar", vm.$data.avatar);
       ProductsService.addMap(formData)
         .then(response => {
-          this.$router.push("/menu/maps");
+          alert("Успешно");
+          //this.$router.push("/menu/maps");
         })
         .catch(error => {
           console.error(error);
           alert("Ошибка отправки");
-          this.$router.push("/menu/maps");
+          //this.$router.push("/menu/maps");
         });
     },
     async fetchIngridients() {
