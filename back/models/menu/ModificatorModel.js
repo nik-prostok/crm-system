@@ -22,10 +22,31 @@ var ModificatorSchema = new Schema({
 	setMax: {
 		type: Boolean
 	},
-	ingridients: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Ing'
-	}]
+	ingridients: [
+		{
+			ingridient: {
+				type: Schema.Types.ObjectId,
+				ref: 'Ing'
+			},
+			bind: {
+				type: Boolean,
+			},
+			netto: {
+				type: Schema.Types.Decimal128,
+			},
+			brutto: {
+				type: Schema.Types.Decimal128,
+			},
+			method_cooking: [{
+				_id: {
+					type: Number,
+				},
+				title: {
+					type: String,
+				}
+			}]
+		}
+	],
 });
 
 module.exports = {

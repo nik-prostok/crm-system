@@ -756,8 +756,6 @@ export default {
       console.log(id);
       const response = await ProductsService.deleteProduct(id)
         .then(response => {
-          console.log(response);
-          this.products = [];
           this.getProducts();
           console.log("Ok del");
           this.showAlertSuccess("Товар успешно удален!");
@@ -769,15 +767,18 @@ export default {
         });
     },
     async getProducts() {
-      const response = await ProductsService.fetchProducts().catch(err => {
-        console.log(err);
-      });
-      console.log(response.data);
-      this.products = response.data;
-      this.products.forEach(product => {
+      const response = await ProductsService.fetchProducts()
+      .then(response => {
+        this.products = response.data;
+        this.products.forEach(product => {
         product.title_shop = product.shop.title;
         product.title_category = product.category.title;
       });
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
     },
     async getShops() {
       const response = await ProductsService.fetchShops();

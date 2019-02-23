@@ -5,51 +5,54 @@ const db = connectDB.db;
 
 module.exports = {
 	create: (req, res) => {
-		var TechMapsRequest = req.body;
+		let TechMapsRequest = JSON.parse(req.body.map);
+		if (req.files['avatar']) {
+			TechMapsRequest.photo = "http://localhost:8081/static/" + req.files['avatar'][0].filename;
+		}
 		console.log(TechMapsRequest);
 		TechMaps.TechMapsModel.create(
 			TechMapsRequest, function (err) {
-				if (err){
+				if (err) {
 					console.log(err);
 					res.sendStatus(400);
 				} else {
 					res.sendStatus(200);
 				}
-			}); 
+			});
 	},
 	fetch: (req, res) => {
 		TechMaps.TechMapsModel
-		.find()
-		.populate({
-			path: 'ingridients',
-			populate: {
-				path: 'category'
-			}
-		})
-		.populate({
-			path: 'modificators',
-			populate: {
+			.find()
+			.populate({
 				path: 'ingridients',
 				populate: {
 					path: 'category'
 				}
-			}
-		})
-		.populate('category')
-		.populate('shop')
-		.exec((err, arr) => {
-			if (err){
-				console.log(err)
-				res.sendStatus(400)
-			} else {
-				res.send(arr)
-			}
-		})
+			})
+			.populate({
+				path: 'modificators',
+				populate: {
+					path: 'ingridients',
+					populate: {
+						path: 'category'
+					}
+				}
+			})
+			.populate('category')
+			.populate('shop')
+			.exec((err, arr) => {
+				if (err) {
+					console.log(err)
+					res.sendStatus(400)
+				} else {
+					res.send(arr)
+				}
+			})
 	},
 	delete: (req, res) => {
 		console.log(req.params.id);
-		TechMaps.TechMapsModel.findByIdAndRemove(req.params.id, (err)=>{
-			if (err){
+		TechMaps.TechMapsModel.findByIdAndRemove(req.params.id, (err) => {
+			if (err) {
 				console.log(err);
 				res.sendStatus(400);
 			} else {
@@ -59,9 +62,9 @@ module.exports = {
 	},
 	update: (req, res) => {
 		var TechMapsRequest = req.body;
-		TechMaps.TechMapsModel.findByIdAndUpdate(req.params.id, {'$set': TechMapsRequest}, 
-			(err)=>{
-				if (err){
+		TechMaps.TechMapsModel.findByIdAndUpdate(req.params.id, { '$set': TechMapsRequest },
+			(err) => {
+				if (err) {
 					console.log(err);
 					res.sendStatus(400);
 				}

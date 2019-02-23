@@ -63,37 +63,23 @@ export default {
     return api().put(`/api/shop/${id}`, shop);
   },
 
-
-  /*     // CategoryIngridients
-      addCategoryIng(category) {
-        return api().post('catIngrid', category)
-      },
-      fetchCategoryIng() {
-        return api().get('catIngrid')
-      },
-      deleteCatIng(id) {
-        return api().post('deleteCatIng', id)
-      },
-      return api().post('shops', shop)
-    },
-  */
   // CategoryIngridients
   addCategoryIng(category) {
-    return api().post('/cat_ing', category)
+    return api().post('/cat_ing', category);
   },
   fetchCategoryIng() {
-    return api().get('/cat_ing')
+    return api().get('/cat_ing');
   },
   deleteCatIng(id) {
-    return api().post('/cat_ing' + id, id)
+    return api().post(`/cat_ing/${id}`, id);
   },
 
   // Ingridients
   fetchIngridients() {
-    return api().get('/ing')
+    return api().get('/ing');
   },
   addIngridients(ingridient) {
-    return api().post('/ing', ingridient)
+    return api().post('/ing', ingridient);
   },
   /*
     // Semi
@@ -119,19 +105,36 @@ export default {
       fetchSemi() {
         return api().get('semi')
       },
+*/
 
+  // Map
+  addMap(map) {
+    return api().post('/api/map', map, {
+      emulateJSON: true,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  fetchMaps() {
+    return api().get('/api/map');
+  },
+  delMap(id) {
+    return api().delete(`/api/map/${id}`);
+  },
+  updateMap(id, map) {
+    return api().put(`/api/map/${id}`, map);
+  },
 
-      // Map
-      addMap(map) {
-        return api().post('addmap', map)
-      },
-      fetchMaps() {
-        return api().get('map')
-      },
-      delMap(id) {
-        return api().post('deleteCard', id)
-      },
-      fetchModificators() {
-        return api().get('modificators')
-      }, */
+  // Modificators
+  addModificator(mod) {
+    return api().post('/api/modificator', mod);
+  },
+  fetchModificator() {
+    return api().get('/api/modificator');
+  },
+  deleteModificator(id) {
+    return api().delete(`/api/modificator/${id}`);
+  },
+  updateModificator(id, mod) {
+    return api().put(`/api/modificator/${id}`, mod);
+  },
 };

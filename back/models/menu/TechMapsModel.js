@@ -48,10 +48,34 @@ var TechMapsSchema = new Schema({
 	price: {
 		type: Number
 	},
-	ingridients: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Ing'
-	}],
+	photo: {
+		type: String
+	},
+	ingridients: [
+		{
+			ingridient: {
+				type: Schema.Types.ObjectId,
+				ref: 'Ing'
+			},
+			bind: {
+				type: Boolean,
+			},
+			netto: {
+				type: Schema.Types.Decimal128,
+			},
+			brutto: {
+				type: Schema.Types.Decimal128,
+			},
+			method_cooking: [{
+				_id: {
+					type: Number,
+				},
+				title: {
+					type: String,
+				}
+			}]
+		}
+	],
 	modificators: [{
 		type: Schema.Types.ObjectId,
 		ref: 'Modificator'
@@ -59,5 +83,5 @@ var TechMapsSchema = new Schema({
 });
 
 module.exports = {
-	TechMapsModel: mongoose.model('TechMaps', TechMapsSchema )
+	TechMapsModel: mongoose.model('TechMaps', TechMapsSchema)
 }

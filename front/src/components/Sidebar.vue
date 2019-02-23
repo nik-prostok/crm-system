@@ -158,7 +158,7 @@ export default {
             },
             {
               title: 'Тех. карты',
-              id: '/menu/tech_maps',
+              id: '/menu/maps',
             },
             {
               title: 'Полуфабрикаты',

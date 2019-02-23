@@ -45,8 +45,8 @@
 					</div>
 					<hr class="hr-page">
 					<button type="button" @click="sendShop" class="btn btn-success btn-lg btn-save">
-						<div v-if="!stateSaving" style="color: white;" class="main-text">Добавить цех</div>
-						<div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
+						<div v-if="!stateSaving" style="color: white;" class="main-text">Сохранить цех</div>
+						<div v-if="stateSaving" style="color: white;" class="main-text">Сохранение...</div>
 					</button>
 				</div>
 			</div>
@@ -82,8 +82,15 @@ export default {
   },
   methods: {
     async sendShop() {
-      ProductsService.updateShop(this.editId, this.shop);
-      this.$router.push('/menu/shops');
+      this.stateSaving = true;
+      ProductsService.updateShop(this.editId, this.shop)
+      .then(response => {
+        this.$router.push('/menu/shops');
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      //
     },
     setEditId(id) {
       this.editId = id;

@@ -1,7 +1,6 @@
 const product = require('../../controllers/menu/product')
 const verify = require('../../controllers/verify')
 const uuidv1 = require('uuid/v1')
-
 let multer  		 = require('multer')
 
 let storage = multer.diskStorage({

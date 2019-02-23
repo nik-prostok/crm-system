@@ -8,12 +8,13 @@ module.exports = {
 		var ModificatorRequest = req.body;
 		console.log(ModificatorRequest);
 		Modificator.ModificatorModel.create(
-			ModificatorRequest, function (err) {
+			ModificatorRequest, function (err, Modificator) {
 				if (err){
 					console.log(err);
 					res.sendStatus(400);
 				} else {
-					res.sendStatus(200);
+					console.log(Modificator._id);
+					res.send(Modificator._id);
 				}
 			}); 
 	},

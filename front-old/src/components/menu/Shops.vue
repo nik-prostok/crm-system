@@ -140,6 +140,7 @@
 				this.getShop()
 			}
 		},
+		created: 
 		methods: {
 			async deleteShop(id){
 				console.log(id);
