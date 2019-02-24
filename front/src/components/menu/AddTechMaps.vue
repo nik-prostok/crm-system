@@ -972,12 +972,12 @@ export default {
       ProductsService.addMap(formData)
         .then(response => {
           alert("Успешно");
-          //this.$router.push("/menu/maps");
+          this.$router.push("/menu/maps");
         })
         .catch(error => {
           console.error(error);
           alert("Ошибка отправки");
-          //this.$router.push("/menu/maps");
+          this.$router.push("/menu/maps");
         });
     },
     async fetchIngridients() {

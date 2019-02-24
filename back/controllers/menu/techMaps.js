@@ -17,37 +17,31 @@ module.exports = {
 			Modificator.ModificatorModel.create(
 				mod, (err, instance) => {
 					if (err) {
-						console.log(err);
-						res.sendStatus(400);
+						throw err;
 					} else {
 						modificators.push(instance.id);
 					}
 				});
-			setTimeout(function () {
-				console.log(modificators);
-				TechMapsRequest.modificators = modificators;
-				TechMaps.TechMapsModel.create(
-					TechMapsRequest, function (err) {
-						if (err) {
-							console.log(err);
-							res.sendStatus(400);
-						} else {
-							res.sendStatus(200);
-						}
-					});
-			}, 500);
-
 		})
-
-
-
-
+		setTimeout(() => {
+			console.log(modificators);
+			TechMapsRequest.modificators = modificators;
+			TechMaps.TechMapsModel.create(
+				TechMapsRequest, function (err) {
+					if (err) {
+						console.log(err);
+						res.sendStatus(400);
+					} else {
+						res.sendStatus(200);
+					}
+				});
+		}, 500);
 	},
 	fetch: (req, res) => {
 		TechMaps.TechMapsModel
 			.find()
 			.populate({
-				path: 'ingridients',
+				path: 'ingridients.ingridient',
 				populate: {
 					path: 'category'
 				}

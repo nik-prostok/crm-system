@@ -53,7 +53,7 @@
                   </div>
 
                   <router-link
-                    class="btn-group btn-group-custom mt-3"
+                    class="btn-group btn-group-custom mt-3 ml-2"
                     style="text-decoration: none;"
                     to="/menu/maps/add"
                   >
@@ -89,6 +89,99 @@
                 >
               </div>
             </div>
+            <div class="col-md-5 col-lg-10 col-xl-8">
+              <div class="text-center btn-shadow btn-group btn-group-custom mb-3" role="group">
+                <div class="btn-group btn-group-toggle" role="group">
+                  <button
+                    type="button"
+                    class="btn btn-custom-border"
+                    style=" border-radius: 16px 0 0px 16px;"
+                    data-toggle="dropdown"
+                  >
+                    <a class="main-text">Категории</a>
+                    <img class="m-1" src="/static/image/down.png" alt="down">
+                  </button>
+                  <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
+                    <div class="group mr-3 ml-3 mb-2">
+                      <input
+                        type="text"
+                        ref="search"
+                        class="form-control search-cat"
+                        placeholder="Поиск..."
+                        v-model="selectCategoriesSearch"
+                      >
+                    </div>
+                    <div v-bind:key="key" v-for="(item, key) in FilterCategories ">
+                      <div class="form-check dropdown-item">
+                        <div class="pretty p-switch p-fill">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            v-bind:id="item.title"
+                            v-model="selectCategories"
+                            v-bind:value="item.title"
+                          >
+                          <div class="state">
+                            <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-custom-border ml-2 mb-1"
+                      v-on:click="selectCategories = [] "
+                    >Очистить</button>
+                  </div>
+                </div>
+
+                <div class="btn-group btn-group-toggle" role="group">
+                  <button
+                    type="button"
+                    style="border-radius: 0px 16px 16px 0px;"
+                    class="btn btn-custom-border"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  >
+                    <a class="main-text">Цех</a>
+                    <img class="m-1" src="/static/image/down.png" alt="down">
+                  </button>
+                  <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
+                    <div class="group mr-3 ml-3 mb-2">
+                      <input
+                        type="text"
+                        ref="search"
+                        class="form-control search-cat"
+                        placeholder="Поиск..."
+                        v-model="selectShopsSearch"
+                      >
+                    </div>
+                    <div v-bind:key="key" v-for="(item, key) in FilterShops ">
+                      <div class="form-check dropdown-item">
+                        <div class="pretty p-switch p-fill">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            v-bind:id="item.title"
+                            v-model="selectShops"
+                            v-bind:value="item.title"
+                          >
+                          <div class="state">
+                            <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      class="btn btn-custom-border ml-2 mb-1"
+                      v-on:click="selectShops = [] "
+                    >Очистить</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="mt-4">
@@ -110,32 +203,55 @@
             >
               <p class="main-text">{{msgSuccess}}</p>
             </b-alert>
-            <b-table :items="maps" :fields="fieldsSet" class="table-custom">
-              <template slot="id" slot-scope="data">{{data.item.id}}</template>
+            <b-table :items="FilterMaps" :fields="fieldsSet" class="table-custom">
+              <template slot="title" slot-scope="data">
+                <div class="d-flex flex-row">
+                  <div v-if="data.item.photo != null" class="mr-2">
+                    <img class="img-fluid" width="50" :src="data.item.photo" alt>
+                  </div>
+                  <div v-else class="rectangle mr-2">
+                    <div :class="data.item.color" class="h-100">
+                      <p
+                        class="pt-2"
+                        style="color: white; text-align: center;"
+                      >{{ data.item.title.slice(0,1) }}</p>
+                    </div>
+                  </div>
+                  <div class="align-self-center">{{ data.item.title }}</div>
+                </div>
+              </template>
 
-              <template slot="actions" slot-scope="row">
+              <template slot="cat_title" slot-scope="data">
+                <div>{{data.item.category[0].title}}</div>
+              </template>
+
+              <template slot="shop_title" slot-scope="data">
+                <div>{{data.item.shop.title}}</div>
+              </template>
+
+              <template slot="actions" slot-scope="data">
                 <div class="d-flex flex-row">
                   <div class="mr-2">
-                    <b-link class="main-text" @click.stop="row.toggleDetails">
+                    <b-link class="main-text" @click.stop="data.toggleDetails">
                       <div
                         class="link-blue link-hover"
-                      >{{ row.detailsShowing ? 'Скрыть' : 'Показать'}} состав</div>
+                      >{{ data.detailsShowing ? 'Скрыть' : 'Показать'}} состав</div>
                     </b-link>
                   </div>
 
                   <div class="mr-2">
-                    <b-link :to="getHrefEdit(row.item.id)" class="main-text">
+                    <b-link :to="getHrefEdit(data.item._id)" class="main-text">
                       <div class="link-blue link-hover">Ред.</div>
                     </b-link>
                   </div>
 
                   <div class="ml-2">
-                    <button class="btn-icon popoverButton" :id="getPopoverId(row.item.id)">
+                    <button class="btn-icon popoverButton" :id="getPopoverId(data.item._id)">
                       <i class="fa fa-ellipsis-h"></i>
                     </button>
-                    <b-popover :target="getPopoverId(row.item.id)" triggers="focus">
+                    <b-popover :target="getPopoverId(data.item._id)" triggers="focus">
                       <ul class="actions-popover">
-                        <li @click="deleteMaps(row.item.id)" class="action-item">
+                        <li @click="deleteMaps(data.item._id)" class="action-item">
                           <a
                             style="text-decoration: none; cursor: pointer;"
                             class="main-text"
@@ -288,22 +404,22 @@ export default {
 
       fieldsDetails: [
         {
-          key: "title_ing",
+          key: "ingridient.title",
           label: "Ингридиент",
           sortable: true
         },
         {
-          key: "netto",
+          key: "netto.$numberDecimal",
           label: "Нетто",
           sortable: true
         },
         {
-          key: "brutto",
+          key: "brutto.$numberDecimal",
           label: "Брутто",
           sortable: true
         },
         {
-          key: "price",
+          key: "ingridient.price",
           label: "Цена",
           sortable: true
         }
@@ -312,7 +428,14 @@ export default {
       search: "",
       ingridients: [],
       maps: [],
-      sortColumn: "count",
+      shops: [],
+      categories: [],
+
+      // Search
+      selectCategoriesSearch: "",
+      selectCategories: [],
+      selectShopsSearch: "",
+      selectShops: [],
 
       //Alert
       dismissSecsDanger: 10,
@@ -326,6 +449,8 @@ export default {
   },
   mounted() {
     this.getMaps();
+    this.getCategories();
+    this.getShops();
   },
   methods: {
     async deleteMaps(id) {
@@ -338,6 +463,26 @@ export default {
           this.showAlertDanger("Ошибка удаления технологической карты!");
         });
     },
+    async getCategories() {
+      ProductsService.fetchCategories()
+        .then(res => {
+          this.categories = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+          this.showAlertDanger("Ошибка загрузки категорий!");
+        });
+    },
+    async getShops() {
+      ProductsService.fetchShops()
+        .then(res => {
+          this.shops = res.data;
+        })
+        .catch(err => {
+          console.log(err);
+          this.showAlertDanger("Ошибка загрузки цехов!");
+        });
+    },
     async getMaps() {
       ProductsService.fetchMaps()
         .then(res => {
@@ -347,7 +492,7 @@ export default {
             if (map.modificators != null) {
               map.modificators.forEach(mod => {
                 mod.ingridients.forEach(ing => {
-                  map.netto += Number(ing.netto);
+                  map.netto += Number(ing.netto.$numberDecimal);
                 });
               });
             }
@@ -358,10 +503,10 @@ export default {
                     ing.title_ing = ingItem.title;
                   }
                 }); */
-                map.netto += Number(ing.netto);
+                map.netto += Number(ing.netto.$numberDecimal);
               });
             }
-            map.netto = `${String(map.netto)} кг`;
+            map.netto = `${String(map.netto / 1000)} кг`;
             if (map.weight) {
               map.weight = "Да";
             } else {
@@ -409,6 +554,55 @@ export default {
     showAlertSuccess(msg) {
       this.msgSuccess = msg;
       this.dismissCountDownSuccess = this.dismissSecsSuccess;
+    },
+    filterBySearchCategories(categories) {
+      if (this.selectCategoriesSearch.length === 0) {
+        return true;
+      }
+      return (
+        categories.title
+          .toLowerCase()
+          .indexOf(this.selectCategoriesSearch.toLowerCase()) > -1
+      );
+    },
+    filterBySearchShops(shops) {
+      if (this.selectShopsSearch.length === 0) {
+        return true;
+      }
+      return (
+        shops.title
+          .toLowerCase()
+          .indexOf(this.selectShopsSearch.toLowerCase()) > -1
+      );
+    },
+    filterBySearch(product) {
+      if (this.search.length === 0) {
+        return true;
+      }
+      return (
+        product.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+      );
+    },
+    filterByCategory(product) {
+      if (this.selectCategories.length === 0) {
+        return true;
+      }
+      return this.selectCategories.some(
+        item =>
+          product.category[0].title
+            .toLowerCase()
+            .localeCompare(item.toLowerCase()) == 0
+      );
+    },
+    filterByShop(product) {
+      if (this.selectShops.length === 0) {
+        return true;
+      }
+      return this.selectShops.some(
+        item =>
+          product.shop.title.toLowerCase().localeCompare(item.toLowerCase()) ==
+          0
+      );
     }
   },
   computed: {
@@ -418,6 +612,24 @@ export default {
         length++;
       });
       return length;
+    },
+    FilterMaps() {
+      return this.maps
+          .filter(this.filterBySearch)
+          .filter(this.filterByCategory)
+          .filter(this.filterByShop)
+    },
+    FilterCategories() {
+      return this.categories.filter(this.filterBySearchCategories);
+    },
+    FilterShops() {
+      return this.shops.filter(this.filterBySearchShops);
+    },
+    FilterCategories() {
+      return this.categories.filter(this.filterBySearchCategories);
+    },
+    FilterShops() {
+      return this.shops.filter(this.filterBySearchShops);
     }
   }
 };

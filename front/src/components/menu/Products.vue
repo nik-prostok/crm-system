@@ -1054,37 +1054,7 @@ export default {
     }
   },
   computed: {
-    sCount() {
-      return this.FilterProducts.reduce(
-        (sum, current) => sum + Number(current.count),
-        0
-      );
-    },
-    sGross_turnover() {
-      return this.FilterProducts.reduce(
-        (sum, current) => sum + Number(current.gross_turnover),
-        0
-      ).toFixed(2);
-    },
-    sDiscount() {
-      return this.FilterProducts.reduce(
-        (sum, current) => sum + Number(current.discount),
-        0
-      ).toFixed(2);
-    },
-    sReceipts() {
-      return this.FilterProducts.reduce(
-        (sum, current) => sum + Number(current.receipts),
-        0
-      ).toFixed(2);
-    },
-    sProfit() {
-      return this.FilterProducts.reduce(
-        (sum, current) => sum + Number(current.profit),
-        0
-      ).toFixed(2);
-    },
-    FilterProducts() {
+     FilterProducts() {
       return this.addModif(
         this.products
           .filter(this.filterBySearch)
