@@ -222,7 +222,7 @@
               </template>
 
               <template slot="cat_title" slot-scope="data">
-                <div>{{data.item.category[0].title}}</div>
+                <div>{{data.item.category.title}}</div>
               </template>
 
               <template slot="shop_title" slot-scope="data">
@@ -531,7 +531,7 @@ export default {
       return `popover${id}`;
     },
     getHrefEdit(id) {
-      return `/menu/category_prod_cards/edit/${id}`;
+      return `/menu/maps/edit/${id}`;
     },
     sortEvent(message) {
       console.log(message);
@@ -589,7 +589,7 @@ export default {
       }
       return this.selectCategories.some(
         item =>
-          product.category[0].title
+          product.category.title
             .toLowerCase()
             .localeCompare(item.toLowerCase()) == 0
       );
@@ -615,9 +615,9 @@ export default {
     },
     FilterMaps() {
       return this.maps
-          .filter(this.filterBySearch)
-          .filter(this.filterByCategory)
-          .filter(this.filterByShop)
+        .filter(this.filterBySearch)
+        .filter(this.filterByCategory)
+        .filter(this.filterByShop);
     },
     FilterCategories() {
       return this.categories.filter(this.filterBySearchCategories);

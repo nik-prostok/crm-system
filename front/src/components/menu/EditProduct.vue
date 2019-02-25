@@ -200,7 +200,7 @@
                       </div>
                     </p-radio>
                     <b-collapse v-model="with_mod" class="mt-2" id="no-modif-collapse">
-                      <div class="mod" v-for="(mod_item,key) in product.modification">
+                      <div class="mod" :key="key" v-for="(mod_item,key) in product.modification">
                         <hr>
                         <div class="row mt-4 ml-2">
                           <div class="col-lg-8">

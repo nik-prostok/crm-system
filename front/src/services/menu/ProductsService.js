@@ -1,17 +1,17 @@
-import api from '../api';
+import api from "../api";
 
 export default {
   // Products
   verifyToken() {
-    return api().post('/api/verifyToken');
+    return api().post("/api/verifyToken");
   },
   fetchProducts() {
-    return api().get('/api/products');
+    return api().get("/api/products");
   },
   addProduct(product) {
-    return api().post('/api/products', product, {
+    return api().post("/api/products", product, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" }
     });
   },
   deleteProduct(id) {
@@ -20,7 +20,7 @@ export default {
   updateProduct(product, id) {
     return api().put(`/api/products/${id}`, product, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" }
     });
   },
   getProduct(id) {
@@ -28,13 +28,13 @@ export default {
   },
   // Categories
   fetchCategories() {
-    return api().get('/api/category');
+    return api().get("/api/category");
   },
   addCategory(category) {
-    return api().post('/api/category', category, {
+    return api().post("/api/category", category, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+        "Content-Type": "multipart/form-data"
+      }
     });
   },
   deleteCategory(id) {
@@ -44,17 +44,17 @@ export default {
     // eslint-disable-next-line no-underscore-dangle
     return api().put(`/api/category/${category._id}`, category, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+        "Content-Type": "multipart/form-data"
+      }
     });
   },
 
   // Shops
   fetchShops() {
-    return api().get('/api/shop');
+    return api().get("/api/shop");
   },
   addShop(shop) {
-    return api().post('/api/shop', shop);
+    return api().post("/api/shop", shop);
   },
   deleteShop(id) {
     return api().delete(`/api/shop/${id}`);
@@ -65,10 +65,10 @@ export default {
 
   // CategoryIngridients
   addCategoryIng(category) {
-    return api().post('/cat_ing', category);
+    return api().post("/cat_ing", category);
   },
   fetchCategoryIng() {
-    return api().get('/cat_ing');
+    return api().get("/cat_ing");
   },
   deleteCatIng(id) {
     return api().post(`/cat_ing/${id}`, id);
@@ -76,10 +76,10 @@ export default {
 
   // Ingridients
   fetchIngridients() {
-    return api().get('/ing');
+    return api().get("/ing");
   },
   addIngridients(ingridient) {
-    return api().post('/ing', ingridient);
+    return api().post("/ing", ingridient);
   },
   /*
     // Semi
@@ -109,13 +109,16 @@ export default {
 
   // Map
   addMap(map) {
-    return api().post('/api/map', map, {
+    return api().post("/api/map", map, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { "Content-Type": "multipart/form-data" }
     });
   },
+  getMap(id) {
+    return api().get(`/api/map/${id}`);
+  },
   fetchMaps() {
-    return api().get('/api/map');
+    return api().get("/api/map");
   },
   delMap(id) {
     return api().delete(`/api/map/${id}`);
@@ -126,15 +129,15 @@ export default {
 
   // Modificators
   addModificator(mod) {
-    return api().post('/api/modificator', mod);
+    return api().post("/api/modificator", mod);
   },
   fetchModificator() {
-    return api().get('/api/modificator');
+    return api().get("/api/modificator");
   },
   deleteModificator(id) {
     return api().delete(`/api/modificator/${id}`);
   },
   updateModificator(id, mod) {
     return api().put(`/api/modificator/${id}`, mod);
-  },
+  }
 };
