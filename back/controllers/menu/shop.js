@@ -1,7 +1,4 @@
-const connectDB = require('../../utils/connectDB')
 const Shop = require('../../models/menu/ShopModel')
-const db = connectDB.db;
-
 
 module.exports = {
 	create: (req, res) => {

@@ -1,6 +1,4 @@
-const connectDB = require('../../utils/connectDB')
 const Semi = require('../../models/menu/SemiModel')
-const db = connectDB.db;
 
 
 module.exports = {

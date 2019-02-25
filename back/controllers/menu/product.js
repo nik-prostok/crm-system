@@ -1,8 +1,5 @@
-const connectDB = require('../../utils/connectDB')
 const Product = require('../../models/menu/ProductModel')
 ObjectId = require('mongodb').ObjectID
-const db = connectDB.db;
-
 
 module.exports = {
 	create: (req, res) => {

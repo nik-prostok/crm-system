@@ -1,6 +1,4 @@
-const connectDB = require('../../utils/connectDB')
 const Ing = require('../../models/menu/IngModel')
-const db = connectDB.db;
 
 
 module.exports = {

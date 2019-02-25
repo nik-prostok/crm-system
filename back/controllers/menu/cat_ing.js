@@ -1,7 +1,4 @@
-const connectDB = require('../../utils/connectDB')
 const CatIng = require('../../models/menu/CatIngModel')
-const db = connectDB.db;
-
 
 module.exports = {
 	create: (req, res) => {

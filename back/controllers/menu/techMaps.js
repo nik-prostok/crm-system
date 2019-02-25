@@ -1,8 +1,5 @@
-const connectDB = require('../../utils/connectDB')
 const TechMaps = require('../../models/menu/TechMapsModel')
 const Modificator = require('../../models/menu/ModificatorModel')
-const db = connectDB.db;
-
 
 module.exports = {
 	create: (req, res) => {

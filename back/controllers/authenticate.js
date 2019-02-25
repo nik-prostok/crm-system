@@ -1,6 +1,6 @@
 const connectDB = require('../utils/connectDB')
 const User 		= require('../models/users')
-const jwt   	= require('jsonwebtoken');
+const jwt   	= require('jsonwebtoken')
 const config 	= require('../config/config')
 const enc 		= require('../utils/encrypt')
 
@@ -8,9 +8,6 @@ const db = connectDB.db;
 
 //Я добавил в создание пользователя функцию хэширования
 //name: test1, password: test1
-
-//И ещё прости, я создал случайно пустого пользователя, теперь функция находит пользователя всегда .-.
-//Так что почисти потом базу данных ))) Я не могу чего-то онлайн в неё зайти
 
 module.exports = {
 	auth: (req, res) => {

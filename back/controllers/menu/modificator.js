@@ -1,7 +1,4 @@
-const connectDB = require('../../utils/connectDB')
 const Modificator = require('../../models/menu/ModificatorModel')
-const db = connectDB.db;
-
 
 module.exports = {
 	create: (req, res) => {

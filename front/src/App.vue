@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-on:lo>
+  <div id="app">
     <router-view/>
   </div>
 </template>
@@ -9,7 +9,7 @@
 import ProductsService from '@/services/menu/ProductsService';
 
 export default {
-	name: 'main',
+	name: 'start',
 	data () {
 		return {
 
