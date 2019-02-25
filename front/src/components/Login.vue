@@ -12,53 +12,59 @@
 </template>
 
 <script>
-import ProductsService from '@/services/menu/ProductsService';
-import axios from 'axios';
+import ProductsService from "@/services/menu/ProductsService";
+import axios from "axios";
 
 export default {
-  name: 'Login',
+  name: "Login",
   created() {
+    const vm = this;
     if (typeof localStorage !== typeof undefined) {
-      if (localStorage.getItem('token')) this.$data.isLoggedIn = true;
+      if (localStorage.getItem("token")) this.$data.isLoggedIn = true;
+    }
+    if (vm.$data.isLoggedIn == true) {
+      vm.$router.push("/menu/products");
     }
   },
   data() {
     return {
-      name: '',
-      password: '',
-      isLoggedIn: false,
+      name: "",
+      password: "",
+      isLoggedIn: false
     };
   },
   methods: {
     login() {
       const vm = this;
-      if (localStorage.getItem('token')) return (vm.$data.isLoggedIn = true);
-      if (vm.$data.username != '' && vm.$data.password != '') {
+      if (localStorage.getItem("token")) return (vm.$data.isLoggedIn = true);
+      if (vm.$data.username != "" && vm.$data.password != "") {
         axios
-          .post('http://localhost:8081/auth', {
+          .post("http://localhost:8081/auth", {
             name: vm.$data.name,
-            password: vm.$data.password,
+            password: vm.$data.password
           })
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
-            axios.defaults.headers.post.Authorization = `Bearer ${response.data.token}`;
+            axios.defaults.headers.post.Authorization = `Bearer ${
+              response.data.token
+            }`;
             localStorage.setItem(
-              'token',
-              JSON.stringify({ token: `Bearer ${response.data.token}` }),
+              "token",
+              JSON.stringify({ token: `Bearer ${response.data.token}` })
             );
             return (vm.$data.isLoggedIn = true);
           })
-          .catch((err) => {
+          .catch(err => {
             console.log(err);
           });
       } else {
-        console.log('username or password empty');
+        console.log("username or password empty");
       }
     },
     logout() {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       return (this.$data.isLoggedIn = false);
-    },
-  },
+    }
+  }
 };
 </script>
