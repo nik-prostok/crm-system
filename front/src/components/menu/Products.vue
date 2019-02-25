@@ -1054,16 +1054,16 @@ export default {
     }
   },
   computed: {
+
+    //*********************Вот мой вариант. Это весь код, да ))) Если правильно понял, то этого должно хватить */
      FilterProducts() {
-      return this.addModif(
-        this.products
-          .filter(this.filterBySearch)
-          .filter(this.filterByCategory)
-          .filter(this.filterByShop)
-          .filter(this.filterByONews)
-          .sort(this.sortByColumn)
-      );
+      return this.products.filter(product => {
+        return JSON.stringify(product).toLowerCase().indexOf(this.search) > -1
+      })
     },
+    //******************************************************************************************************** */
+
+
     FilterCategories() {
       return this.categories.filter(this.filterBySearchCategories);
     },
