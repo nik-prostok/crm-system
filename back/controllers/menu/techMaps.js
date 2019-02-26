@@ -43,8 +43,10 @@ module.exports = {
       })
       .populate({
         path: "modificators",
+        model: "Modificator",
         populate: {
-          path: "ingridients",
+          path: "ingridients.ingridient",
+          model: "Ing",
           populate: {
             path: "category"
           }

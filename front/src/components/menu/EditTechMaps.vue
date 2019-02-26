@@ -306,7 +306,7 @@
                   type="text"
                   ref="search"
                   class="form-control input-param"
-                  v-model="map.min_cook"
+                  v-model="map.min"
                   placeholder="Введите"
                 >
                 <div class="input-group-append">
@@ -320,7 +320,7 @@
                   type="text"
                   ref="search"
                   class="form-control input-param"
-                  v-model="map.sec_cook"
+                  v-model="map.sec"
                   placeholder="Введите"
                 >
                 <div class="input-group-append">
@@ -377,7 +377,7 @@
                         </div>
                       </td>
                       <td class="td-custom align-middle">
-                        <div v-if="ing.ingridient.unit == 'кг'" class="form-group">
+                        <div v-if="ing.unit == 'кг'" class="form-group">
                           <multiselect
                             class="my-multiselect"
                             placeholder="Выберите"
@@ -400,13 +400,13 @@
                                 type="text"
                                 ref="search"
                                 class="form-control input-param"
-                                v-model="ing.brutto"
+                                v-model="ing.brutto.$numberDecimal"
                                 placeholder="Введите"
                                 @change="bindChangeBrutto(ing)"
                               >
                             </div>
                             <div class="col-lg-1">
-                              <p class="main-text ml-1 mt-2">{{ing.ingridient.unit}}</p>
+                              <p class="main-text ml-1 mt-2">{{ing.unit}}</p>
                             </div>
                           </div>
                         </div>
@@ -431,7 +431,7 @@
                                 type="text"
                                 ref="search"
                                 class="form-control input-param"
-                                v-model="ing.netto"
+                                v-model="ing.netto.$numberDecimal"
                                 placeholder="Введите"
                                 @change="bindChangeNetto(ing)"
                               >
@@ -523,7 +523,7 @@
                         </div>
                       </td>
                       <td class="td-custom align-middle">
-                        <div v-if="ing.ingridient.unit == 'кг'" class="form-group">
+                        <div v-if="ing.unit == 'кг'" class="form-group">
                           <multiselect
                             class="my-multiselect"
                             placeholder="Выберите"
@@ -546,13 +546,13 @@
                                 type="text"
                                 ref="search"
                                 class="form-control input-param"
-                                v-model="ing.brutto"
+                                v-model="ing.brutto.$numberDecimal"
                                 placeholder="Введите"
                                 @change="bindChangeBrutto(ing)"
                               >
                             </div>
                             <div class="col-lg-1">
-                              <p class="main-text ml-1 mt-2">{{ing.ingridient.unit}}</p>
+                              <p class="main-text ml-1 mt-2">{{ing.unit}}</p>
                             </div>
                           </div>
                         </div>
@@ -577,7 +577,7 @@
                                 type="text"
                                 ref="search"
                                 class="form-control input-param"
-                                v-model="ing.netto"
+                                v-model="ing.netto.$numberDecimal"
                                 placeholder="Введите"
                                 @change="bindChangeNetto(ing)"
                               >
@@ -927,6 +927,14 @@ export default {
         .then(res => {
           console.log(res.data);
           this.map = res.data;
+          this.map.ingridients.forEach(ing => {
+            ing.unit = ing.ingridient.unit;
+          });
+          this.map.modificators.forEach(mod => {
+            mod.ingridients.forEach(ing => {
+              ing.unit = ing.ingridient.unit;
+            });
+          });
         })
         .error(err => {
           alert("Ошибка загрузки данных.");
@@ -1005,22 +1013,18 @@ export default {
         netto: 0,
         price: 0,
         bind: false,
-        object_ing: {
-          unit: ""
-        }
+        unit: null
       });
     },
-    addRowToMod(_id) {
-      console.log(_id);
-      this.map.modificators[_id].ingridients.push({
+    addRowToMod(id) {
+      console.log(id);
+      this.map.modificators[id].ingridients.push({
         method_cooking: null,
         brutto: 0,
         netto: 0,
         price: 0,
         bind: false,
-        object_ing: {
-          unit: ""
-        }
+        unit: null
       });
     },
     addNewModificators() {
@@ -1040,14 +1044,14 @@ export default {
     changeBind(ing) {
       ing.bind = !ing.bind;
       if (ing.bind) {
-        ing.brutto = ing.netto;
+        ing.brutto.$numberDecimal = ing.netto.$numberDecimal;
       }
     },
     bindChangeNetto(ing) {
-      if (ing.bind) ing.brutto = ing.netto;
+      if (ing.bind) ing.brutto.$numberDecimal = ing.netto.$numberDecimal;
     },
     bindChangeBrutto(ing) {
-      if (ing.bind) ing.netto = ing.brutto;
+      if (ing.bind) ing.netto.$numberDecimal = ing.brutto.$numberDecimal;
     },
     selectFile() {
       $("#upload:hidden").trigger("click");

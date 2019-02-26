@@ -9,7 +9,7 @@
         <div class="container-fluid mt-2 mb-5">
           <div class="row">
             <div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
-              <router-link to="/menu/ingridients">
+              <router-link to="/menu/maps">
                 <img class="back-arrow mt-2 mr-4" src="/static/image/arrow_back.png" alt="Back">
               </router-link>
               <h1 class="head-text">Новая тех. карта</h1>
@@ -306,7 +306,7 @@
                   type="text"
                   ref="search"
                   class="form-control input-param"
-                  v-model="map.min_cook"
+                  v-model="map.min"
                   placeholder="Введите"
                 >
                 <div class="input-group-append">
@@ -320,7 +320,7 @@
                   type="text"
                   ref="search"
                   class="form-control input-param"
-                  v-model="map.sec_cook"
+                  v-model="map.sec"
                   placeholder="Введите"
                 >
                 <div class="input-group-append">
@@ -339,42 +339,21 @@
                 <table class="table table-ing">
                   <thead>
                     <tr class="tr-ing">
-                      <!-- @click="sortEvent('ingridient')" -->
                       <th class="th-ing align-content-start">
                         <p class="main-text">Ингридиент</p>
-                        <!-- <div v-if="sortColumn == 'ingridient'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-                        </div>-->
                       </th>
                       <th class="th-ing align-content-start">
                         <p class="main-text">Метод приготовления</p>
-                        <!-- <div v-if="sortColumn == 'ingridient'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-                        </div>-->
                       </th>
                       <th class="th-ing align-content-start">
                         <p class="main-text">Брутто</p>
-                        <!-- <div v-if="sortColumn == 'ingridient'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-                        </div>-->
                       </th>
                       <th class="th-ing align-content-start"></th>
                       <th class="th-ing align-middle">
                         <p class="main-text">Нетто</p>
-                        <!-- <div v-if="sortColumn == 'ingridient'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-                        </div>-->
                       </th>
                       <th class="th-ing align-content-start">
                         <p class="main-text">Цена</p>
-                        <!-- <div v-if="sortColumn == 'ingridient'">
-													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
-													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">
-                        </div>-->
                       </th>
                     </tr>
                   </thead>
@@ -387,7 +366,7 @@
                             placeholder="Выберите"
                             select-label="Нажмите Enter"
                             deselectLabel="Enter для удаления"
-                            v-model="ing.object_ing"
+                            v-model="ing.ingridient"
                             :multiple="false"
                             :close-on-select="true"
                             label="title"
@@ -398,7 +377,7 @@
                         </div>
                       </td>
                       <td class="td-custom align-middle">
-                        <div v-if="ing.object_ing.unit == 'кг'" class="form-group">
+                        <div v-if="ing.ingridient.unit == 'кг'" class="form-group">
                           <multiselect
                             class="my-multiselect"
                             placeholder="Выберите"
@@ -427,7 +406,7 @@
                               >
                             </div>
                             <div class="col-lg-1">
-                              <p class="main-text ml-1 mt-2">{{ing.object_ing.unit}}</p>
+                              <p class="main-text ml-1 mt-2">{{ing.ingridient.unit}}</p>
                             </div>
                           </div>
                         </div>
@@ -533,7 +512,7 @@
                             placeholder="Выберите"
                             select-label="Нажмите Enter"
                             deselectLabel="Enter для удаления"
-                            v-model="ing.object_ing"
+                            v-model="ing.ingridient"
                             :multiple="false"
                             :close-on-select="true"
                             label="title"
@@ -544,7 +523,7 @@
                         </div>
                       </td>
                       <td class="td-custom align-middle">
-                        <div v-if="ing.object_ing.unit == 'кг'" class="form-group">
+                        <div v-if="ing.ingridient.unit == 'кг'" class="form-group">
                           <multiselect
                             class="my-multiselect"
                             placeholder="Выберите"
@@ -573,7 +552,7 @@
                               >
                             </div>
                             <div class="col-lg-1">
-                              <p class="main-text ml-1 mt-2">{{ing.object_ing.unit}}</p>
+                              <p class="main-text ml-1 mt-2">{{ing.ingridient.unit}}</p>
                             </div>
                           </div>
                         </div>
@@ -953,21 +932,21 @@ export default {
       this.map.shop = this.map.shop._id;
 
       this.map.ingridients.forEach(ing => {
-        ing.ingridient = ing.object_ing._id;
-        // delete ing.object_ing;
+        ing.ingridient = ing.ingridient._id;
+        // delete ing.ingridient;
       });
 
       this.map.modificators.forEach(mod => {
         delete mod._id;
         mod.ingridients.forEach(ing => {
-          ing._id = ing.object_ing._id;
+          ing._id = ing.ingridient._id;
         });
       });
       console.log(this.map);
 
       const formData = new FormData();
-      formData.append('map', JSON.stringify(this.map));
-      console.log(formData.getAll('map'));
+      formData.append("map", JSON.stringify(this.map));
+      console.log(formData.getAll("map"));
       formData.append("avatar", vm.$data.avatar);
       ProductsService.addMap(formData)
         .then(response => {
@@ -1014,7 +993,7 @@ export default {
         netto: 0,
         price: 0,
         bind: false,
-        object_ing: {
+        ingridient: {
           unit: ""
         }
       });
@@ -1027,7 +1006,7 @@ export default {
         netto: 0,
         price: 0,
         bind: false,
-        object_ing: {
+        ingridient: {
           unit: ""
         }
       });
