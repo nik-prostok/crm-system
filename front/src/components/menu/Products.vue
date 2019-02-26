@@ -1,5 +1,5 @@
 <template>
-  <div class="products">
+  <div class="products" v-on:click="ClosePopup">
     <!-- Bootstrap row -->
     <div class="row no-gutters" id="body-row">
       <!-- MAIN -->
@@ -204,13 +204,13 @@
 
                 <button id="popoverButton-event" class="btn btn-filter mb-3">
                   <img src="/static/image/+.png" alt="+">
-                  Фильтр
+                  {{ filterText }}
                 </button>
                 <b-popover
                   ref="popover"
                   placement="bottom"
                   target="popoverButton-event"
-                  triggers="focus"
+                  triggers="click"
                   title="Показать только те, в которых:"
                 >
                   <div class="mr-1 ml-1">
@@ -727,6 +727,8 @@ export default {
       endDate: 1546117229,
       nameDate: "9 октября 2018 - 30 декабря 2018",
 
+      filterText: 'Фильтр',
+
       sortColumn: "count",
 
       //Alert
@@ -752,6 +754,12 @@ export default {
     }
   },
   methods: {
+    ClosePopup () {
+      if (document.getElementsByClassName('bs-popover-bottom show').length == 1) 
+        this.filterText = 'Закрыть'
+      else
+        this.filterText = 'Фильтр'
+    },
     async deleteProduct(id) {
       console.log(id);
       const response = await ProductsService.deleteProduct(id)
@@ -1054,16 +1062,16 @@ export default {
     }
   },
   computed: {
+
+    //*********************Вот мой вариант. Это весь код, да ))) Если правильно понял, то этого должно хватить */
      FilterProducts() {
-      return this.addModif(
-        this.products
-          .filter(this.filterBySearch)
-          .filter(this.filterByCategory)
-          .filter(this.filterByShop)
-          .filter(this.filterByONews)
-          .sort(this.sortByColumn)
-      );
+      return this.products.filter(product => {
+        return JSON.stringify(product).toLowerCase().indexOf(this.search) > -1
+      })
     },
+    //******************************************************************************************************** */
+
+
     FilterCategories() {
       return this.categories.filter(this.filterBySearchCategories);
     },
