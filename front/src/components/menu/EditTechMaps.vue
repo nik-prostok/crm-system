@@ -102,23 +102,27 @@
             <div class="col-lg-2">
               <p class="title-form mt-2">Фотография</p>
             </div>
-            <b-form-file
-              accept="image/*"
-              style="display: none;"
-              v-model="avatar"
-              id="upload"
-              class="mt-3"
-              plain
-            ></b-form-file>
+            <b-form-file accept="image/*" v-model="map.photo" id="upload" class="mt-3" plain></b-form-file>
             <div class="col-lg-4 align-self-center">
               <b-link @click="selectFile" class="main-text">
                 <div class="link-green link-hover">
                   <u id="upload_link">Загрузить</u>
                 </div>
               </b-link>
-              <div v-if="avatar" class="mt-3">
-                {{avatar && avatar.name}}
-                <i @click="resetFile" class="fas fa-times"></i>
+
+              <div v-if="map.photo" class="mt-3">
+                <img
+                  v-b-modal.modal1
+                  style="height: 50px; width: auto; cursor: pointer;"
+                  :src="map.photo"
+                  alt
+                  :href="map.photo"
+                  class="img-thumbnail"
+                >
+                <i @click="resetFile" style="cursor: pointer;" class="fas fa-times"></i>
+                <b-modal id="modal1" size="lg" style="text-align: center;">
+                  <img :src="map.photo" alt style="width: 600px; height: auto;">
+                </b-modal>
               </div>
             </div>
           </div>
@@ -957,7 +961,10 @@ export default {
       this.map.shop = this.map.shop._id;
 
       this.map.modificators.forEach(mod => {
-        delete mod._id;
+        if (mod.newMod) {
+          delete mod.newMod;
+          delete mod._id;
+        }
         mod.ingridients.forEach(ing => {
           ing._id = ing.ingridient._id;
         });
@@ -965,10 +972,11 @@ export default {
       console.log(this.map);
 
       const formData = new FormData();
+      formData.append("avatar", vm.$data.map.photo);
+      this.map.photo = null;
       formData.append("map", JSON.stringify(this.map));
       console.log(formData.getAll("map"));
-      formData.append("avatar", vm.$data.avatar);
-      ProductsService.addMap(formData)
+      ProductsService.updateMap(this.editId, formData)
         .then(response => {
           alert("Успешно");
           this.$router.push("/menu/maps");
@@ -1003,7 +1011,8 @@ export default {
         max: null,
         setMax: false,
         setMin: false,
-        ingridients: []
+        ingridients: [],
+        newMod: true
       };
     },
     addRow() {
@@ -1018,17 +1027,35 @@ export default {
     },
     addRowToMod(id) {
       console.log(id);
-      this.map.modificators[id].ingridients.push({
-        method_cooking: null,
-        brutto: 0,
-        netto: 0,
-        price: 0,
-        bind: false,
-        unit: null
+      this.map.modificators.forEach(mod => {
+        if (mod._id == id) {
+          mod.ingridients.push({
+            method_cooking: null,
+            brutto: 0,
+            netto: 0,
+            price: 0,
+            bind: false,
+            unit: null,
+            ingridient: {
+              _id: null
+            }
+          });
+        }
       });
     },
+    uuidv4() {
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
+        c
+      ) {
+        var r = (Math.random() * 16) | 0,
+          v = c == "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      });
+    },
+
     addNewModificators() {
-      this.idMod++;
+      this.idMod = this.uuidv4();
+      // console.log(this.idMod);
       this.nowNewModif._id = this.idMod;
 
       if (this.nowModif != null) {
@@ -1057,9 +1084,16 @@ export default {
       $("#upload:hidden").trigger("click");
     },
     resetFile() {
-      this.avatar = null;
+      this.map.photo = null;
+      this.file = null;
     }
   }
 };
 </script>
+
+<style>
+#upload {
+  display: none;
+}
+</style>
 

@@ -103,17 +103,35 @@ module.exports = {
     });
   },
   update: (req, res) => {
-    var TechMapsRequest = req.body;
-    TechMaps.TechMapsModel.findByIdAndUpdate(
-      req.params.id,
-      { $set: TechMapsRequest },
-      err => {
+    let TechMapsRequest = JSON.parse(req.body.map);
+    console.log(req.body.map);
+    if (req.files["avatar"]) {
+      TechMapsRequest.photo =
+        "http://localhost:8081/static/" + req.files["avatar"][0].filename;
+    }
+    console.log(TechMapsRequest.modificators);
+
+    let modificators = [];
+    TechMapsRequest.modificators.forEach(mod => {
+      Modificator.ModificatorModel.findByIdAndUpdate(mod._id, { '$set': mod }, (err, instance) => {
+        if (err) {
+          throw err;
+        } else {
+          modificators.push(instance.id);
+        }
+      });
+    });
+    setTimeout(() => {
+      console.log(modificators);
+      TechMapsRequest.modificators = modificators;
+      TechMaps.TechMapsModel.findByIdAndUpdate(req.params.id, { '$set': TechMapsRequest }, function(err) {
         if (err) {
           console.log(err);
           res.sendStatus(400);
+        } else {
+          res.sendStatus(200);
         }
-        res.sendStatus(200);
-      }
-    );
+      });
+    }, 500);
   }
 };
