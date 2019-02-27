@@ -598,6 +598,9 @@ export default {
       const response = await ProductsService.getProduct(this.editId)
         .then(response => {
           this.product = response.data;
+          if (this.product.photo) {
+            this.photo_src = this.product.photo;
+          }
           if (this.product.types) {
             this.mod = "with_mod";
             this.open_collapse();
@@ -641,17 +644,21 @@ export default {
 
       let vm = this;
 
-     /*  if (this.product.photo != null) {
+      /*  if (this.product.photo != null) {
         ProductsService.deleteOnlyPhoto(this.product.id);
         formData.append("avatar", this.file);
       } */
 
       const formData = new FormData();
 
-      formData.append("avatar", vm.$data.product.photo);
-      this.product.photo = null;
-      formData.append("product", JSON.stringify(vm.$data.product));
+      console.log(this.photo_src);
+      if (this.photo_src != this.product.photo) {
+        formData.append("avatar", vm.$data.product.photo);
+        this.product.photo = null;
+      }
 
+      console.log(this.product);
+      formData.append("product", JSON.stringify(vm.$data.product));
 
       ProductsService.updateProduct(formData, this.editId)
         .then(response => {

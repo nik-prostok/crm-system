@@ -113,25 +113,45 @@ module.exports = {
 
     let modificators = [];
     TechMapsRequest.modificators.forEach(mod => {
-      Modificator.ModificatorModel.findByIdAndUpdate(mod._id, { '$set': mod }, (err, instance) => {
-        if (err) {
-          throw err;
-        } else {
-          modificators.push(instance.id);
+      console.log("find: " + mod._id);
+      Modificator.ModificatorModel.findByIdAndUpdate(
+        mod._id,
+        { $set: mod },
+        (err, instance) => {
+          if (instance != null) {
+            modificators.push(instance._id);
+          } else {
+            Modificator.ModificatorModel.create(mod, (err, instance) => {
+              if (err) {
+                console.log(err);
+              } else {
+                modificators.push(instance.id);
+              }
+            });
+          }
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(instance);
+          }
         }
-      });
+      );
     });
     setTimeout(() => {
       console.log(modificators);
       TechMapsRequest.modificators = modificators;
-      TechMaps.TechMapsModel.findByIdAndUpdate(req.params.id, { '$set': TechMapsRequest }, function(err) {
-        if (err) {
-          console.log(err);
-          res.sendStatus(400);
-        } else {
-          res.sendStatus(200);
+      TechMaps.TechMapsModel.findByIdAndUpdate(
+        req.params.id,
+        { $set: TechMapsRequest },
+        function(err) {
+          if (err) {
+            console.log(err);
+            res.sendStatus(400);
+          } else {
+            res.sendStatus(200);
+          }
         }
-      });
+      );
     }, 500);
   }
 };

@@ -814,7 +814,7 @@
 
           <hr class="hr-page">
           <button type="button" @click="sendMap" class="btn btn-success btn-lg btn-save">
-            <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить полуфабрикат</div>
+            <div v-if="!stateSaving" style="color: white;" class="main-text">Обновить тех. карту</div>
             <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
           </button>
         </div>
@@ -844,6 +844,8 @@ export default {
       idMod: -1,
 
       key: null,
+
+      photo_src: null,
 
       ingridientsList: [],
       categories: [],
@@ -891,7 +893,8 @@ export default {
         max: null,
         setMax: false,
         setMin: false,
-        ingridients: []
+        ingridients: [],
+        newMod: true
       },
 
       avatar: null,
@@ -931,6 +934,9 @@ export default {
         .then(res => {
           console.log(res.data);
           this.map = res.data;
+          if (this.map.photo) {
+            this.photo_src = this.map.photo;
+          }
           this.map.ingridients.forEach(ing => {
             ing.unit = ing.ingridient.unit;
           });
@@ -961,10 +967,10 @@ export default {
       this.map.shop = this.map.shop._id;
 
       this.map.modificators.forEach(mod => {
-        if (mod.newMod) {
+        /* if (mod.newMod) {
           delete mod.newMod;
           delete mod._id;
-        }
+        } */
         mod.ingridients.forEach(ing => {
           ing._id = ing.ingridient._id;
         });
@@ -972,8 +978,14 @@ export default {
       console.log(this.map);
 
       const formData = new FormData();
-      formData.append("avatar", vm.$data.map.photo);
-      this.map.photo = null;
+
+      if (this.photo_src != this.map.photo) {
+        formData.append("avatar", vm.$data.map.photo);
+        this.map.photo = null;
+      }
+
+      /* formData.append("avatar", vm.$data.map.photo);
+      this.map.photo = null; */
       formData.append("map", JSON.stringify(this.map));
       console.log(formData.getAll("map"));
       ProductsService.updateMap(this.editId, formData)
@@ -1011,8 +1023,7 @@ export default {
         max: null,
         setMax: false,
         setMin: false,
-        ingridients: [],
-        newMod: true
+        ingridients: []
       };
     },
     addRow() {
@@ -1044,9 +1055,7 @@ export default {
       });
     },
     uuidv4() {
-      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
-        c
-      ) {
+      return "xxxxxxxxxxxxxxxxxxxxxxxx".replace(/[xy]/g, function(c) {
         var r = (Math.random() * 16) | 0,
           v = c == "x" ? r : (r & 0x3) | 0x8;
         return v.toString(16);
@@ -1055,7 +1064,6 @@ export default {
 
     addNewModificators() {
       this.idMod = this.uuidv4();
-      // console.log(this.idMod);
       this.nowNewModif._id = this.idMod;
 
       if (this.nowModif != null) {

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node-dev server.js"
   },
   "repository": "https://github.com/nik-prostok/crm-system.git",
   "author": "Nik Prostokvashin",

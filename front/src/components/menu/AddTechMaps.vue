@@ -810,7 +810,7 @@
 
           <hr class="hr-page">
           <button type="button" @click="sendMap" class="btn btn-success btn-lg btn-save">
-            <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить полуфабрикат</div>
+            <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить тех. карту</div>
             <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
           </button>
         </div>
