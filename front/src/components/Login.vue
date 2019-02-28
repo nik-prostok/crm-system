@@ -20,10 +20,10 @@ export default {
   created() {
     const vm = this;
     if (typeof localStorage !== typeof undefined) {
-      if (localStorage.getItem("token")) this.$data.isLoggedIn = true;
-    }
-    if (vm.$data.isLoggedIn == true) {
-      vm.$router.push("/menu/products");
+      if (localStorage.getItem("token")) {
+        this.$data.isLoggedIn = true;
+        vm.$router.push("/menu/products");
+      }
     }
   },
   data() {
@@ -52,6 +52,7 @@ export default {
               "token",
               JSON.stringify({ token: `Bearer ${response.data.token}` })
             );
+            this.$router.push('/');
             return (vm.$data.isLoggedIn = true);
           })
           .catch(err => {

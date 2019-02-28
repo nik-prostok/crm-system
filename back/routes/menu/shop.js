@@ -1,5 +1,4 @@
 const shop = require('../../controllers/menu/shop')
-
 const verify = require('../../controllers/verify')
 
 //Маршруты для регистрации и управления Category

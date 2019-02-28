@@ -81,31 +81,20 @@ export default {
   addIngridients(ingridient) {
     return api().post('/ing', ingridient);
   },
-  /*
-    // Semi
-    addSemi(semi) {
-      return api().post('semi', semi)
-    },
-    fetchSemi() {
-      return api().get('semi')
-    },
 
-      // Ingridients
-      fetchIngridients() {
-        return api().get('ingridients')
-      },
-      addIngridients(ingridient) {
-        return api().post('ingridients', ingridient)
-      },
-
-      // Semi
-      addSemi(semi) {
-        return api().post('semi', semi)
-      },
-      fetchSemi() {
-        return api().get('semi')
-      },
-*/
+  // Semi
+  addSemi(semi) {
+    return api().post('/api/semi', semi);
+  },
+  fetchSemi() {
+    return api().get('/api/semi');
+  },
+  deleteSemi(id) {
+    return api().delete(`/api/semi/${id}`);
+  },
+  updateSemi(id, semi) {
+    return api().put(`/api/semi/${id}`, semi);
+  },
 
   // Map
   addMap(map) {
@@ -126,7 +115,7 @@ export default {
   updateMap(id, map) {
     return api().put(`/api/map/${id}`, map, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: { 'Content-Type': 'multipart/form-data' }
     });
   },
 

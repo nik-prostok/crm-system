@@ -104,15 +104,15 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="tr-td-custom" v-for="ing in semi.ingridients">
+										<tr class="tr-td-custom" :key="ing._id" v-for="ing in semi.ingridients">
 											<td class="td-custom align-middle">
 												<div class="form-group">
-													<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ing.object_ing" :multiple="false" :close-on-select="true" label="title" track-by="id" :options="ingridientsList"></multiselect>
+													<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ing.ingridient" :multiple="false" :close-on-select="true" label="title" track-by="_id" :options="ingridientsList"></multiselect>
 												</div>
 											</td>
 											<td class="td-custom align-middle" >
-												<div v-if="ing.object_ing.unit == 'кг'" class="form-group">
-													<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ing.method_cooking" :multiple="true" :close-on-select="false" label="title" track-by="id" :options="listMethodsCooking"></multiselect>
+												<div v-if="ing.ingridient.unit == 'кг'" class="form-group">
+													<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ing.method_cooking" :multiple="true" :close-on-select="false" label="title" track-by="_id" :options="listMethodsCooking"></multiselect>
 												</div>
 											</td>
 											<td class="td-custom align-middle">
@@ -122,7 +122,7 @@
 															<input type="text" ref="search" class="form-control input-param" v-model="ing.brutto" placeholder="Введите">
 														</div>
 														<div class="col-lg-1">
-															<p class="main-text ml-1 mt-2">{{ing.object_ing.unit}}</p>
+															<p class="main-text ml-1 mt-2">{{ing.ingridient.unit}}</p>
 														</div>
 													</div>
 												</div>
@@ -247,7 +247,14 @@ export default {
       // this.semi.cat_id = this.ingridient.category.cat_id;
       /* if (this.ingridient.round != null)
 				this.ingridient.round = this.ingridient.round.value; */
-      ProductsService.addSemi(this.semi);
+			ProductsService.addSemi(this.semi)
+			.then(res => {
+				console.log(res.data);
+				alert("Успешно");
+			})
+			.catch(err => {
+				console.error(err);
+			})
       // this.$router.push('/menu/semi')
     },
     async fetchIngridients() {
@@ -257,11 +264,10 @@ export default {
     },
     addRow() {
       this.semi.ingridients.push({
-        object_ing: {
-          unit: '',
-        },
         title: null,
-        id_ingridient: null,
+        ingridient: {
+          unit: ""
+        },
         method_cooking: null,
         brutto: 0,
         netto: 0,
@@ -276,12 +282,6 @@ export default {
 };
 
 </script>
-
-<style lang="scss">
-@import '../../assets/less/menu.less'
-</style>
-
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style>
 #upload {

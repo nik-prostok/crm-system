@@ -9,7 +9,7 @@
 import ProductsService from '@/services/menu/ProductsService';
 
 export default {
-	name: 'start',
+	name: 'app',
 	data () {
 		return {
 
@@ -22,8 +22,10 @@ export default {
 		checkToken () {
 			ProductsService.verifyToken()
 			.then(res => {
-				if(!res.data) return this.logout()
-				if(!res.data.success) return this.logout()
+				if (!res.data || !res.data.success){
+					this.logout()
+					this.$router.push('/login');
+				}
 			})
 			.catch(err => this.logout())
 		}
