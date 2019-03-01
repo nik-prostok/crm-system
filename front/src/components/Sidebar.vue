@@ -43,9 +43,8 @@
         </div>
       </ul>
 
-      <!--  -->
       <ul class="list-group fixed-bottom">
-        <div class="d-flex flex-row ml-3 mt-2">
+        <div class="d-flex flex-row ml-3 mt-2 mb-2">
           <i
             class="fas fa-user fa-2x"
             v-on:click="navAction"
@@ -57,8 +56,9 @@
             @click="show = !show"
             id="popoverButton-sync"
           >
-            <p class="ml-3" style="color: white;">Лев</p>
-            <i class="mt-1 ml-1 fas fa-angle-down" style="color: white;"></i>
+            <a v-if="stateNav" class="ml-3" style="color: white;">Лев</a>
+            <i v-if="stateNav && !show" class="mt-1 ml-1 fas fa-angle-down" style="color: white;"></i>
+            <i v-if="stateNav && show" class="mt-1 ml-1 fas fa-angle-up" style="color: white;"></i>
           </div>
         </div>
       </ul>
@@ -316,7 +316,7 @@ export default {
     },
     logout() {
       localStorage.removeItem("token");
-      this.$router.push('/login');
+      this.$router.push("/login");
     }
   },
   computed: {}
@@ -368,3 +368,7 @@ export default {
   margin-left: 50px;
 }
 </style>
+
+<style lang="less" scoped>
+</style>
+

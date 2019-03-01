@@ -7,11 +7,9 @@ var SemiSchema = new Schema({
     type: String,
     reqired: true
   },
-  process_cooking: [
-    {
-      type: Number
-    }
-  ],
+  process_cooking: {
+    type: String,
+  },
   sum_mass: {
     type: Number
   },

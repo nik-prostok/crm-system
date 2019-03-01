@@ -23,7 +23,7 @@
 									<router-link  to="/menu/ingridients/add" class="main-text" style="text-decoration: none;">
 										<div class=" btn-group btn-group-custom mt-3">
 											<div class="btn btn-shadow btn-custom-border" >
-												<a class="main-text" style="text-decoration: none;">Добавить ингридиент</a>
+												<a class="main-text" style="text-decoration: none;">Добавить ингредиент</a>
 											</div>
 
 										</div>
@@ -82,7 +82,7 @@
 												</div>
 											</th>
 											<th @click="sortEvent('losses')" class="td-th-custom">
-												Вес шт. ингридиента
+												Вес шт. ингредиента
 												<div v-if="sortColumn == 'weight'">
 													<img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
 													<img v-else="!sort" class="m-1" src="/static/image/up.png" alt="up">

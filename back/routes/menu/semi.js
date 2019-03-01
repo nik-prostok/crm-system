@@ -3,8 +3,8 @@ const verify = require('../../controllers/verify')
 
 //Маршруты для регистрации и управления Product
 module.exports = function(app) {
-	app.post('/semi', verify, semi.create);
-	app.get('/semi', verify, semi.fetch)
-	app.delete('/semi/:id', verify, semi.delete)
-	app.put('/semi/:id', verify, semi.update)
+	app.post('/api/semi', verify, semi.create);
+	app.get('/api/semi', verify, semi.fetch)
+	app.delete('/api/semi/:id', verify, semi.delete)
+	app.put('/api/semi/:id', verify, semi.update)
 };
