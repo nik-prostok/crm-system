@@ -52,7 +52,11 @@ export default new Router({
       component: () => import('./components/menu/CategoryIngridients'),
       meta: { requiresAuth: true },
     },
-
+    {
+      path: '/menu/cat_ingridients/edit/:id',
+      component: () => import('./components/menu/EditCategoryIngridients'),
+      meta: { requiresAuth: true },
+    },
     {
       path: '/menu/cat_ingridients/add',
       component: () => import('./components/menu/AddCategoryIngridients'),
@@ -113,6 +117,13 @@ export default new Router({
     {
       path: '/menu/semi/add',
       component: () => import('./components/menu/AddSemi'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: '/menu/semi/edit/:id',
+      component: () => import('./components/menu/EditSemi'),
       meta: {
         requiresAuth: true,
       },

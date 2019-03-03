@@ -35,13 +35,23 @@
                       >
                     </button>
                     <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
-                      <b-form-group class="ml-2" label="Отображать столбцы">
-                        <b-form-checkbox-group id="checkboxes1" name="flavour1" v-model="fieldsSet">
-                          <div v-for="field in fields" :key="field.label">
-                            <b-form-checkbox switch :value="field">{{field.label}}</b-form-checkbox>
+                      <a class="m-2">Отображать столбцы</a>
+                      <div v-bind:key="key" v-for="(item, key) in fields ">
+                        <div class="form-check dropdown-item">
+                          <div class="pretty p-switch p-fill">
+                            <input
+                              @change="sortFields"
+                              v-model="fieldsSet"
+                              v-bind:value="item"
+                              type="checkbox"
+                              v-bind:id="item.key"
+                            >
+                            <div class="state">
+                              <label class="form-check-label" v-bind:for="item">{{item.label}}</label>
+                            </div>
                           </div>
-                        </b-form-checkbox-group>
-                      </b-form-group>
+                        </div>
+                      </div>
                     </div>
                     <button type="button" class="btn btn-custom-border">
                       <a class="main-text">Экcпорт</a>
@@ -55,7 +65,7 @@
                   <router-link
                     class="btn-group btn-group-custom mt-3 ml-2"
                     style="text-decoration: none;"
-                    to="/menu/maps/add"
+                    to="/menu/semi/add"
                   >
                     <div class="btn btn-shadow btn-custom-border main-text" tag="button">
                       <a class="main-text" style="text-decoration: none;">Добавить полуфабрикат</a>
@@ -110,30 +120,20 @@
             >
               <p class="main-text">{{msgSuccess}}</p>
             </b-alert>
-            <b-table :items="FilterMaps" :fields="fieldsSet" class="table-custom">
+            <b-table :items="FilterSemi" :fields="fieldsSet" class="table-custom">
               <template slot="title" slot-scope="data">
-                <div class="d-flex flex-row">
-                  <div v-if="data.item.photo != null" class="mr-2">
-                    <img class="img-fluid" width="50" :src="data.item.photo" alt>
-                  </div>
-                  <div v-else class="rectangle mr-2">
-                    <div :class="data.item.color" class="h-100">
-                      <p
-                        class="pt-2"
-                        style="color: white; text-align: center;"
-                      >{{ data.item.title.slice(0,1) }}</p>
-                    </div>
-                  </div>
-                  <div class="align-self-center">{{ data.item.title }}</div>
+                <div class="align-self-center">{{ data.item.title }}</div>
+              </template>
+
+              <template slot="sum_mass" slot-scope="data">
+                <div>{{data.item.sum_mass}}</div>
+              </template>
+
+              <template slot="price" slot-scope="data">
+                <div>
+                  {{data.item.price}}
+                  <i class="fas fa-ruble-sign ml-1"></i>
                 </div>
-              </template>
-
-              <template slot="cat_title" slot-scope="data">
-                <div>{{data.item.category.title}}</div>
-              </template>
-
-              <template slot="shop_title" slot-scope="data">
-                <div>{{data.item.shop.title}}</div>
               </template>
 
               <template slot="actions" slot-scope="data">
@@ -153,12 +153,16 @@
                   </div>
 
                   <div class="ml-2">
-                    <button class="btn-icon popoverButton" :id="getPopoverId(data.item._id)">
+                    <button
+                      class="btn-icon popoverButton"
+                      style="cursor: pointer;"
+                      :id="getPopoverId(data.item._id)"
+                    >
                       <i class="fa fa-ellipsis-h"></i>
                     </button>
                     <b-popover :target="getPopoverId(data.item._id)" triggers="focus">
                       <ul class="actions-popover">
-                        <li @click="deleteMaps(data.item._id)" class="action-item">
+                        <li @click="deleteSemi(data.item._id)" class="action-item">
                           <a
                             style="text-decoration: none; cursor: pointer;"
                             class="main-text"
@@ -187,7 +191,7 @@
             <p
               class="text-center"
               v-if="length == 0 "
-            >Нет категорий, подходящим по выбранным фильтрам.</p>
+            >Нет полуфабрикатов, подходящим по выбранным фильтрам.</p>
           </div>
         </div>
       </div>
@@ -202,7 +206,7 @@ import ProductsService from "@/services/menu/ProductsService";
 import Sidebar from "@/components/Sidebar";
 
 export default {
-  name: "TechMaps",
+  name: "Semi",
   components: {
     sidebar: Sidebar
   },
@@ -214,27 +218,64 @@ export default {
           label: "Название",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 0
         },
         {
-          key: "netto",
+          key: "sum_mass",
           label: "Выход",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 1
         },
         {
-          key: "self-cost",
+          key: "price",
           label: "Себестоимость",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 2
         },
         {
           key: "actions",
           label: "Действия",
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 3
+        }
+      ],
+      fields: [
+        {
+          key: "title",
+          label: "Название",
+          sortable: true,
+          thClass: "tr-th-custom tr-td-custom",
+          tdClass: "tr-td-custom",
+          position: 0
+        },
+        {
+          key: "sum_mass",
+          label: "Выход",
+          sortable: true,
+          thClass: "tr-th-custom tr-td-custom",
+          tdClass: "tr-td-custom",
+          position: 1
+        },
+        {
+          key: "price",
+          label: "Себестоимость",
+          sortable: true,
+          thClass: "tr-th-custom tr-td-custom",
+          tdClass: "tr-td-custom",
+          position: 2
+        },
+        {
+          key: "actions",
+          label: "Действия",
+          thClass: "tr-th-custom tr-td-custom",
+          tdClass: "tr-td-custom",
+          position: 3
         }
       ],
 
@@ -263,15 +304,7 @@ export default {
 
       search: "",
       ingridients: [],
-      maps: [],
-      shops: [],
-      categories: [],
-
-      // Search
-      selectCategoriesSearch: "",
-      selectCategories: [],
-      selectShopsSearch: "",
-      selectShops: [],
+      semi: [],
 
       //Alert
       dismissSecsDanger: 10,
@@ -284,90 +317,47 @@ export default {
     };
   },
   mounted() {
-    this.getMaps();
-    this.getCategories();
-    this.getShops();
+    this.getSemi();
   },
   methods: {
-    async deleteMaps(id) {
-      ProductsService.delMap(id)
+    sortFields() {
+      this.fieldsSet.sort((a, b) => {
+        if (a.position < b.position) return -1;
+        if (a.position > b.position) return 1;
+      });
+    },
+    async deleteSemi(id) {
+      ProductsService.deleteSemi(id)
         .then(response => {
-          this.getMaps();
-          this.showAlertSuccess("Технологическая карта успешно удалена!");
+          this.getSemi();
+          this.showAlertSuccess("Полуфабрикат успешно удален!");
         })
         .catch(error => {
-          this.showAlertDanger("Ошибка удаления технологической карты!");
+          this.showAlertDanger("Ошибка удаления полуфабриката!");
         });
     },
-    async getCategories() {
-      ProductsService.fetchCategories()
+    async getSemi() {
+      ProductsService.fetchSemi()
         .then(res => {
-          this.categories = res.data;
-        })
-        .catch(err => {
-          console.log(err);
-          this.showAlertDanger("Ошибка загрузки категорий!");
-        });
-    },
-    async getShops() {
-      ProductsService.fetchShops()
-        .then(res => {
-          this.shops = res.data;
-        })
-        .catch(err => {
-          console.log(err);
-          this.showAlertDanger("Ошибка загрузки цехов!");
-        });
-    },
-    async getMaps() {
-      ProductsService.fetchMaps()
-        .then(res => {
-          this.maps = res.data;
-          this.maps.forEach(map => {
-            map.netto = 0;
-            if (map.modificators != null) {
-              map.modificators.forEach(mod => {
-                mod.ingridients.forEach(ing => {
-                  map.netto += Number(ing.netto.$numberDecimal);
-                });
-              });
-            }
-            if (map.ingridients != null) {
-              map.ingridients.forEach(ing => {
-                /* this.ingridients.forEach(ingItem => {
-                  if (ing.id_ingridients == ingItem.id) {
-                    ing.title_ing = ingItem.title;
-                  }
-                }); */
-                map.netto += Number(ing.netto.$numberDecimal);
-              });
-            }
-            map.netto = `${String(map.netto / 1000)} кг`;
-            if (map.weight) {
-              map.weight = "Да";
-            } else {
-              map.weight = "Нет";
-            }
+          this.semi = res.data;
+          this.semi.forEach(semi => {
+            let mass = 0;
+            semi.ingridients.forEach(ing => {
+              mass = mass + Number(ing.netto.$numberDecimal);
+            });
+            semi.sum_mass = mass;
           });
         })
         .catch(err => {
           console.error(err);
-          this.showAlertDanger("Ошибка загрузки технологических карт!");
+          this.showAlertDanger("Ошибка загрузки полуфабрикатов!");
         });
-    },
-    filterBySearch(ingridients) {
-      if (this.search.length === 0) {
-        return true;
-      }
-      return (
-        ingridients.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1
-      );
     },
     getPopoverId(id) {
       return `popover${id}`;
     },
     getHrefEdit(id) {
-      return `/menu/maps/edit/${id}`;
+      return `/menu/semi/edit/${id}`;
     },
     sortEvent(message) {
       console.log(message);
@@ -391,81 +381,23 @@ export default {
       this.msgSuccess = msg;
       this.dismissCountDownSuccess = this.dismissSecsSuccess;
     },
-    filterBySearchCategories(categories) {
-      if (this.selectCategoriesSearch.length === 0) {
-        return true;
-      }
-      return (
-        categories.title
-          .toLowerCase()
-          .indexOf(this.selectCategoriesSearch.toLowerCase()) > -1
-      );
-    },
-    filterBySearchShops(shops) {
-      if (this.selectShopsSearch.length === 0) {
-        return true;
-      }
-      return (
-        shops.title
-          .toLowerCase()
-          .indexOf(this.selectShopsSearch.toLowerCase()) > -1
-      );
-    },
-    filterBySearch(product) {
+    filterBySearch(semi) {
       if (this.search.length === 0) {
         return true;
       }
-      return (
-        product.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1
-      );
-    },
-    filterByCategory(product) {
-      if (this.selectCategories.length === 0) {
-        return true;
-      }
-      return this.selectCategories.some(
-        item =>
-          product.category.title
-            .toLowerCase()
-            .localeCompare(item.toLowerCase()) == 0
-      );
-    },
-    filterByShop(product) {
-      if (this.selectShops.length === 0) {
-        return true;
-      }
-      return this.selectShops.some(
-        item =>
-          product.shop.title.toLowerCase().localeCompare(item.toLowerCase()) ==
-          0
-      );
+      return semi.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
     }
   },
   computed: {
     length() {
       let length = 0;
-      this.maps.forEach(item => {
+      this.semi.forEach(item => {
         length++;
       });
       return length;
     },
-    FilterMaps() {
-      return this.maps
-        .filter(this.filterBySearch)
-        .filter(this.filterByCategory)
-        .filter(this.filterByShop);
-    },
-    FilterCategories() {
-      return this.categories.filter(this.filterBySearchCategories);
-    },
-    FilterShops() {
-      return this.shops.filter(this.filterBySearchShops);
-    },
-    FilterCategories() {
-      return this.categories.filter(this.filterBySearchCategories);
-    },
-    FilterShops() {
-      return this.shops.filter(this.filterBySearchShops);
+    FilterSemi() {
+      return this.semi.filter(this.filterBySearch);
     }
   }
 };

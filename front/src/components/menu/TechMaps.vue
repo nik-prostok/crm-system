@@ -35,13 +35,23 @@
                       >
                     </button>
                     <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
-                      <b-form-group class="ml-2" label="Отображать столбцы">
-                        <b-form-checkbox-group id="checkboxes1" name="flavour1" v-model="fieldsSet">
-                          <div v-for="field in fields" :key="field.label">
-                            <b-form-checkbox switch :value="field">{{field.label}}</b-form-checkbox>
+                      <a class="m-2">Отображать столбцы</a>
+                      <div v-bind:key="key" v-for="(item, key) in fields ">
+                        <div class="form-check dropdown-item">
+                          <div class="pretty p-switch p-fill">
+                            <input
+                              @change="sortFields"
+                              v-model="fieldsSet"
+                              v-bind:value="item"
+                              type="checkbox"
+                              v-bind:id="item.key"
+                            >
+                            <div class="state">
+                              <label class="form-check-label" v-bind:for="item">{{item.label}}</label>
+                            </div>
                           </div>
-                        </b-form-checkbox-group>
-                      </b-form-group>
+                        </div>
+                      </div>
                     </div>
                     <button type="button" class="btn btn-custom-border">
                       <a class="main-text">Экcпорт</a>
@@ -307,48 +317,55 @@ export default {
           label: "Блюдо",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 0,
         },
         {
           key: "cat_title",
           label: "Категория",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 1,
         },
         {
           key: "bar_code",
           label: "Штрихкод",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 2,
         },
         {
           key: "shop_title",
           label: "Цех",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 3,
         },
         {
           key: "weight",
           label: "Весовая тех. карта",
           sortable: false,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 4,
         },
         {
           key: "netto",
           label: "Выход",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 5,
         },
         {
           key: "actions",
           label: "Действия",
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 6,
         }
       ],
       fields: [
@@ -357,48 +374,55 @@ export default {
           label: "Блюдо",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 0,
         },
         {
           key: "cat_title",
           label: "Категория",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 1,
         },
         {
           key: "bar_code",
           label: "Штрихкод",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 2,
         },
         {
           key: "shop_title",
           label: "Цех",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 3,
         },
         {
           key: "weight",
           label: "Весовая тех. карта",
           sortable: false,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 4,
         },
         {
           key: "netto",
           label: "Выход",
           sortable: true,
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 5,
         },
         {
           key: "actions",
           label: "Действия",
           thClass: "tr-th-custom tr-td-custom",
-          tdClass: "tr-td-custom"
+          tdClass: "tr-td-custom",
+          position: 6
         }
       ],
 
@@ -453,6 +477,12 @@ export default {
     this.getShops();
   },
   methods: {
+    sortFields() {
+      this.fieldsSet.sort((a, b) => {
+        if (a.position < b.position) return -1;
+        if (a.position > b.position) return 1;
+      });
+    },
     async deleteMaps(id) {
       ProductsService.delMap(id)
         .then(response => {

@@ -18,7 +18,7 @@ module.exports = {
 		Semi.SemiModel
 		.find()
 		.populate({
-			path: 'ingridients',
+			path: 'ingridients.ingridient',
 			populate: {
 				path: 'category'
 			}

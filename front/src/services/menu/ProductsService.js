@@ -65,13 +65,16 @@ export default {
 
   // CategoryIngridients
   addCategoryIng(category) {
-    return api().post('/cat_ing', category);
+    return api().post('/api/cat_ing', category);
   },
   fetchCategoryIng() {
-    return api().get('/cat_ing');
+    return api().get('/api/cat_ing');
   },
   deleteCatIng(id) {
-    return api().post(`/cat_ing/${id}`, id);
+    return api().delete(`/api/cat_ing/${id}`);
+  },
+  editCategoryIng(id, catIng) {
+    return api().put(`/api/cat_ing/${id}`, catIng);
   },
 
   // Ingridients

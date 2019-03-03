@@ -1,5 +1,5 @@
 <template>
-  <div id="add_semi">
+  <div id="edit_semi">
     <div class="row no-gutters" id="body-row">
       <div class="col-lg-1">
         <sidebar></sidebar>
@@ -12,7 +12,7 @@
               <router-link to="/menu/semi">
                 <img class="back-arrow mt-2 mr-4" src="/static/image/arrow_back.png" alt="Back">
               </router-link>
-              <h1 class="head-text">Новый полуфабрикат</h1>
+              <h1 class="head-text">Редактирование полуфабриката</h1>
             </div>
           </div>
 
@@ -240,7 +240,7 @@ import ProductsService from "@/services/menu/ProductsService";
 import Sidebar from "@/components/Sidebar";
 
 export default {
-  name: "add_products",
+  name: "EditSemi",
   components: {
     sidebar: Sidebar
   },
@@ -251,6 +251,8 @@ export default {
       with_mod: false,
       without_mod: true,
       countMod: 1,
+
+      editId: null,
 
       key: null,
 
@@ -291,8 +293,24 @@ export default {
   },
   mounted() {
     this.fetchIngridients();
+    this.setEditId(this.$route.params.id);
+    this.getSemi();
   },
   methods: {
+    setEditId(id) {
+      this.editId = id;
+    },
+    async getSemi() {
+      ProductsService.fetchSemi()
+        .then(res => {
+          res.data.semi.forEach(semi => {
+            if (semi._id = this.editId) {
+                this.semi = semi;
+            }
+          });
+        })
+        .catch(err => console.error(err));
+    },
     async sendSemi() {
       ProductsService.addSemi(this.semi)
         .then(res => {
@@ -302,7 +320,7 @@ export default {
         .catch(err => {
           console.error(err);
         });
-      this.$router.push("/menu/semi");
+      // this.$router.push('/menu/semi')
     },
     async fetchIngridients() {
       const response = await ProductsService.fetchIngridients();
