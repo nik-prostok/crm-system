@@ -19,7 +19,7 @@ module.exports = {
 		Modificator.ModificatorModel
 		.find()
 		.populate({
-			path:'ingridients',
+			path:'ingridients.ingridient',
 			populate: {
 				path:'category'
 			}

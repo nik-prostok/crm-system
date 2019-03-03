@@ -34,17 +34,6 @@
               </div>
             </div>
           </div>
-
-          <!-- <div class="row">
-						<div class="col-lg-3">
-							<p class="title-form mt-2">Категория</p>
-						</div>
-						<div class="col-lg-4">
-							<div class="form-group">
-								<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ingridient.category" :multiple="false" :close-on-select="true" label="cat_title" track-by="cat_id" :options="categoriesIng"></multiselect>
-							</div>
-						</div>
-          </div>-->
           <div class="row">
             <div class="col-lg-3">
               <p class="title-form mt-2">Процесс приготовления</p>
@@ -224,8 +213,8 @@
 
           <hr class="hr-page">
           <button type="button" @click="sendSemi" class="btn btn-success btn-lg btn-save">
-            <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить полуфабрикат</div>
-            <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
+            <div v-if="!stateSaving" style="color: white;" class="main-text">Сохранить полуфабрикат</div>
+            <div v-if="stateSaving" style="color: white;" class="main-text">Сохранение...</div>
           </button>
         </div>
       </div>
@@ -282,6 +271,7 @@ export default {
         }
       ],
 
+      semis: [],
       semi: {
         title: "",
         process_cooking: "",
@@ -301,26 +291,33 @@ export default {
       this.editId = id;
     },
     async getSemi() {
+      const vm = this
       ProductsService.fetchSemi()
         .then(res => {
-          res.data.semi.forEach(semi => {
-            if (semi._id = this.editId) {
-                this.semi = semi;
+          vm.semis = res.data;
+          vm.semis.forEach(semi => {
+            if (semi._id == vm.editId) {
+                vm.semi = semi;
+                vm.semi.ingridients.forEach(ing => {
+                  ing.netto = ing.netto.$numberDecimal;
+                  ing.brutto = ing.brutto.$numberDecimal;
+                });
             }
           });
         })
         .catch(err => console.error(err));
     },
     async sendSemi() {
-      ProductsService.addSemi(this.semi)
+      this.stateSaving = true;
+      ProductsService.updateSemi(this.editId, this.semi)
         .then(res => {
           console.log(res.data);
-          alert("Успешно");
+          this.$router.push('/menu/semi')
         })
         .catch(err => {
+          alert('Ошибка сохранения редактиования!');
           console.error(err);
         });
-      // this.$router.push('/menu/semi')
     },
     async fetchIngridients() {
       const response = await ProductsService.fetchIngridients();

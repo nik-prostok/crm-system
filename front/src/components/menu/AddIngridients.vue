@@ -1,5 +1,5 @@
 <template>
-	<div id="add_category_ing">
+	<div id="add_ing">
 		<div class="row no-gutters" id="body-row">
 			<div class="col-lg-1">
 				<sidebar></sidebar>
@@ -13,7 +13,7 @@
 							<router-link to="/menu/ingridients">
 								<img class="back-arrow mt-2 mr-4" src="/static/image/arrow_back.png" alt="Back">
 							</router-link>
-							<h1 class="head-text">Новый ингридиент</h1>
+							<h1 class="head-text">Новый ингредиент</h1>
 						</div>
 					</div>
 
@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ingridient.category" :multiple="false" :close-on-select="true" label="cat_title" track-by="cat_id" :options="categoriesIng"></multiselect>
+								<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="ingridient.category" :multiple="false" :close-on-select="true" label="title" track-by="_id" :options="categoriesIng"></multiselect>
 							</div>
 						</div>
 					</div>
@@ -199,7 +199,7 @@ export default {
   },
   methods: {
     sendIng() {
-      this.ingridient.cat_id = this.ingridient.category.cat_id;
+      this.ingridient.category = this.ingridient.category.cat_id;
       if (this.ingridient.round != null) { this.ingridient.round = this.ingridient.round.value; }
       ProductsService.addIngridients(this.ingridient);
       this.$router.push('/menu/ingridients');

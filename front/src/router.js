@@ -74,6 +74,13 @@ export default new Router({
       meta: { requiresAuth: true },
     },
     {
+      path: '/menu/ingridients/edit/:id',
+      component: () => import('./components/menu/EditIngredients'),
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
       path: '/menu/shops',
       component: () => import('./components/menu/Shops'),
       meta: { requiresAuth: true },

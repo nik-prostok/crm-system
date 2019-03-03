@@ -137,7 +137,7 @@
               </template>
 
               <template slot="actions" slot-scope="data">
-                <div class="d-flex flex-row">
+                <div class="d-flex flex-row justify-content-center">
                   <div class="mr-2">
                     <b-link class="main-text" @click.stop="data.toggleDetails">
                       <div

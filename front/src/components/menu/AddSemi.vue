@@ -294,6 +294,7 @@ export default {
   },
   methods: {
     async sendSemi() {
+      this.stateSaving = true;
       ProductsService.addSemi(this.semi)
         .then(res => {
           console.log(res.data);

@@ -11,7 +11,7 @@ export default {
   addProduct(product) {
     return api().post('/api/products', product, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
   deleteProduct(id) {
@@ -20,7 +20,7 @@ export default {
   updateProduct(product, id) {
     return api().put(`/api/products/${id}`, product, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
   getProduct(id) {
@@ -33,8 +33,8 @@ export default {
   addCategory(category) {
     return api().post('/api/category', category, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
   },
   deleteCategory(id) {
@@ -44,8 +44,8 @@ export default {
     // eslint-disable-next-line no-underscore-dangle
     return api().put(`/api/category/${category._id}`, category, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
   },
 
@@ -79,10 +79,16 @@ export default {
 
   // Ingridients
   fetchIngridients() {
-    return api().get('/ing');
+    return api().get('/api/ing');
   },
   addIngridients(ingridient) {
-    return api().post('/ing', ingridient);
+    return api().post('/api/ing', ingridient);
+  },
+  deleteIngridients(id) {
+    return api().delete(`/api/ing/${id}`);
+  },
+  updateIngridients(id, ing) {
+    return api().put(`/api/ing/${id}`, ing);
   },
 
   // Semi
@@ -103,7 +109,7 @@ export default {
   addMap(map) {
     return api().post('/api/map', map, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
   getMap(id) {
@@ -118,7 +124,7 @@ export default {
   updateMap(id, map) {
     return api().put(`/api/map/${id}`, map, {
       emulateJSON: true,
-      headers: { 'Content-Type': 'multipart/form-data' }
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 
@@ -134,5 +140,5 @@ export default {
   },
   updateModificator(id, mod) {
     return api().put(`/api/modificator/${id}`, mod);
-  }
+  },
 };

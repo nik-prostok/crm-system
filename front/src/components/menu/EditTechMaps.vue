@@ -830,7 +830,7 @@ import ProductsService from "@/services/menu/ProductsService";
 import Sidebar from "@/components/Sidebar";
 
 export default {
-  name: "EditTechMaps",
+  name: "AddTechMap",
   components: {
     sidebar: Sidebar
   },
@@ -936,7 +936,7 @@ export default {
           this.map = res.data;
           if (this.map.photo) {
             this.photo_src = this.map.photo;
-          }
+          };
           this.map.ingridients.forEach(ing => {
             ing.unit = ing.ingridient.unit;
           });
@@ -946,15 +946,22 @@ export default {
             });
           });
         })
-        .error(err => {
+        .catch(err => {
           alert("Ошибка загрузки данных.");
           console.error(err);
         });
     },
     async fetchModificators() {
-      ProductsService.fetchModificators()
+      let vm = this;
+      ProductsService.fetchModificator()
         .then(res => {
-          listModificators = res.data;
+          this.listModificators = res.data;
+          this.listModificators.forEach(mod => {
+            mod.ingridients.forEach(ing => {
+              ing.brutto = ing.brutto.$numberDecimal;
+              ing.netto = ing.netto.$numberDecimal;
+            })
+          })
         })
         .catch(err => {
           console.error(err);

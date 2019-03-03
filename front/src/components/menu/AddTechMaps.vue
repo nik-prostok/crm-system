@@ -913,13 +913,19 @@ export default {
     this.fetchIngridients();
     this.fetchCategories();
     this.fetchShops();
-    //this.fetchModificators();
+    this.fetchModificators();
   },
   methods: {
     async fetchModificators() {
-      ProductsService.fetchModificators()
+      ProductsService.fetchModificator()
         .then(res => {
-          listModificators = res.data;
+          this.listModificators = res.data;
+          this.listModificators.forEach(mod => {
+            mod.ingridients.forEach(ing => {
+              ing.brutto = ing.brutto.$numberDecimal;
+              ing.netto = ing.netto.$numberDecimal;
+            })
+          })
         })
         .catch(err => {
           console.error(err);
