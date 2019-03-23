@@ -8,6 +8,13 @@
             "script": "serve",
             "path": "front/",
             "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "path": "back/",
+            "problemMatcher": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
@@ -15,9 +22,9 @@
         },
         {
             "type": "npm",
-            "script": "start",
-            "path": "back/",
+            "script": "build",
+            "path": "front/",
             "problemMatcher": []
-        },
+        }
     ]
 }

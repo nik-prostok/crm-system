@@ -1,11 +1,11 @@
 <template>
   <div id="add_products">
-    <div class="row no-gutters" id="body-row">
-      <div class="col-lg-1">
+    <div class="row" id="body-row">
+      <div class="col-2 col-sm-1">
         <sidebar></sidebar>
       </div>
 
-      <div class="col-lg-11">
+      <div class="col-10 col-sm-11">
         <div class="container-fluid mt-2 mb-5">
           <div class="row">
             <div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
@@ -79,10 +79,10 @@
           <hr class="hr-page">
 
           <div class="row">
-            <div class="col-lg-2">
+            <div class="col-2">
               <p class="title-form mt-2">Цвет</p>
             </div>
-            <div class="col-lg-10 d-inline-flex">
+            <div class="col-10 d-sm-inline-flex">
               <div class="container p-0 m-3" style="width: 80px;">
                 <div class="row no-gutters">
                   <div class="col pt-1">
@@ -219,10 +219,12 @@
           </div>
 
           <hr class="hr-page">
-          <button type="button" @click="sendProducts" class="btn btn-success btn-lg btn-save">
-            <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить категорию</div>
-            <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
-          </button>
+          <div class="col-sm-3">
+            <button type="button" @click="sendProducts" class="btn btn-success btn-block btn-save">
+              <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить категорию</div>
+              <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -278,7 +280,7 @@ export default {
     async sendProducts() {
       let vm = this;
       vm.$data.category.parent_id = this.parent.id;
-      console.log(vm.$data.category)
+      console.log(vm.$data.category);
       const formData = new FormData();
       formData.append("category", JSON.stringify(vm.$data.category));
       formData.append("avatar", vm.$data.avatar);
@@ -290,7 +292,7 @@ export default {
       const vm = this;
       ProductsService.fetchCategories()
         .then(res => {
-          console.log(res.data)
+          console.log(res.data);
           vm.$data.categories = res.data.map(item => ({
             id: item._id,
             title: item.title,

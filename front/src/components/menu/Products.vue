@@ -3,12 +3,11 @@
     <!-- Bootstrap row -->
     <div class="row no-gutters" id="body-row">
       <!-- MAIN -->
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
+      <div class="col-2 col-sm-1">
         <sidebar></sidebar>
       </div>
 
-      <div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
-        <!-- <button @click="getProducts" class="btn">Обновить...</button> -->
+      <div class="col-10 col-sm-11">
         <div id="printMe">
           <div class="container-fluid mt-2 pl-0">
             <div class="row">
@@ -38,7 +37,7 @@
                     <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
                       <a class="m-2">Отображать столбцы</a>
                       <div v-bind:key="key" v-for="(item, key) in NameColumn ">
-                        <div class="form-check dropdown-item">
+                        <div class="form-check dropdown-item" @click="changeColumn(item)">
                           <div class="pretty p-switch p-fill">
                             <input
                               v-model="selectColumn"
@@ -279,7 +278,8 @@
                         @click="sortEvent('title')"
                         class="td-th-custom"
                         v-if="((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))"
-                      >Название
+                      >
+                        Название
                         <div v-if="sortColumn == 'title'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -289,7 +289,8 @@
                         @click="sortEvent('count')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Категория')> -1 )||(selectColumn.length == 0))"
-                      >Категория
+                      >
+                        Категория
                         <div v-if="sortColumn == 'category'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -299,7 +300,8 @@
                         @click="sortEvent('barcode')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))"
-                      >Штрихкод
+                      >
+                        Штрихкод
                         <div v-if="sortColumn == 'barcode'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -309,7 +311,8 @@
                         @click="sortEvent('SKU')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('SKU')> -1 )||(selectColumn.length == 0))"
-                      >SKU
+                      >
+                        SKU
                         <div v-if="sortColumn == 'SKU'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -319,7 +322,8 @@
                         @click="sortEvent('shop')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Цех')> -1 )||(selectColumn.length == 0))"
-                      >Цех
+                      >
+                        Цех
                         <div v-if="sortColumn == 'shop'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -329,7 +333,8 @@
                         @click="sortEvent('types')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"
-                      >Тип
+                      >
+                        Тип
                         <div v-if="sortColumn == 'types'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -339,7 +344,8 @@
                         @click="sortEvent('weight_goods')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Весовой товар')> -1 )||(selectColumn.length == 0))"
-                      >Весовой товар
+                      >
+                        Весовой товар
                         <div v-if="sortColumn == 'weight_goods'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -349,7 +355,8 @@
                         @click="sortEvent('unit')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Единица измерения')> -1 )||(selectColumn.length == 0))"
-                      >Единица измерения
+                      >
+                        Единица измерения
                         <div v-if="sortColumn == 'unit'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -359,7 +366,8 @@
                         @click="sortEvent('self_cost')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Себестоимость')> -1 )||(selectColumn.length == 0))"
-                      >Себестоимость
+                      >
+                        Себестоимость
                         <div v-if="sortColumn == 'self_cost'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -369,7 +377,8 @@
                         @click="sortEvent('price')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Цена')> -1 )||(selectColumn.length == 0))"
-                      >Цена
+                      >
+                        Цена
                         <div v-if="sortColumn == 'price'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -379,7 +388,8 @@
                         @click="sortEvent('profit')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Прибыль')> -1 )||(selectColumn.length == 0))"
-                      >Прибыль
+                      >
+                        Прибыль
                         <div v-if="sortColumn == 'profit'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -389,7 +399,8 @@
                         @click="sortEvent('markup')"
                         class="td-th-custom"
                         v-if=" ((selectColumn.indexOf('Наценка')> -1 )||(selectColumn.length == 0))"
-                      >Наценка
+                      >
+                        Наценка
                         <div v-if="sortColumn == 'markup'">
                           <img v-if="sort" class="m-1" src="/static/image/down.png" alt="down">
                           <img v-else class="m-1" src="/static/image/up.png" alt="up">
@@ -727,7 +738,7 @@ export default {
       endDate: 1546117229,
       nameDate: "9 октября 2018 - 30 декабря 2018",
 
-      filterText: 'Фильтр',
+      filterText: "Фильтр",
 
       sortColumn: "count",
 
@@ -754,11 +765,21 @@ export default {
     }
   },
   methods: {
-    ClosePopup () {
-      if (document.getElementsByClassName('bs-popover-bottom show').length == 1) 
-        this.filterText = 'Закрыть'
-      else
-        this.filterText = 'Фильтр'
+    changeColumn(item) {
+      let isWrite = false;
+      this.selectColumn.forEach((col, index, arr) => {
+        if (col === item) {
+          console.log(col);
+          arr.splice(index, 1);
+          isWrite = true;
+        }
+      });
+      if (!isWrite) this.selectColumn.push(item);
+    },
+    ClosePopup() {
+      if (document.getElementsByClassName("bs-popover-bottom show").length == 1)
+        this.filterText = "Закрыть";
+      else this.filterText = "Фильтр";
     },
     async deleteProduct(id) {
       console.log(id);
@@ -776,17 +797,16 @@ export default {
     },
     async getProducts() {
       const response = await ProductsService.fetchProducts()
-      .then(response => {
-        this.products = response.data;
-        this.products.forEach(product => {
-        product.title_shop = product.shop.title;
-        product.title_category = product.category.title;
-      });
-      })
-      .catch(err => {
-        console.log(err);
-      })
-
+        .then(response => {
+          this.products = response.data;
+          this.products.forEach(product => {
+            product.title_shop = product.shop.title;
+            product.title_category = product.category.title;
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     async getShops() {
       const response = await ProductsService.fetchShops();
@@ -1062,15 +1082,17 @@ export default {
     }
   },
   computed: {
-
     //*********************Вот мой вариант. Это весь код, да ))) Если правильно понял, то этого должно хватить */
-     FilterProducts() {
+    FilterProducts() {
       return this.products.filter(product => {
-        return JSON.stringify(product).toLowerCase().indexOf(this.search) > -1
-      })
+        return (
+          JSON.stringify(product)
+            .toLowerCase()
+            .indexOf(this.search) > -1
+        );
+      });
     },
     //******************************************************************************************************** */
-
 
     FilterCategories() {
       return this.categories.filter(this.filterBySearchCategories);

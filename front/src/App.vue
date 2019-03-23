@@ -178,8 +178,6 @@ h1.head-text {
 	border-radius: 7px;
 	background-color: rgb(54, 187, 76);
 	box-shadow: 0.837px 11.971px 29px 0px rgba(25, 21, 21, 0.13);
-	width: 327px;
-	height: 57px;
 }
 
 .btn-add {
@@ -256,10 +254,6 @@ h1.head-text {
 .rectangle {
 	width: 50px;
 	height: 40px;
-}
-
-.table-ing {
-
 }
 
 .tr-ing {

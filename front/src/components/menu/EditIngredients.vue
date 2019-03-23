@@ -1,11 +1,11 @@
 <template>
   <div id="add_ing">
     <div class="row no-gutters" id="body-row">
-      <div class="col-lg-1">
+      <div class="col-2 col-sm-1">
         <sidebar></sidebar>
       </div>
 
-      <div class="col-lg-11">
+      <div class="col-10 col-sm-11">
         <div class="container-fluid mt-2 mb-5">
           <div class="row">
             <div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
@@ -249,9 +249,9 @@ export default {
 
       unitIng: ["кг", "шт", "л"],
       categoriesIng: [],
-			/* {id: 1,title:"Первая категория"},{id: 2, title:"Вторая категория"} */
-			
-			ingridients: [],
+      /* {id: 1,title:"Первая категория"},{id: 2, title:"Вторая категория"} */
+
+      ingridients: [],
 
       ingridient: {
         title: "",
@@ -264,34 +264,34 @@ export default {
         losses_bak: 0,
         round: null,
         weight: null
-			},
-			editId: null,
+      },
+      editId: null
     };
-	},
+  },
   mounted() {
-		this.setEditId(this.$route.params.id);
-		this.getIng();
+    this.setEditId(this.$route.params.id);
+    this.getIng();
     this.fetchCategoryIng();
   },
   methods: {
-		setEditId(id) {
+    setEditId(id) {
       this.editId = id;
     },
-		getIng(){
-			let vm = this;
-			ProductsService.fetchIngridients()
-			.then(res => {
-				vm.$data.ingridients = res.data;
-				vm.$data.ingridients.forEach(ing => {
-				if (ing._id == vm.$data.editId){
-					vm.$data.ingridient = ing;
-				}
-			});
-			})
-			.catch(err => {
-				console.error(err);
-			})
-		},
+    getIng() {
+      let vm = this;
+      ProductsService.fetchIngridients()
+        .then(res => {
+          vm.$data.ingridients = res.data;
+          vm.$data.ingridients.forEach(ing => {
+            if (ing._id == vm.$data.editId) {
+              vm.$data.ingridient = ing;
+            }
+          });
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
     async sendIng() {
       this.stateSaving = true;
       this.ingridient.category = this.ingridient.category._id;
@@ -303,7 +303,7 @@ export default {
           this.$router.push("/menu/ingridients");
         })
         .catch(err => {
-					console.error(err);
+          console.error(err);
           alert("Ошибка сохранения!");
         });
     },

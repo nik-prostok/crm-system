@@ -13,34 +13,33 @@
           <img src="/static/image/sandwich.png" style="width: 23px;">
         </div>
       </a>
-      <ul v-for="item in ul_list" :key="item.id" class="list-group">
+      <ul v-for="item in ul_list" :key="item.id" class="list-group" @click="item.isOpen = !item.isOpen">
         <a
           :href="getHref(item.id)"
-          data-toggle="collapse"
           aria-expanded="false"
           class="bg-dark list-group-item list-group-item-action flex-column align-items-start"
         >
           <div class="d-flex w-100 justify-content-start align-items-center">
-            <span class="mr-3" v-on:click="navAction">
+            <span class="mr-3">
               <img :src="item.icon" style="width: 23px; height: 16;">
             </span>
-            <span class="menu-collapsed">{{item.title}}</span>
+            <span>{{item.title}}</span>
             <span class="ml-3">
               <font-awesome-icon icon="caret-down"/>
             </span>
           </div>
         </a>
 
-        <div :id="item.id" class="collapse sidebar-submenu">
+        <b-collapse :id="item.id" v-model="item.isOpen" class="sidebar-submenu">
           <router-link
             v-for="sub in item.submenu"
             :key="sub.id"
             :to="sub.id"
             class="list-group-item list-group-item-action bg-dark text-white"
           >
-            <span class="menu-collapsed">{{ sub.title }}</span>
+            <span>{{ sub.title }}</span>
           </router-link>
-        </div>
+        </b-collapse>
       </ul>
 
       <ul class="list-group fixed-bottom">
@@ -82,6 +81,7 @@ export default {
           title: "Статистика",
           id: "StatisticSubmenu",
           icon: "/static/image/bars.png",
+          isOpen: false,
           submenu: [
             {
               title: "Продажи",
@@ -117,6 +117,7 @@ export default {
           title: "Маркетинг",
           id: "Marketing",
           icon: "/static/image/marketing.png",
+          isOpen: false,
           submenu: [
             {
               title: "Клиенты",
@@ -144,6 +145,7 @@ export default {
           title: "Финансы",
           id: "Finance",
           icon: "/static/image/finance.png",
+          isOpen: false,
           submenu: [
             {
               title: "Транзакции",
@@ -171,6 +173,7 @@ export default {
           title: "Доступ",
           id: "Access",
           icon: "/static/image/access.png",
+          isOpen: false,
           submenu: [
             {
               title: "Сотрудники",
@@ -194,6 +197,7 @@ export default {
           title: "Меню",
           id: "Menu",
           icon: "/static/image/menu.png",
+          isOpen: false,
           submenu: [
             {
               title: "Товары",
@@ -229,6 +233,7 @@ export default {
           title: "Склад",
           id: "Storehouse",
           icon: "/static/image/storehouse.png",
+          isOpen: false,
           submenu: [
             {
               title: "Остатки",
@@ -272,6 +277,7 @@ export default {
           title: "Настройки",
           id: "Settings",
           icon: "/static/image/settings.png",
+          isOpen: false,
           submenu: [
             {
               title: "Общие",
@@ -300,9 +306,20 @@ export default {
   },
   mounted() {},
   methods: {
+    showSubMenu(id){
+      console.log(id);
+      this.ul_list.forEach(ul => {
+        if (ul.id === id){
+          ul.isOpen = !ul.isOpen;
+        }
+      });
+    },
     navAction() {
       console.log("click");
       if (this.stateNav == true) {
+        this.ul_list.forEach(ul => {
+          ul.isOpen = false;
+        });
         document.getElementById("mySidenav").style.width = "60px";
         this.show = false;
         this.stateNav = false;
@@ -325,7 +342,12 @@ export default {
 
 <style>
 .sidenav::-webkit-scrollbar {
-  width: 1em;
+  width: 0.5em;
+}
+
+html {
+    margin-left: calc(100vw - 100%);
+    margin-right: 0;
 }
 
 .sidenav::-webkit-scrollbar-track {

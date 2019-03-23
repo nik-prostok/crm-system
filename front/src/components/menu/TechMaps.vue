@@ -3,11 +3,11 @@
     <!-- Bootstrap row -->
     <div class="row no-gutters" id="body-row">
       <!-- MAIN -->
-      <div class="col-lg-1 col-md-1 col-sm-1 col-xl-1">
+      <div class="col-2 col-sm-1">
         <sidebar></sidebar>
       </div>
 
-      <div class="col-lg-11 col-md-11 col-sm-11 col-xl-11">
+      <div class="col-10 col-sm-11">
         <div id="printMe">
           <div class="container-fluid mt-2 pl-0">
             <div class="row">
@@ -37,7 +37,7 @@
                     <div class="dropdown-menu btn-custom-border" aria-labelledby="btnGroupDrop1">
                       <a class="m-2">Отображать столбцы</a>
                       <div v-bind:key="key" v-for="(item, key) in fields ">
-                        <div class="form-check dropdown-item">
+                        <div class="form-check dropdown-item" @click="changeColumn(item)">
                           <div class="pretty p-switch p-fill">
                             <input
                               @change="sortFields"
@@ -477,6 +477,17 @@ export default {
     this.getShops();
   },
   methods: {
+    changeColumn(item) {
+      let isWrite = false;
+      this.fieldsSet.forEach((col, index, arr) => {
+        if (col.key === item.key) {
+          console.log(col);
+          arr.splice(index, 1);
+          isWrite = true;
+        }
+      });
+      if (!isWrite) this.fieldsSet.push(item);
+    },
     sortFields() {
       this.fieldsSet.sort((a, b) => {
         if (a.position < b.position) return -1;
