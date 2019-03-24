@@ -119,7 +119,7 @@
                           v-model="selectCategoriesSearch"
                         >
                       </div>
-                      <div v-bind:key="item.id" v-for="(item) in FilterCategories ">
+                      <div :key="key" v-for="(item, key) in FilterCategories ">
                         <div class="form-check dropdown-item" @click="changeSelectCategories(item)">
                           <div class="pretty p-switch p-fill">
                             <input
@@ -411,9 +411,9 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-bind:key="product._id"
+                      v-bind:key="key"
                       class="tr-td-custom"
-                      v-for="(product) in FilterProducts"
+                      v-for="(product, key) in FilterProducts"
                     >
                       <td
                         class="td-custom"
@@ -434,7 +434,8 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col align-self-center">{{ product.title }}</div>
+                          <div v-if="!product.isMod" class="col align-self-center">{{ product.title }}</div>
+                          <div v-if="product.isMod" class="col align-self-center">{{ product.title_mode }}</div>
                         </div>
                       </td>
 
@@ -444,7 +445,7 @@
                       >{{product.title_category}}</td>
                       <td
                         class="td-custom align-middle"
-                        v-if=" ((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))"
+                        v-if="((selectColumn.indexOf('Штрихкод')> -1 )||(selectColumn.length == 0))"
                       >{{product.bar_code}}</td>
                       <td
                         class="td-custom align-middle"
@@ -516,12 +517,12 @@
                       </td>
                       <td class="td-custom align-middle">
                         <div v-if="product.title_product==undefined" class="d-flex flex-row">
-                          <div class="mr-2">
+                          <div class="mr-2" v-if="!product.isMod">
                             <b-link :to="getHrefEdit(product._id)" class="main-text">
                               <div class="link-blue link-hover">Ред.</div>
                             </b-link>
                           </div>
-                          <div class="ml-2">
+                          <div class="ml-2" v-if="!product.isMod">
                             <button class="btn-icon popoverButton" :id="getPopoverId(product._id)">
                               <font-awesome-icon icon="ellipsis-h"/>
                             </button>
@@ -529,20 +530,19 @@
                               <ul class="actions-popover">
                                 <li class="action-item">
                                   <a
-                                    style="text-decoration: none;"
-                                    href
+                                    style="text-decoration: none; cursor: pointer;"
                                     class="main-text"
+                                    @click="copyProduct(product._id)"
                                   >Копировать</a>
                                 </li>
                                 <li class="action-item">
                                   <a
-                                    style="text-decoration: none;"
-                                    href
+                                    style="text-decoration: none; cursor: pointer;"
                                     class="main-text"
                                   >Скрыть во всех заведениях</a>
                                 </li>
                                 <li @click="deleteProduct(product._id)" class="action-item">
-                                  <a style="text-decoration: none;" class="main-text">Удалить</a>
+                                  <a style="text-decoration: none; cursor: pointer;" class="main-text">Удалить</a>
                                 </li>
                               </ul>
                             </b-popover>
@@ -765,6 +765,19 @@ export default {
     }
   },
   methods: {
+    async copyProduct(id){
+      const response = await ProductsService.copyProduct(id)
+      .then(response => {
+        this.getProducts();
+        console.log("Ok del");
+        this.showAlertSuccess("Товар успешно скопирован!");
+      })
+      .catch(error => {
+        console.log(error.response);
+        console.log("error del");
+        this.showAlertDanger("Ошибка копирования товара");
+      })
+    },
     changeSelectShops(item) {
       let isWrite = false;
       this.selectShops.forEach((shop, index, arr) => {
@@ -820,6 +833,19 @@ export default {
         .then(response => {
           this.products = response.data;
           this.products.forEach(product => {
+            console.log("mod");
+            if (product.types) {
+              product.profit = 0;
+              product.self_cost = 0;
+              product.price = 0;
+              product.markup = 0;
+              product.modification.forEach(mod => {
+                product.self_cost += mod.self_cost;
+                product.price += mod.price;
+              });
+              product.markup = Math.round((product.price / product.self_cost - 1) * 100);
+            }
+            product.profit = product.price - product.self_cost;
             product.title_shop = product.shop.title;
             product.title_category = product.category.title;
           });
@@ -1073,6 +1099,7 @@ export default {
         ) {
           this.length++;
           filtered2[filtered2.length] = filtered[i];
+          // filtered2[filtered2.length].title = filtered2[filtered2.length].title_mode
         }
         if (this.flagType != "tovar") {
           filtered[i].modification.forEach((item, index, arr) => {
@@ -1102,16 +1129,16 @@ export default {
     }
   },
   computed: {
-    FilterProducts(){
-			return this.addModif(
-				this.products
-				.filter(this.filterBySearch)
-				.filter(this.filterByCategory)
-				.filter(this.filterByShop)
-				.filter(this.filterByONews)
-				.sort(this.sortByColumn)
-				)
-		},
+    FilterProducts() {
+      return this.addModif(
+        this.products
+          .filter(this.filterBySearch)
+          .filter(this.filterByCategory)
+          .filter(this.filterByShop)
+          .filter(this.filterByONews)
+          .sort(this.sortByColumn)
+      );
+    },
     FilterCategories() {
       return this.categories.filter(this.filterBySearchCategories);
     },

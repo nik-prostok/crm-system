@@ -24,4 +24,5 @@ module.exports = function(app) {
   app.get("/api/map/:id", verify, techMaps.get);
   app.delete("/api/map/:id", verify, techMaps.delete);
   app.put("/api/map/:id", verify, cpUpload, techMaps.update);
+  app.post("/api/map/:id", verify, techMaps.copy);
 };

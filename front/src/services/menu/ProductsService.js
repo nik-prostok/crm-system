@@ -26,6 +26,11 @@ export default {
   getProduct(id) {
     return api().get(`/api/products/${id}`);
   },
+  copyProduct(id) {
+    return api().post(`/api/products/${id}`, {
+      emulateJSON: true,
+    });
+  },
   // Categories
   fetchCategories() {
     return api().get('/api/category');
@@ -126,6 +131,9 @@ export default {
       emulateJSON: true,
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+  },
+  copyMap(id) {
+    return api().post(`/api/map/${id}`);
   },
 
   // Modificators

@@ -1,5 +1,6 @@
 const Product = require("../../models/menu/ProductModel");
 ObjectId = require("mongodb").ObjectID;
+const mongoose = require("mongoose");
 
 module.exports = {
   create: (req, res) => {
@@ -73,5 +74,20 @@ module.exports = {
         }
       }
     );
-  }
+  },
+  copy: (req, res) => {
+    let productData = null;
+    Product.ProductModel.findById(req.params.id).exec(
+      function (err, doc) {
+        doc._id = mongoose.Types.ObjectId();
+        doc.isNew = true; //<--------------------IMPORTANT
+        doc.save((err) => {
+          if (err) {
+            res.sendStatus(400);
+          } else {
+            res.sendStatus(200);
+          }
+        });
+      });
+  },
 };

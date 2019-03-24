@@ -268,6 +268,13 @@
                           >Удалить</a>
                         </li>
 
+                        <li @click="copyMap(data.item._id)" class="action-item">
+                          <a
+                            style="text-decoration: none; cursor: pointer;"
+                            class="main-text"
+                          >Копировать</a>
+                        </li>
+
                         <li class="action-item">
                           <a
                             style="text-decoration: none; cursor: pointer;"
@@ -477,6 +484,19 @@ export default {
     this.getShops();
   },
   methods: {
+    async copyMap(id) {
+      const response = await ProductsService.copyMap(id)
+      .then(response => {
+        this.getMaps();
+        console.log("Ok copy");
+        this.showAlertSuccess("Карта успешно скопирована!");
+      })
+      .catch(error => {
+        console.log(error.response);
+        console.log("error copy");
+        this.showAlertDanger("Ошибка копирования карты!");
+      })
+    },
     changeSelectShops(item){
       let isWrite = false;
       this.selectShops.forEach((shop, index, arr) => {

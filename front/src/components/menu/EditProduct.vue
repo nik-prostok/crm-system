@@ -208,7 +208,6 @@
                             <div class="form-group">
                               <input
                                 type="text"
-                                ref="search"
                                 class="form-control input-param"
                                 placeholder="Введите"
                                 v-model="mod_item.title_mode"
@@ -567,7 +566,7 @@ export default {
         price: null,
         color: [],
         weight_goods: 0,
-        types: 0,
+        types: false,
         SKU: 0,
         avatar: null,
         profit: null,
@@ -626,7 +625,7 @@ export default {
       this.stateSaving = true;
       console.log(this.product);
 
-      if (this.product.types == 0) {
+      if (this.product.types == false) {
         this.product.modification = [];
         this.product.profit = this.product.price - this.product.self_cost;
       }
@@ -680,11 +679,11 @@ export default {
       if (this.mod == "without_mod") {
         this.without_mod = true;
         this.with_mod = false;
-        this.product.types = 0;
+        this.product.types = false;
       } else {
         this.without_mod = false;
         this.with_mod = true;
-        this.product.types = 1;
+        this.product.types = true;
       }
     },
     addBlankMod() {

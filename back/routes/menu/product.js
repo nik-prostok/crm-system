@@ -23,4 +23,5 @@ module.exports = function(app) {
 	app.get('/api/products/:id', verify, product.get);
 	app.delete('/api/products/:id', verify, product.delete);
 	app.put('/api/products/:id', verify, cpUpload, product.update);
+	app.post('/api/products/:id', verify, product.copy);
 };

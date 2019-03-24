@@ -399,7 +399,7 @@ export default {
         price: null,
         color: [],
         weight_goods: 0,
-        types: true,
+        types: false,
         SKU: 0,
         profit: null,
 				no_dicsount: false,
@@ -435,7 +435,12 @@ export default {
 
 
 
-      if (this.product.types == true) {
+      if (this.product.types == false) {
+				this.product.bar_code = null;
+				this.product.self_cost = null;
+				this.product.markup = null;
+				this.product.price = null;
+
         this.product.modification = [];
         this.product.profit = this.product.price - this.product.self_cost;
       }
@@ -504,7 +509,6 @@ export default {
         markup: null,
         price: null,
 				profit: null,
-				isMod: true,
       });
     },
     deleteMod(key) {
