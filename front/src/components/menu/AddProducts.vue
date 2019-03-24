@@ -132,13 +132,13 @@
 											<div style="font-size: 18px;" class="main-text"><strong>С модификациями </strong></div>
 										</p-radio>
 										<b-collapse v-model="with_mod" class="mt-2" id="no-modif-collapse">
-											<div class="mod" :key="mod_item.title_mode" v-for="(mod_item,key) in product.modification">
+											<div class="mod" :key="key" v-for="(mod_item,key) in product.modification">
 												<hr>
 												<div class="row mt-4 ml-2">
 													<div class="col-lg-8">
-														<div class="main-text mb-2">Название</div>
+														<p class="main-text mb-2">Название</p>
 														<div class="form-group">
-															<input type="text" ref="search" class="form-control input-param" placeholder="Введите" v-model="mod_item.title_mode">
+															<input type="text" class="form-control input-param" placeholder="Введите" v-model="mod_item.title_mode">
 														</div>
 													</div>
 													<div class="col-lg-4" v-if="key">
@@ -399,10 +399,10 @@ export default {
         price: null,
         color: [],
         weight_goods: 0,
-        types: 0,
+        types: true,
         SKU: 0,
         profit: null,
-        no_dicsount: false,
+				no_dicsount: false,
 
         modification: [
           {
@@ -412,7 +412,7 @@ export default {
             self_cost: null,
             markup: null,
             price: null,
-            profit: null,
+						profit: null,
           }],
       },
     };
@@ -435,7 +435,7 @@ export default {
 
 
 
-      if (this.product.types == 0) {
+      if (this.product.types == true) {
         this.product.modification = [];
         this.product.profit = this.product.price - this.product.self_cost;
       }
@@ -488,11 +488,11 @@ export default {
       if (this.mod == 'without_mod') {
         this.without_mod = true;
         this.with_mod = false;
-        this.product.types = 0;
+        this.product.types = false;
       } else {
         this.without_mod = false;
         this.with_mod = true;
-        this.product.types = 1;
+        this.product.types = true;
       }
     },
     addBlankMod() {
@@ -503,7 +503,8 @@ export default {
         self_cost: null,
         markup: null,
         price: null,
-        profit: null,
+				profit: null,
+				isMod: true,
       });
     },
     deleteMod(key) {

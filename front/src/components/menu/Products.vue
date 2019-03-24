@@ -119,18 +119,18 @@
                           v-model="selectCategoriesSearch"
                         >
                       </div>
-                      <div v-bind:key="key" v-for="(item, key) in FilterCategories ">
-                        <div class="form-check dropdown-item">
+                      <div v-bind:key="item.id" v-for="(item) in FilterCategories ">
+                        <div class="form-check dropdown-item" @click="changeSelectCategories(item)">
                           <div class="pretty p-switch p-fill">
                             <input
                               class="form-check-input"
                               type="checkbox"
-                              v-bind:id="item.title"
+                              v-bind:id="item._id"
                               v-model="selectCategories"
-                              v-bind:value="item.title"
+                              v-bind:value="item"
                             >
                             <div class="state">
-                              <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                              <label class="form-check-label">{{item.title}}</label>
                             </div>
                           </div>
                         </div>
@@ -166,17 +166,17 @@
                         >
                       </div>
                       <div v-bind:key="key" v-for="(item, key) in FilterShops ">
-                        <div class="form-check dropdown-item">
+                        <div class="form-check dropdown-item" @click="changeSelectShops(item)">
                           <div class="pretty p-switch p-fill">
                             <input
                               class="form-check-input"
                               type="checkbox"
-                              v-bind:id="item.title"
+                              :id="item._id"
                               v-model="selectShops"
-                              v-bind:value="item.title"
+                              :value="item"
                             >
                             <div class="state">
-                              <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                              <label class="form-check-label">{{item.title}}</label>
                             </div>
                           </div>
                         </div>
@@ -420,11 +420,11 @@
                         v-if=" ((selectColumn.indexOf('Название')> -1 )||(selectColumn.length == 0))"
                       >
                         <div class="row no-gutters">
-                          <div v-if="product.photo != null" class="col-6">
+                          <div v-if="product.photo != null" class="col">
                             <!-- style="height: 40px; width: auto;"  -->
                             <img class="img-fluid" :src="product.photo" alt>
                           </div>
-                          <div v-else class="rectangle col-6">
+                          <div v-else class="rectangle col">
                             <div :class="product.color" class="h-100">
                               <div v-if="product.modification != null">
                                 <p
@@ -434,7 +434,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-6 align-self-center">{{ product.title }}</div>
+                          <div class="col align-self-center">{{ product.title }}</div>
                         </div>
                       </td>
 
@@ -459,7 +459,7 @@
                         class="td-custom align-middle"
                         v-if=" ((selectColumn.indexOf('Тип')> -1 )||(selectColumn.length == 0))"
                       >
-                        <p v-if="product.types==false">Модификация</p>
+                        <p v-if="product.isMod">Модификация</p>
                         <p v-else>Товар</p>
                       </td>
                       <td
@@ -765,6 +765,26 @@ export default {
     }
   },
   methods: {
+    changeSelectShops(item) {
+      let isWrite = false;
+      this.selectShops.forEach((shop, index, arr) => {
+        if (shop === item) {
+          arr.splice(index, 1);
+          isWrite = true;
+        }
+      });
+      if (!isWrite) this.selectShops.push(item);
+    },
+    changeSelectCategories(item) {
+      let isWrite = false;
+      this.selectCategories.forEach((cat, index, arr) => {
+        if (cat === item) {
+          arr.splice(index, 1);
+          isWrite = true;
+        }
+      });
+      if (!isWrite) this.selectCategories.push(item);
+    },
     changeColumn(item) {
       let isWrite = false;
       this.selectColumn.forEach((col, index, arr) => {
@@ -1049,7 +1069,7 @@ export default {
       for (let i = 0; i < filtered.length; i++) {
         if (
           this.flagType != "modif" ||
-          (this.flagType == "modif" && filtered[i].types == true)
+          (this.flagType == "modif" && filtered[i].isMod == false)
         ) {
           this.length++;
           filtered2[filtered2.length] = filtered[i];
@@ -1082,18 +1102,16 @@ export default {
     }
   },
   computed: {
-    //*********************Вот мой вариант. Это весь код, да ))) Если правильно понял, то этого должно хватить */
-    FilterProducts() {
-      return this.products.filter(product => {
-        return (
-          JSON.stringify(product)
-            .toLowerCase()
-            .indexOf(this.search) > -1
-        );
-      });
-    },
-    //******************************************************************************************************** */
-
+    FilterProducts(){
+			return this.addModif(
+				this.products
+				.filter(this.filterBySearch)
+				.filter(this.filterByCategory)
+				.filter(this.filterByShop)
+				.filter(this.filterByONews)
+				.sort(this.sortByColumn)
+				)
+		},
     FilterCategories() {
       return this.categories.filter(this.filterBySearchCategories);
     },

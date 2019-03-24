@@ -44,10 +44,10 @@
                               v-model="fieldsSet"
                               v-bind:value="item"
                               type="checkbox"
-                              v-bind:id="item.key"
+                              v-bind:id="item._id"
                             >
                             <div class="state">
-                              <label class="form-check-label" v-bind:for="item">{{item.label}}</label>
+                              <label class="form-check-label">{{item.label}}</label>
                             </div>
                           </div>
                         </div>
@@ -121,18 +121,18 @@
                         v-model="selectCategoriesSearch"
                       >
                     </div>
-                    <div v-bind:key="key" v-for="(item, key) in FilterCategories ">
-                      <div class="form-check dropdown-item">
+                    <div v-bind:key="item.id" v-for="(item) in FilterCategories ">
+                      <div class="form-check dropdown-item" @click="changeSelectCategories(item)">
                         <div class="pretty p-switch p-fill">
                           <input
                             class="form-check-input"
                             type="checkbox"
-                            v-bind:id="item.title"
+                            v-bind:id="item._id"
                             v-model="selectCategories"
-                            v-bind:value="item.title"
+                            v-bind:value="item"
                           >
                           <div class="state">
-                            <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                            <label class="form-check-label">{{item.title}}</label>
                           </div>
                         </div>
                       </div>
@@ -168,17 +168,17 @@
                       >
                     </div>
                     <div v-bind:key="key" v-for="(item, key) in FilterShops ">
-                      <div class="form-check dropdown-item">
+                      <div class="form-check dropdown-item" @click="changeSelectShops(item)">
                         <div class="pretty p-switch p-fill">
                           <input
                             class="form-check-input"
                             type="checkbox"
-                            v-bind:id="item.title"
+                            :id="item._id"
                             v-model="selectShops"
-                            v-bind:value="item.title"
+                            :value="item"
                           >
                           <div class="state">
-                            <label class="form-check-label" v-bind:for="item.title">{{item.title}}</label>
+                            <label class="form-check-label">{{item.title}}</label>
                           </div>
                         </div>
                       </div>
@@ -477,6 +477,26 @@ export default {
     this.getShops();
   },
   methods: {
+    changeSelectShops(item){
+      let isWrite = false;
+      this.selectShops.forEach((shop, index, arr) => {
+        if (shop === item) {
+          arr.splice(index, 1);
+          isWrite = true;
+        }
+      });
+      if (!isWrite) this.selectShops.push(item);
+    },
+    changeSelectCategories(item){
+      let isWrite = false;
+      this.selectCategories.forEach((cat, index, arr) => {
+        if (cat === item) {
+          arr.splice(index, 1);
+          isWrite = true;
+        }
+      });
+      if (!isWrite) this.selectCategories.push(item);
+    }, 
     changeColumn(item) {
       let isWrite = false;
       this.fieldsSet.forEach((col, index, arr) => {
@@ -529,6 +549,7 @@ export default {
         .then(res => {
           this.maps = res.data;
           this.maps.forEach(map => {
+            map._rowVariant = 'added-row'
             map.netto = 0;
             if (map.modificators != null) {
               map.modificators.forEach(mod => {
@@ -632,7 +653,7 @@ export default {
         item =>
           product.category.title
             .toLowerCase()
-            .localeCompare(item.toLowerCase()) == 0
+            .localeCompare(item.title.toLowerCase()) == 0
       );
     },
     filterByShop(product) {
@@ -641,7 +662,7 @@ export default {
       }
       return this.selectShops.some(
         item =>
-          product.shop.title.toLowerCase().localeCompare(item.toLowerCase()) ==
+          product.shop.title.toLowerCase().localeCompare(item.title.toLowerCase()) ==
           0
       );
     }
@@ -675,3 +696,35 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+  .table tr.table-added-row {
+	animation-name: addedrow;
+	animation-duration: 2s;
+}
+
+.table tr.table-added-row td {
+	animation-name: addedrowcell;
+	animation-duration: 2s;
+}
+
+.table tr.table-added-row td > div {
+	animation-name: addedrowcelldiv;
+	animation-duration: 2s;
+}
+
+@keyframes addedrow {
+	50%  { background-color: #c3e6cb; }
+	75%  { background-color: #c3e6cb; }
+}
+
+@keyframes addedrowcell {
+	0%   { padding: 0 .75rem; }
+	50%  { padding: .75rem; }
+}
+
+@keyframes addedrowcelldiv {
+	0%   { transform: scale(1, 0); }
+	50%  { transform: scale(1, 1); }
+}
+</style>
