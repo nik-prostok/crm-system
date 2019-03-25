@@ -6,7 +6,7 @@
       </div>
 
       <div class="col-10 col-sm-11">
-        <div class="container-fluid mt-2 mb-5">
+        <b-form class="container-fluid mt-2 mb-5" @submit="sendMap">
           <div class="row">
             <div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
               <router-link to="/menu/maps">
@@ -24,14 +24,8 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <input
-                  type="text"
-                  ref="search"
-                  class="form-control input-param"
-                  v-model="map.title"
-                  placeholder="Введите"
-                >
-              </div>
+								<b-form-input required type="text" ref="search" class="form-control input-param" v-model="map.title" placeholder="Введите" />
+							</div>
             </div>
           </div>
 
@@ -58,18 +52,13 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <multiselect
-                  class="my-multiselect"
-                  placeholder="Выберите"
-                  select-label="Нажмите Enter"
-                  deselectLabel="Enter для удаления"
+                <b-form-select
+                  required
                   v-model="map.category"
-                  :multiple="false"
-                  :close-on-select="true"
-                  label="title"
-                  track-by="_id"
                   :options="categories"
-                ></multiselect>
+                  class="form-control input-param"
+                  placeholder="Выберите"
+                />
               </div>
             </div>
           </div>
@@ -80,18 +69,13 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <multiselect
-                  class="my-multiselect"
-                  placeholder="Выберите"
-                  select-label="Нажмите Enter"
-                  deselectLabel="Enter для удаления"
+                <b-form-select
+                  required
                   v-model="map.shop"
-                  :multiple="false"
-                  :close-on-select="true"
-                  label="title"
-                  track-by="_id"
                   :options="shops"
-                ></multiselect>
+                  class="form-control input-param"
+                  placeholder="Выберите"
+                />
               </div>
             </div>
           </div>
@@ -809,11 +793,11 @@
           </div>
 
           <hr class="hr-page">
-          <button type="button" @click="sendMap" class="btn btn-success btn-lg btn-save">
+          <button type="submit" class="btn btn-success btn-lg btn-save">
             <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить тех. карту</div>
             <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
           </button>
-        </div>
+        </b-form>
       </div>
     </div>
   </div>
@@ -924,18 +908,19 @@ export default {
             mod.ingridients.forEach(ing => {
               ing.brutto = ing.brutto.$numberDecimal;
               ing.netto = ing.netto.$numberDecimal;
-            })
-          })
+            });
+          });
         })
         .catch(err => {
           console.error(err);
         });
     },
-    async sendMap() {
+    async sendMap(event) {
+
+      event.preventDefault();
+
       let vm = this;
       this.stateSaving = true;
-      this.map.category = this.map.category._id;
-      this.map.shop = this.map.shop._id;
 
       this.map.ingridients.forEach(ing => {
         ing.ingridient = ing.ingridient._id;
@@ -971,14 +956,30 @@ export default {
       this.ingridientsList = response.data;
     },
     async fetchCategories() {
-      const response = await ProductsService.fetchCategories();
-      console.log(response.data);
-      this.categories = response.data;
+      await ProductsService.fetchCategories()
+        .then(response => {
+          this.categories = response.data;
+          this.categories.forEach(cat => {
+            cat.value = cat._id;
+            cat.text = cat.title;
+          });
+        })
+        .catch(err => {
+          console.error(err);
+        });
     },
     async fetchShops() {
-      const response = await ProductsService.fetchShops();
-      console.log(response.data);
-      this.shops = response.data;
+      await ProductsService.fetchShops()
+        .then(response => {
+          this.shops = response.data;
+          this.shops.forEach(shop => {
+            shop.value = shop._id;
+            shop.text = shop.title;
+          });
+        })
+        .catch(error => {
+          console.error(error.response);
+        });
     },
     resetNowNewModif() {
       this.nowNewModif = {

@@ -6,7 +6,7 @@
 			</div>
 
 			<div class="col-10 col-sm-11">
-				<div class="container-fluid mt-2 mb-5">
+				<b-form class="container-fluid mt-2 mb-5" @submit="sendProducts">
 
 					<div class="row">
 						<div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
@@ -25,7 +25,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<input type="text" ref="search" class="form-control input-param" v-model="product.title" placeholder="Введите">
+								<b-form-input required type="text" ref="search" class="form-control input-param" v-model="product.title" placeholder="Введите" />
 							</div>
 						</div>
 					</div>
@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<multiselect class="my-multiselect" placeholder="Выберите" v-model="product.category" :multiple="false" track-by="_id" label="title" :close-on-select="true" :options="categories"></multiselect>
+								<b-form-select required v-model="product.category" :options="categories" class="form-control input-param" placeholder="Выберите"/>
 							</div>
 						</div>
 					</div>
@@ -47,8 +47,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<multiselect class="my-multiselect" placeholder="Выберите" :multiple="false" :close-on-select="true" label="title" track-by="_id" v-model="product.shop" :options="shops"></multiselect>
-								<!-- <input type="text" ref="search" class="form-control input-param" placeholder="Введите"> -->
+								<b-form-select required v-model="product.shop" :options="shops" class="form-control input-param" placeholder="Выберите"/>
 							</div>
 						</div>
 					</div>
@@ -354,11 +353,11 @@
 						</div>
 					</div>
 					<hr class="hr-page">
-					<button type="button" @click="sendProducts" class="btn btn-success btn-lg btn-save">
+					<button type="submit" class="btn btn-success btn-lg btn-save">
 						<div v-if="!stateSaving" style="color: white;" class="main-text">Сохранить</div>
 						<div v-if="stateSaving" style="color: white;" class="main-text">Сохранение...</div>
 					</button>
-				</div>
+				</b-form>
 			</div>
 		</div>
 	</div>
@@ -428,12 +427,9 @@ export default {
     resetFile() {
       this.avatar = null;
     },
-    async sendProducts() {
+    async sendProducts(evt) {
+			evt.preventDefault();
       this.stateSaving = true;
-      this.product.category = this.product.category._id;
-      this.product.shop = this.product.shop._id;
-
-
 
       if (this.product.types == false) {
 				this.product.bar_code = null;
@@ -474,7 +470,11 @@ export default {
     async getCategories() {
       const response = await ProductsService.fetchCategories()
       .then(response => {
-          this.categories = response.data;
+					this.categories = response.data;
+					this.categories.forEach(cat => {
+						cat.value = cat._id;
+						cat.text = cat.title;
+					})
         })
         .catch(error => {
           console.error(error.response);
@@ -483,7 +483,11 @@ export default {
     async getShops() {
       const res = await ProductsService.fetchShops()
       .then(response => {
-        this.shops = response.data;
+				this.shops = response.data;
+				this.shops.forEach(shop => {
+					shop.value = shop._id;
+					shop.text = shop.title;
+				})
       })
       .catch(error => {
         console.error(error.response);

@@ -6,7 +6,7 @@
 			</div>
 
 			<div class="col-10 col-sm-11">
-				<div class="container-fluid mt-2 mb-5">
+				<b-form class="container-fluid mt-2 mb-5" @submit="sendCatIng">
 
 					<div class="row">
 						<div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
@@ -25,17 +25,17 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<input type="text" ref="search" class="form-control input-param" v-model="categoryIng.title" placeholder="Например 'Овощи' или 'мясо'">
+								<b-form-input required type="text" ref="search" class="form-control input-param" v-model="categoryIng.title" placeholder="Введите" />
 							</div>
 						</div>
 					</div>
 
 					<hr class="hr-page">
-					<button type="button" @click="sendProducts" class="btn btn-success btn-lg btn-save">
+					<button type="submit" class="btn btn-success btn-lg btn-save">
 						<div v-if="!stateSaving" style="color: white;" class="main-text">Добавить категорию</div>
 						<div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
 					</button>
-				</div>
+				</b-form>
 			</div>
 		</div>
 	</div>
@@ -48,7 +48,7 @@ import ProductsService from '@/services/menu/ProductsService';
 import Sidebar from '@/components/Sidebar';
 
 export default {
-  name: 'add_products',
+  name: 'AddCatIng',
   components: {
     sidebar: Sidebar,
   },
@@ -65,7 +65,8 @@ export default {
   mounted() {
   },
   methods: {
-    async sendProducts() {
+    async sendCatIng(evt) {
+			evt.preventDefault();
       console.log(this.categoryIng);
 
       ProductsService.addCategoryIng(this.categoryIng);

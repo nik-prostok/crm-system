@@ -6,7 +6,7 @@
 			</div>
 
 			<div class="col-10 col-sm-11">
-				<div class="container-fluid mt-2 mb-5">
+				 <b-form class="container-fluid mt-2 mb-5" @submit="sendCategory">
 
 					<div class="row">
 						<div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
@@ -25,7 +25,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<input type="text" ref="search" class="form-control input-param" v-model="category.title" placeholder="Введите">
+								<b-form-input required type="text" ref="search" class="form-control input-param" v-model="category.title" placeholder="Введите" />
 							</div>
 						</div>
 					</div>
@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<multiselect class="my-multiselect" placeholder="Выберите" select-label="Нажмите Enter" deselectLabel="Enter для удаления" v-model="parent" :multiple="false" :close-on-select="true" label="title" track-by="title" :options="categories"></multiselect>
+								<b-form-select required v-model="parent" :options="categories" class="form-control input-param" placeholder="Выберите"/>
 							</div>
 						</div>
 					</div>
@@ -173,11 +173,11 @@
 					</div>
 
 					<hr class="hr-page">
-					<button type="button" @click="sendProducts" class="btn btn-success btn-lg btn-save">
+					<button type="submit" class="btn btn-success btn-lg btn-save">
 						<div v-if="!stateSaving" style="color: white;" class="main-text">Сохранить категорию</div>
 						<div v-if="stateSaving" style="color: white;" class="main-text">Сохранение...</div>
 					</button>
-				</div>
+				 </b-form>
 			</div>
 		</div>
 	</div>
@@ -211,10 +211,7 @@ export default {
 
       key: null,
 
-      parent: {
-        _id: null,
-        title: null,
-      },
+      parent: null,
 
       categories: [],
 
@@ -246,10 +243,11 @@ export default {
       $('#upload:hidden').trigger('click');
 		},
 		
-    async sendProducts() {
+    async sendCategory(event) {
       //console.log(this.category);
-
-			this.category.parent = this.parent._id;
+			event.preventDefault();
+			let vm = this;
+			this.category.parent_id = this.parent;
 
 			console.log('category', this.category)
 
@@ -257,29 +255,35 @@ export default {
       formData.append('category', JSON.stringify(this.category));
       if (this.file != null) {
         formData.append('avatar', this.file);
-      }
+			}
+			console.log(this.category);
 
-      ProductsService.editCategory(formData);
+			await ProductsService.editCategory(formData);
 
-      this.$router.push('/menu/category_prod_cards');
+			vm.$router.push("/menu/category_prod_cards");
 		},
 		
     async getCategories() {
-      const res = await ProductsService.fetchCategories()
-			const id = location.pathname.replace('/menu/category_prod_cards/edit/', '')
+			let vm = this;
+      const res = await ProductsService.fetchCategories();
+			const id = location.pathname.replace('/menu/category_prod_cards/edit/', '');
 			
+			console.log(id);
+
 			this.categories = res.data
-			this.category = res.data.filter(item => {return item._id == id});
-			
-			[this.category] = this.category
+			this.categories.forEach(cat => {
+				cat.text = cat.title;
+				cat.value = cat._id;
+			})
 
-			console.log('categories', this.categories)
-			console.log('category', this.category)
-
-			this.parent._id =  this.category.parent._id
-			this.parent.title =  this.category.parent.title
-
-			console.log('parent', this.parent)
+			this.category = this.categories.filter(item => {return item._id === id});
+			this.category = this.category[0];
+			this.categories.forEach(cat => {
+				if (cat._id == this.category.parent_id){
+					this.parent = cat._id;
+					console.log(vm.parent)
+				}
+			})
 
       if (this.category.photo != null) {
         this.category.avatar = this.category.photo;

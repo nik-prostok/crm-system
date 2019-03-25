@@ -6,7 +6,7 @@
       </div>
 
       <div class="col-10 col-sm-11">
-        <div class="container-fluid mt-2 mb-5">
+        <b-form class="container-fluid mt-2 mb-5" @submit="sendCategory">
           <div class="row">
             <div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
               <router-link to="/menu/category_prod_cards">
@@ -24,14 +24,8 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <input
-                  type="text"
-                  ref="search"
-                  class="form-control input-param"
-                  v-model="category.title"
-                  placeholder="Введите"
-                >
-              </div>
+								<b-form-input required type="text" ref="search" class="form-control input-param" v-model="category.title" placeholder="Введите" />
+							</div>
             </div>
           </div>
 
@@ -41,18 +35,8 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <multiselect
-                  class="my-multiselect"
-                  placeholder="Выберите"
-                  select-label="Нажмите Enter"
-                  deselectLabel="Enter для удаления"
-                  v-model="parent"
-                  :multiple="false"
-                  :close-on-select="true"
-                  label="title"
-                  :options="categories"
-                ></multiselect>
-              </div>
+								<b-form-select required v-model="parent" :options="categories" class="form-control input-param" placeholder="Выберите"/>
+							</div>
             </div>
           </div>
 
@@ -220,12 +204,12 @@
 
           <hr class="hr-page">
           <div class="col-sm-3">
-            <button type="button" @click="sendProducts" class="btn btn-success btn-block btn-save">
+            <button type="submit" class="btn btn-success btn-block btn-save">
               <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить категорию</div>
               <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
             </button>
           </div>
-        </div>
+        </b-form>
       </div>
     </div>
   </div>
@@ -240,7 +224,7 @@ import ProductsService from "@/services/menu/ProductsService";
 import Sidebar from "@/components/Sidebar";
 
 export default {
-  name: "add_products",
+  name: "AddCategory",
   components: {
     sidebar: Sidebar
   },
@@ -277,7 +261,8 @@ export default {
     selectFile() {
       $("#upload:hidden").trigger("click");
     },
-    async sendProducts() {
+    async sendCategory(event) {
+      event.preventDefault();
       let vm = this;
       vm.$data.category.parent_id = this.parent.id;
       console.log(vm.$data.category);
@@ -296,7 +281,9 @@ export default {
           vm.$data.categories = res.data.map(item => ({
             id: item._id,
             title: item.title,
-            parent_id: item.parent_id
+            parent_id: item.parent_id,
+            text: item.title,
+            value: item._id,
           }));
         })
         .catch(err => console.log);

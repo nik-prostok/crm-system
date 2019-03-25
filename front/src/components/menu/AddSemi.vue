@@ -6,7 +6,7 @@
       </div>
 
       <div class="col-10 col-sm-11">
-        <div class="container-fluid mt-2 mb-5">
+        <b-form class="container-fluid mt-2 mb-5" @submit="sendSemi">
           <div class="row">
             <div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
               <router-link to="/menu/semi">
@@ -24,14 +24,8 @@
             </div>
             <div class="col-lg-4">
               <div class="form-group">
-                <input
-                  type="text"
-                  ref="search"
-                  class="form-control input-param"
-                  v-model="semi.title"
-                  placeholder="Введите"
-                >
-              </div>
+								<b-form-input required type="text" ref="search" class="form-control input-param" v-model="semi.title" placeholder="Введите" />
+							</div>
             </div>
           </div>
 
@@ -223,11 +217,11 @@
           </div>
 
           <hr class="hr-page">
-          <button type="button" @click="sendSemi" class="btn btn-success btn-lg btn-save">
+          <button type="submit" class="btn btn-success btn-lg btn-save">
             <div v-if="!stateSaving" style="color: white;" class="main-text">Добавить полуфабрикат</div>
             <div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
           </button>
-        </div>
+        </b-form>
       </div>
     </div>
   </div>
@@ -293,7 +287,8 @@ export default {
     this.fetchIngridients();
   },
   methods: {
-    async sendSemi() {
+    async sendSemi(evt) {
+      evt.preventDefault();
       this.stateSaving = true;
       ProductsService.addSemi(this.semi)
         .then(res => {

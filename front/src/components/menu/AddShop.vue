@@ -6,7 +6,7 @@
 			</div>
 
 			<div class="col-10 col-sm-11">
-				<div class="container-fluid mt-2 mb-5">
+				<b-form class="container-fluid mt-2 mb-5" @submit="sendShop">
 
 					<div class="row">
 						<div class="col-md-5 col-lg-5 mt-3 d-flex flex-row">
@@ -25,7 +25,7 @@
 						</div>
 						<div class="col-lg-4">
 							<div class="form-group">
-								<input type="text" ref="search" class="form-control input-param" v-model="shop.title" placeholder="Например, 'Кухня'">
+								<b-form-input required type="text" ref="search" class="form-control input-param" v-model="shop.title" placeholder="Введите" />
 							</div>
 						</div>
 					</div>
@@ -44,11 +44,11 @@
 						</div>
 					</div>
 					<hr class="hr-page">
-					<button type="button" @click="sendShop" class="btn btn-success btn-lg btn-save">
+					<button type="submit" class="btn btn-success btn-lg btn-save">
 						<div v-if="!stateSaving" style="color: white;" class="main-text">Добавить цех</div>
 						<div v-if="stateSaving" style="color: white;" class="main-text">Добавление...</div>
 					</button>
-				</div>
+				</b-form>
 			</div>
 		</div>
 	</div>
