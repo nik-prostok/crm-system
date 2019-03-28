@@ -52,6 +52,10 @@ export default {
               "token",
               JSON.stringify({ token: `Bearer ${response.data.token}` })
             );
+            localStorage.setItem(
+              "name",
+              JSON.stringify({name: this.name})
+            );
             this.$router.push('/');
             return (vm.$data.isLoggedIn = true);
           })

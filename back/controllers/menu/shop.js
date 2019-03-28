@@ -4,12 +4,13 @@ module.exports = {
 	create: (req, res) => {
 		var RequestShop = req.body;
 		console.log(RequestShop);
-		Shop.ShopModel.create(RequestShop, function (err) {
+		Shop.ShopModel.create(RequestShop, function (err, data) {
 			if (err){
 				console.log(err);
 				res.sendStatus(400);
 			} else {
-				res.sendStatus(200);
+				res.status(200);
+				res.send(data);
 			}
 		}); 
 	},

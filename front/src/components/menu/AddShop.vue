@@ -87,9 +87,18 @@ export default {
 
   },
   methods: {
-    async sendShop() {
-      ProductsService.addShop(this.shop);
-      this.$router.push('/menu/shops');
+    async sendShop(event) {
+			event.preventDefault();
+			ProductsService.addShop(this.shop)
+			.then(res => {
+				if (res.status === 200){
+					this.$router.push('/menu/shops');
+				}
+			})
+			.catch(err => {
+				alert("Ошибка сохранения!");
+				console.error(err);
+			})
     },
   },
   computed: {

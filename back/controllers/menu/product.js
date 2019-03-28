@@ -7,7 +7,8 @@ module.exports = {
     let RequestProduct = JSON.parse(req.body.product);
     if (req.files["avatar"]) {
       RequestProduct.photo =
-        "http://localhost:8081/static/" + req.files["avatar"][0].filename;
+        "http://89.223.91.34:8081/static/" +
+        req.files["avatar"][0].filename;
     }
     console.log(RequestProduct);
     Product.ProductModel.create(RequestProduct, function(err) {

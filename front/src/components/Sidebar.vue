@@ -42,27 +42,27 @@
         </b-collapse>
       </ul>
 
-      <ul class="list-group fixed-bottom">
-        <div class="d-flex flex-row ml-3 mt-2 mb-2">
+      <ul class="list-group logout-item" id="logout-item">
+        <div class="d-flex flex-row ml-3 mt-2 mb-2 logout-content max">
           <i
             class="fas fa-user fa-2x"
-            v-on:click="navAction"
+            @click="navAction"
             style="cursor: pointer; color: #a6a9ab;"
           ></i>
           <div
+            @click="show = !show"
             class="d-flex flex-row"
             style="cursor: pointer;"
-            @click="show = !show"
             id="popoverButton-sync"
           >
-            <a v-if="stateNav" class="ml-3" style="color: white;">Лев</a>
+            <a v-if="stateNav" class="ml-3" style="color: white;">{{nameUser}}</a>
             <i v-if="stateNav && !show" class="mt-1 ml-1 fas fa-angle-down" style="color: white;"></i>
             <i v-if="stateNav && show" class="mt-1 ml-1 fas fa-angle-up" style="color: white;"></i>
           </div>
         </div>
       </ul>
 
-      <b-popover :show.sync="show" target="popoverButton-sync" placement="topright">
+      <b-popover :show.sync="show" target="popoverButton-sync" placement="left" offset="300">
         <b-button variant="link" @click="logout">Выход</b-button>
       </b-popover>
     </div>
@@ -74,6 +74,7 @@ export default {
   name: "sidebar",
   data() {
     return {
+      nameUser: 'DefaultUser',
       show: false,
       stateNav: false,
       ul_list: [
@@ -304,8 +305,13 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() {
+    this.setNameUser();
+  },
   methods: {
+    setNameUser(){
+      this.nameUser = JSON.parse(localStorage.getItem('name')).name;
+    },
     showSubMenu(id){
       console.log(id);
       this.ul_list.forEach(ul => {
@@ -348,6 +354,22 @@ export default {
 html {
     margin-left: calc(100vw - 100%);
     margin-right: 0;
+}
+
+.logout-item {
+  bottom: 0;
+  position: fixed;
+  width: inherit;
+  background-color: #262b30;
+}
+.logout-content {
+  display: block;
+  float: left;
+}
+/* Растягиваем второй блок на максимальнуцю ширину */
+.logout-content.max {
+  float: none;
+  overflow: auto;
 }
 
 .sidenav::-webkit-scrollbar-track {

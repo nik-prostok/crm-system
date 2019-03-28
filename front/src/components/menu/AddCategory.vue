@@ -269,9 +269,16 @@ export default {
       const formData = new FormData();
       formData.append("category", JSON.stringify(vm.$data.category));
       formData.append("avatar", vm.$data.avatar);
-      ProductsService.addCategory(formData);
-
-      vm.$router.push("/menu/category_prod_cards");
+      await ProductsService.addCategory(formData)
+      .then(res => {
+        if (res.status === 200) {
+           vm.$router.push("/menu/category_prod_cards");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Ошибка добавления!');
+      });
     },
     async getCategories() {
       const vm = this;

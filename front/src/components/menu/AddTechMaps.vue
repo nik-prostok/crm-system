@@ -63,6 +63,64 @@
             </div>
           </div>
 
+          <div class="row mt-2 mb-4" v-if="map.category === 0">
+            <div class="col-lg-3">
+              <!-- <p class="title-form mt-2">Новая категория</p> -->
+            </div>
+            <div class="col-lg-4 card-custom">
+              <b-card>
+                <b-form-group>
+                  <b-form-input
+                    required
+                    v-model="category.title"
+                    class="form-control input-param"
+                    placeholder="Имя новой категории"
+                  />
+                </b-form-group>
+                <b-form-group description="Родительская категория">
+                  <b-form-select
+                    required
+                    v-model="category.parent"
+                    :options="categoriesParent"
+                    class="form-control input-param"
+                    placeholder="Выберите"
+                  />
+                </b-form-group>
+                <div class="row">
+                  <div class="col-lg-5">
+                    <p class="mt-2">Фотография</p>
+                  </div>
+                  <b-form-file
+                    accept="image/*"
+                    v-model="avatarCategory"
+                    id="upload"
+                    class="mt-3"
+                    plain
+                  ></b-form-file>
+                  <div class="col-lg-4 align-self-center">
+                    <b-link @click="selectFile" class="main-text">
+                      <div class="link-green link-hover">
+                        <u id="upload_link">Загрузить</u>
+                      </div>
+                    </b-link>
+                    <div v-if="avatarCategory" class="mt-3">
+                      {{avatarCategory && avatarCategory.name}}
+                      <i
+                        @click="avatarCategory = null"
+                        class="fas fa-times"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <div slot="footer">
+                  <button @click="saveCategory" class="btn btn-success btn-save">
+                    <div style="color: white;" class="main-text">Сохранить</div>
+                  </button>
+                </div>
+              </b-card>
+            </div>
+          </div>
+
           <div class="row">
             <div class="col-lg-3">
               <p class="title-form mt-2">Цех</p>
@@ -77,6 +135,40 @@
                   placeholder="Выберите"
                 />
               </div>
+            </div>
+          </div>
+
+          <div class="row mt-2 mb-4" v-if="map.shop === 0">
+            <div class="col-lg-3">
+              <!-- <p class="title-form mt-2">Новый цех</p> -->
+            </div>
+            <div class="col-lg-4 card-custom">
+              <b-card>
+                <b-form-group>
+                  <b-form-input
+                    required
+                    v-model="shop.title"
+                    class="form-control input-param"
+                    placeholder="Имя нового цеха"
+                  />
+                </b-form-group>
+                <b-form-group>
+                  <p-check
+                    v-model="shop.print_runners"
+                    style="font-size: 18px;"
+                    class="p-icon p-smooth mt-0"
+                    color="success"
+                  >
+                    <i slot="extra" class="icon fa fa-check"></i>
+                    <div style="font-size: 16px;" class="main-text">Печатать бегунки</div>
+                  </p-check>
+                </b-form-group>
+                <div slot="footer">
+                  <button @click="saveShop" class="btn btn-success btn-save">
+                    <div style="color: white;" class="main-text">Сохранить</div>
+                  </button>
+                </div>
+              </b-card>
             </div>
           </div>
 
@@ -874,6 +966,18 @@ export default {
         ingridients: []
       },
 
+      avatarCategory: null,
+      category: {
+        title: "",
+        parent_id: null,
+        color: ""
+      },
+
+      shop: {
+        title: "",
+        print_runners: false
+      },
+
       avatar: null,
       map: {
         title: "",
@@ -900,6 +1004,43 @@ export default {
     this.fetchModificators();
   },
   methods: {
+    async saveCategory() {
+      this.category.parent_id = this.category.parent;
+      const formData = new FormData();
+      formData.append("category", JSON.stringify(this.category));
+      formData.append("avatar", this.avatarCategory);
+      await ProductsService.addCategory(formData)
+        .then(res => {
+          this.fetchCategories();
+          this.map.category = res.data._id;
+          this.category = {
+            title: "",
+            parent_id: null,
+            color: ""
+          };
+          console.log(res);
+        })
+        .catch(error => {
+          console.error(error);
+          alert("Ошибка добавления!");
+        });
+    },
+    async saveShop() {
+      await ProductsService.addShop(this.shop)
+        .then(res => {
+          this.fetchShops();
+          this.map.shop = res.data._id;
+          this.shop = {
+            title: "",
+            print_runners: false
+          };
+          console.log(res);
+        })
+        .catch(error => {
+          console.error(error);
+          alert("Ошибка добавления!");
+        });
+    },
     async fetchModificators() {
       ProductsService.fetchModificator()
         .then(res => {
@@ -963,6 +1104,11 @@ export default {
             cat.value = cat._id;
             cat.text = cat.title;
           });
+          this.categoriesParent = JSON.parse(JSON.stringify(this.categories));
+          this.categories.push({
+            value: 0,
+            text: "Добавить новую категорию"
+          });
         })
         .catch(err => {
           console.error(err);
@@ -975,6 +1121,10 @@ export default {
           this.shops.forEach(shop => {
             shop.value = shop._id;
             shop.text = shop.title;
+          });
+          this.shops.push({
+            value: 0,
+            text: "Добавить новый цех"
           });
         })
         .catch(error => {
@@ -1054,3 +1204,8 @@ export default {
 };
 </script>
 
+<style>
+#upload {
+  display: none;
+}
+</style>

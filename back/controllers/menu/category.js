@@ -5,15 +5,18 @@ module.exports = {
 	create: (req, res) => {
 		let RequestCategory = JSON.parse(req.body.category);
 		if (req.files['avatar']) {
-			RequestCategory.photo = "http://localhost:8081/static/" + req.files['avatar'][0].filename;
+			RequestCategory.photo =
+        "http://89.223.91.34:8081/static/" +
+        req.files["avatar"][0].filename;
 		}
 		console.log(RequestCategory)
-		Category.CategoryModel.create(RequestCategory, function (err) {
+		Category.CategoryModel.create(RequestCategory, function (err, data) {
 			if (err) {
 				console.log(err);
 				res.sendStatus(400);
 			} else {
-				res.sendStatus(200);
+				res.status(200);
+				res.send(data);
 			}
 		});
 	},

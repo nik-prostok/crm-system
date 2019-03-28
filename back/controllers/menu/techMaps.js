@@ -7,7 +7,8 @@ module.exports = {
     let TechMapsRequest = JSON.parse(req.body.map);
     if (req.files["avatar"]) {
       TechMapsRequest.photo =
-        "http://localhost:8081/static/" + req.files["avatar"][0].filename;
+        "http://89.223.91.34:8081/static/" +
+        req.files["avatar"][0].filename;
     }
     console.log(TechMapsRequest.modificators);
 
