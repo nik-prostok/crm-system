@@ -17,6 +17,10 @@ export default new Router({
       component: () => import('./components/Login.vue'),
     },
     {
+      path: '/table',
+      component: () => import('./components/TEST/table.vue'),
+    },
+    {
       path: '/menu/products',
       component: () => import('./components/menu/Products.vue'),
       meta: { requiresAuth: true },

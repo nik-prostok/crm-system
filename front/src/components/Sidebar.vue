@@ -79,6 +79,18 @@ export default {
       stateNav: false,
       ul_list: [
         {
+          title: "ТЕСТОВАЯ ТАБЛИЦА СТОЛОВ",
+          id: "TableTest",
+          icon: "/static/image/bars.png",
+          isOpen: false,
+          submenu: [
+            {
+              title: "Стол",
+              id: "/table"
+            }
+          ]
+        },
+        {
           title: "Статистика",
           id: "StatisticSubmenu",
           icon: "/static/image/bars.png",
