@@ -86,7 +86,7 @@ export default {
           submenu: [
             {
               title: "Стол",
-              id: "/table"
+              id: "/tables"
             }
           ]
         },
