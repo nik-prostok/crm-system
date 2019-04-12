@@ -1,6 +1,6 @@
 <template>
   <div id="tables">
-    <div class="row no-gutters mt-4" id="body-row">
+    <div class="row no-gutters mt-4 mr-5" id="body-row">
       <div class="col-2 col-sm-1">
         <sidebar></sidebar>
       </div>
@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="tables" style="margin-left: 100px;">
+    <div class="tables ml-5">
       <div class="field-container" v-on:mousemove="moveTable">
         <div
           v-for="(el, index) in AllTables"
