@@ -18,7 +18,7 @@ export default new Router({
     },
     {
       path: '/tables',
-      component: () => import('./components/menu/Tables.vue'),
+      component: () => import('./components/settings/tables/Tables.vue'),
     },
     {
       path: '/menu/products',
