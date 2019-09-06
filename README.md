@@ -1,7 +1,16 @@
 # crm
 
-backend:
-npm run start
+## Project setup
+```
+npm install
+```
 
-front:
+### Compiles and hot-reloads for development frontend
+```
 npm run dev
+```
+
+### Compiles and hot-reloads for development backend
+```
+npm run start
+```
